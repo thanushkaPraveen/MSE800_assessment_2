@@ -1,7 +1,7 @@
 import os
 import time
 
-from car_rental_system.controllers.UserController import UserController
+from car_rental_system.controllers.user_controller import UserController
 from car_rental_system.database.connection import Database
 from car_rental_system.insert_data import *
 from car_rental_system.models.additional_services import AdditionalServices
