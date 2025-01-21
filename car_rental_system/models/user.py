@@ -5,7 +5,7 @@ from car_rental_system.database.sql_statement import *
 
 class User:
     def __init__(self, user_type_id, user_name, user_email, user_phone_number, user_password, is_active=1, user_id=None):
-        self.user_type_id = int(user_type_id)
+        self.user_type_id = user_type_id
         self.user_name = user_name
         self.user_email = user_email
         self.user_phone_number = user_phone_number

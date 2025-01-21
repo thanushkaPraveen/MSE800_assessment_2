@@ -28,10 +28,13 @@ def main():
         print("Welcome to the Car Rental System!")
         user = user_controller.login_or_register()
 
-        if user.user_type_id == 1:
-            print("Admin")
-        else:
-            print("Customer")
+        if isinstance(user, User):
+            if user.user_type_id == 1:
+                print("Admin")
+            else:
+                print("Customer")
+
+
 
 def create_db():
     return
