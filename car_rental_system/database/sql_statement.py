@@ -64,7 +64,7 @@ CREATE TABLE IF NOT EXISTS Car (
   car_brand_model_id INT NOT NULL,
   car_status_Id INT NOT NULL,
   number_plate VARCHAR(45) NOT NULL,
-  model_name VARCHAR(45) NOT NULL,
+  model_name VARCHAR(45) NULL,
   daily_rate VARCHAR(45) NOT NULL,
   year VARCHAR(45) NOT NULL,
   mileage VARCHAR(45) NOT NULL,
@@ -130,7 +130,6 @@ CREATE TABLE IF NOT EXISTS BookingAdditionalServices (
     CONSTRAINT fk_additional_services FOREIGN KEY (additional_services_id) REFERENCES AdditionalServices(additional_services_id)
 );
 """
-
 CREATE_INVOICE_TABLE  = """
 CREATE TABLE IF NOT EXISTS Invoice (
   invoice_id INT AUTO_INCREMENT PRIMARY KEY,
@@ -147,7 +146,6 @@ CREATE TABLE IF NOT EXISTS Invoice (
     CONSTRAINT fk_user_invoice FOREIGN KEY (user_id) REFERENCES User(user_id)
 );
 """
-
 
 # UserType Table
 INSERT_USER_TYPE = "INSERT INTO UserType (user_type, is_active, create_at, updated_at) VALUES (%s, %s, %s, %s)"

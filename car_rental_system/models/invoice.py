@@ -52,6 +52,26 @@ class Invoice:
         sql = SELECT_ALL_INVOICES if invoice is None else SELECT_INVOICE_BY_ID
         values = (invoice.invoice_id,) if invoice else None
         rows = db.select_from_database(sql, values)
+
+        # for row in rows:
+        #     print(row)
+
+        # Create a list to hold Invoice objects
+        invoices = []
         for row in rows:
-            print(row)
+            # Assuming `row` is a tuple in the format:
+            # (invoice_id, booking_id, user_id, amount, payment_method, payment_date, is_paid, is_active, ...)
+            invoice_obj = Invoice(
+                booking_id=row[1],  # Assuming `booking_id` is the second column
+                user_id=row[2],  # Assuming `user_id` is the third column
+                amount=row[3],  # Assuming `amount` is the fourth column
+                payment_method=row[4],  # Assuming `payment_method` is the fifth column
+                payment_date=row[5],  # Assuming `payment_date` is the sixth column
+                is_paid=row[6],  # Assuming `is_paid` is the seventh column
+                is_active=row[7],  # Assuming `is_active` is the eighth column
+                invoice_id=row[0]  # Assuming `invoice_id` is the first column
+            )
+            invoices.append(invoice_obj)
+
+        return invoices
 

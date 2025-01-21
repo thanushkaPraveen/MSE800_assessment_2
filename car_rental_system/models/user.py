@@ -51,25 +51,26 @@ class User:
         sql = SELECT_ALL_USERS if user is None else SELECT_USER_BY_ID
         values = (user.user_id,) if user else None
         rows = db.select_from_database(sql, values)
-        for row in rows:
-            print(row)
 
-    '''    
+        # for row in rows:
+        #     print(row)
+
         users = []
         for row in rows:
-            # Assuming `row` is a dictionary with column names as keys
-            users.append(User(
-                user_type_id=row['user_type_id'],
-                user_name=row['user_name'],
-                user_email=row['user_email'],
-                user_phone_number=row['user_phone_number'],
-                user_password=row['user_password'],
-                is_active=row['is_active'],
-                user_id=row['user_id']
-            ))
+            user = User(
+                user_id=row[0],  # First column: user_id
+                user_type_id=row[1],  # Second column: user_type_id
+                user_name=row[2],  # Third column: user_name
+                user_email=row[3],  # Fourth column: user_email
+                user_phone_number=row[4],  # Fifth column: user_phone_number
+                user_password=row[5],  # Sixth column: user_password
+                is_active=row[6]  # Seventh column: is_active
+            )
+
+            # Add the created User object to the list
+            users.append(user)
 
         return users
-    '''
 
     @staticmethod
     def find_by_email_and_password(db, user_email, user_password=None):

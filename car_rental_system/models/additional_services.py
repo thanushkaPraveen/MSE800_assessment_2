@@ -48,6 +48,19 @@ class AdditionalServices:
         sql = SELECT_ALL_ADDITIONAL_SERVICES if service is None else SELECT_ADDITIONAL_SERVICE_BY_ID
         values = (service.additional_services_id,) if service else None
         rows = db.select_from_database(sql, values)
+
+        # Create a list to hold AdditionalServices objects
+        additional_services = []
         for row in rows:
-            print(row)
+            # Assuming `row` is a tuple in the format:
+            # (additional_services_id, services_description, services_amount, is_active, ...)
+            service_obj = AdditionalServices(
+                services_description=row[1],  # Assuming `services_description` is the second column
+                services_amount=row[2],  # Assuming `services_amount` is the third column
+                is_active=row[3],  # Assuming `is_active` is the fourth column
+                additional_services_id=row[0]  # Assuming `additional_services_id` is the first column
+            )
+            additional_services.append(service_obj)
+
+        return additional_services
 

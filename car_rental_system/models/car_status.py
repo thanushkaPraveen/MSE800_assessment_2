@@ -44,6 +44,21 @@ class CarStatus:
         sql = SELECT_ALL_CAR_STATUSES if car_status is None else SELECT_CAR_STATUS_BY_ID
         values = (car_status.car_status_id,) if car_status else None
         rows = db.select_from_database(sql, values)
+
+        # for row in rows:
+        #     print(row)
+
+        # Create a list to hold CarStatus objects
+        car_statuses = []
         for row in rows:
-            print(row)
+            # Assuming `row` is a tuple in the format:
+            # (car_status_id, car_status_type, is_active, ...)
+            status_obj = CarStatus(
+                car_status_type=row[1],  # Assuming `car_status_type` is the second column
+                is_active=row[2],  # Assuming `is_active` is the third column
+                car_status_id=row[0]  # Assuming `car_status_id` is the first column
+            )
+            car_statuses.append(status_obj)
+
+        return car_statuses
 

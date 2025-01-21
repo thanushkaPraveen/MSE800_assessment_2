@@ -49,7 +49,24 @@ class CarBrandModel:
         sql = SELECT_ALL_CAR_BRAND_MODELS  if car_brand_model is None else SELECT_CAR_BRAND_MODEL_BY_ID
         values = (car_brand_model.car_brand_model_id,) if car_brand_model else None
         rows = db.select_from_database(sql, values)
+
+        # for row in rows:
+        #     print(row)
+
+        # Create a list to hold CarBrandModel objects
+        car_brand_models = []
         for row in rows:
-            print(row)
+            # Assuming `row` is a tuple in the format: (car_brand_model_id, car_type_id, brand_name, model_name, is_active, ...)
+            car_brand_model_obj = CarBrandModel(
+                car_type_id=row[1],  # Assuming `car_type_id` is the second column
+                brand_name=row[2],  # Assuming `brand_name` is the third column
+                model_name=row[3],  # Assuming `model_name` is the fourth column
+                is_active=row[4],  # Assuming `is_active` is the fifth column
+                car_brand_model_id=row[0]  # Assuming `car_brand_model_id` is the first column
+            )
+            car_brand_models.append(car_brand_model_obj)
+
+        return car_brand_models
+
 
 

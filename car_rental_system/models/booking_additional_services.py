@@ -46,9 +46,25 @@ class BookingAdditionalServices:
 
     @staticmethod
     def select(db, booking_service=None):
-        sql = SELECT_ALL_ADDITIONAL_SERVICES if booking_service is None else SELECT_ADDITIONAL_SERVICE_BY_ID
+        sql = SELECT_ALL_BOOKING_ADDITIONAL_SERVICES if booking_service is None else SELECT_BOOKING_ADDITIONAL_SERVICE_BY_ID
         values = (booking_service.booking_additional_charge_id,) if booking_service else None
         rows = db.select_from_database(sql, values)
+
+        # for row in rows:
+        #     print(row)
+
+        # Create a list to hold BookingAdditionalServices objects
+        booking_additional_services = []
         for row in rows:
-            print(row)
+            # Assuming `row` is a tuple in the format:
+            # (booking_additional_charge_id, booking_id, additional_services_id, is_active, ...)
+            service_obj = BookingAdditionalServices(
+                booking_id=row[1],  # Assuming `booking_id` is the second column
+                additional_services_id=row[2],  # Assuming `additional_services_id` is the third column
+                is_active=row[3],  # Assuming `is_active` is the fourth column
+                booking_additional_charge_id=row[0]  # Assuming `booking_additional_charge_id` is the first column
+            )
+            booking_additional_services.append(service_obj)
+
+        return booking_additional_services
 

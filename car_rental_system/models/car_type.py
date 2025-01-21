@@ -44,6 +44,17 @@ class CarType:
         sql = SELECT_ALL_CAR_TYPES if car_type is None else SELECT_CAR_TYPE_BY_ID
         values = (car_type.car_type_id,) if car_type else None
         rows = db.select_from_database(sql, values)
+
+        # Create a list to hold CarType objects
+        car_types = []
         for row in rows:
-            print(row)
+            # Assuming `row` is a tuple in the format: (car_type_id, car_type, is_active, ...)
+            car_type_obj = CarType(
+                car_type=row[1],  # Assuming `car_type` is the second column
+                is_active=row[2],  # Assuming `is_active` is the third column
+                car_type_id=row[0]  # Assuming `car_type_id` is the first column
+            )
+            car_types.append(car_type_obj)
+
+        return car_types
 
