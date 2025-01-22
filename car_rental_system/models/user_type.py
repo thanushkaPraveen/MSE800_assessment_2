@@ -22,6 +22,7 @@ class UserType:
         db.update_database(sql, values)
         print(f"UserType with ID {user_type.user_type_id} updated.")
 
+    @staticmethod
     def deactivate(db, user_type):
         sql = UPDATE_USER_TYPE
         is_active = 0

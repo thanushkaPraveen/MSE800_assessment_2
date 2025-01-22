@@ -1,3 +1,4 @@
+from car_rental_system.insert_data import update_data
 from car_rental_system.models.car import Car
 from car_rental_system.models.car_brand_model import CarBrandModel
 from car_rental_system.utils.input_validation import *
@@ -35,6 +36,23 @@ class ManageCarsController:
 
     def edit_car(self):
         print("Editing car details...")
+        cars = Car.select_with_details_and_display(self.db)
+        car_model = cars[
+            get_valid_integer(f"Enter Car Index Edit (1-{len(cars)}): ", 1, len(cars)) - 1]
+
+        update_car = self.collect_car_data()
+
+        user_choice = get_user_confirmation()
+        if user_choice == 1:
+            update_car.car_id = car_model["car_id"]
+            Car.update(self.db, update_car)
+            print("The car has been added to the database successfully.")
+        else:
+            print("The action has been canceled. The car was not added to the database.")
+
+        cars = Car.select_with_details_and_display(self.db)
+        print("Checked updated car details from the table...")
+        input("Press Enter to go back to the previous screen...")
 
     def delete_car(self):
         print("Deleting a car...")
@@ -54,10 +72,12 @@ class ManageCarsController:
         mileage = get_valid_positive_integer("Enter Mileage (e.g., 10000): ")
         min_rental_period = get_valid_positive_integer("Enter Minimum Rental Period (e.g., 1): ")
         max_rental_period = get_valid_max_rental_period(min_rental_period)
+        is_active = get_valid_is_active()
+        is_available = get_valid_is_status()
 
         return Car (
             car_brand_model_id=int(car_brand_model_id[0]),
-            car_status_id=1,  # Default value
+            car_status_id= is_available,  # Default value
             number_plate=number_plate,
             model_name=model_name,
             daily_rate=str(daily_rate),
@@ -65,7 +85,7 @@ class ManageCarsController:
             mileage=str(mileage),
             min_rental_period=str(min_rental_period),
             max_rental_period=str(max_rental_period),
-            is_active=1
+            is_active=is_active
         )
 
     def display_menu(self):

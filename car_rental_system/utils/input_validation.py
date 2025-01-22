@@ -91,3 +91,11 @@ def get_user_confirmation():
             return int(confirmation)
         else:
             print("Invalid input. Please enter 1 (Yes) to confirm or 0 (No) to cancel.")
+
+def get_valid_is_status():
+    while True:
+        is_active = input("Is the car status? (1 for Available, 2 for Unavailable): ").strip()
+        if is_active in {"1", "2"}:
+            return int(is_active)
+        else:
+            print("Invalid input. Please enter 1 (Yes) or 0 (No).")
