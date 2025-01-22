@@ -1,5 +1,7 @@
 import time
 
+from car_rental_system.controllers.invoice_payment_controller import InvoicePaymentController
+from car_rental_system.controllers.my_bookings_controller import MyBookingsController
 from car_rental_system.models.additional_services import AdditionalServices
 from car_rental_system.models.booking import Booking
 from car_rental_system.models.booking_additional_services import BookingAdditionalServices
@@ -154,14 +156,18 @@ class CustomerController:
             else:
                 print("Invalid input. Please enter 'yes' or 'no'.")
 
-    def view_booked_car(self):
+    def my_bookings(self):
         print("Viewing booked car...")
+        my_bookings_controller = MyBookingsController(self.db, self.customer)
+        my_bookings_controller.display_menu()
 
     def manage_booking(self):
         print("Managing booking...")
 
-    def view_invoice(self):
+    def invoice_payment(self):
         print("Viewing invoice...")
+        invoice_payment_controller = InvoicePaymentController(self.db, self.customer)
+        invoice_payment_controller.display_menu()
 
     def logout(self):
         print("Logging out...")
@@ -175,9 +181,8 @@ class CustomerController:
             print("-----------------------")
             print("1. Make a Booking")
             print("2. My Bookings")
-            print("3. Manage Booking")
-            print("4. Invoices & Payments")
-            print("5. Logout")
+            print("3. Invoices & Payments")
+            print("4. Logout")
             print("-----------------------")
 
             try:
@@ -185,12 +190,10 @@ class CustomerController:
                 if choice == 1:
                     self.select_car()
                 elif choice == 2:
-                    self.view_booked_car()
+                    self.my_bookings()
                 elif choice == 3:
-                    self.manage_booking()
+                    self.invoice_payment()
                 elif choice == 4:
-                    self.view_invoice()
-                elif choice == 5:
                     self.logout()
                     break
                 else:

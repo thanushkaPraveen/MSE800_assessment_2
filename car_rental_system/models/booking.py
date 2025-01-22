@@ -1,6 +1,7 @@
 import time
 
 from car_rental_system.database.sql_statement import *
+from tabulate import tabulate
 
 
 class Booking:
@@ -79,4 +80,72 @@ class Booking:
             bookings.append(booking_obj)
 
         return bookings
+
+    @staticmethod
+    def get_bookings_by_user_id(db, user_id):
+        """
+        Fetch bookings and related data by user ID.
+        """
+        sql = SELECT_BOOKINGS_AND_DETAILS_BY_USER_ID
+        values = (user_id,)
+        rows = db.select_from_database(sql, values)
+
+        bookings = [
+            {
+                "booking_id": row[0],
+                "start_date": row[1],
+                "end_date": row[2],
+                "total_amount": row[3],
+                "note": row[4],
+                "number_plate": row[5],
+                "model_name": row[6],
+                "daily_rate": row[7],
+                "year": row[8],
+                "status": row[9],
+                "user_name": row[10],
+                "user_email": row[11],
+            }
+            for row in rows
+        ]
+
+        return bookings
+
+    @staticmethod
+    def display_bookings_by_user_id(db, user_id):
+        """
+        Display bookings and related data for a specific user.
+        """
+        bookings = Booking.get_bookings_by_user_id(db, user_id)
+
+        if not bookings:
+            print("No bookings found for this user.")
+            return
+
+        table_data = [
+            [
+                idx + 1,
+                booking["booking_id"],
+                booking["start_date"],
+                booking["end_date"],
+                booking["total_amount"],
+                booking["status"],
+                booking["number_plate"],
+                booking["model_name"],
+                booking["daily_rate"],
+                booking["year"],
+                booking["user_name"],
+                booking["user_email"],
+                booking["note"],
+            ]
+            for idx, booking in enumerate(bookings)
+        ]
+
+        headers = [
+            "Index", "Booking ID", "Start Date", "End Date", "Total Amount", "Status",
+            "Number Plate", "Model Name", "Daily Rate", "Year", "User Name", "User Email", "Note"
+        ]
+
+        print(tabulate(table_data, headers=headers, tablefmt="fancy_grid"))
+        return  bookings
+
 

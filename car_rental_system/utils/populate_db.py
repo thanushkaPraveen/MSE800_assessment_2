@@ -7,6 +7,7 @@ from car_rental_system.models.car import *
 from car_rental_system.models.car_brand_model import *
 from car_rental_system.models.car_status import *
 from car_rental_system.models.car_type import *
+from car_rental_system.models.invoice import Invoice
 from car_rental_system.models.user import *
 from car_rental_system.models.user_type import *
 
@@ -162,6 +163,17 @@ def booking_additional_services_model(db):
         for booking_service in booking_services_list:
             BookingAdditionalServices.insert(db, booking_service)
 
+def add_invoices(db):
+    invoices = Invoice.select(db)
+    if len(invoices) < 1:
+
+        invoice_list = [
+             Invoice(booking_id=1, user_id=2, amount=135.50, payment_method="Credit Card", payment_date=int(time.time()), is_paid=1, is_active=1)
+         ]
+
+        for invoice in invoice_list:
+            Invoice.insert(db, invoice)
+
 def insert_records():
     # Create a Database object
     db = Database()
@@ -176,6 +188,7 @@ def insert_records():
     additional_services_model(db)
     booking_model(db)
     booking_additional_services_model(db)
+    add_invoices(db)
 
 
 

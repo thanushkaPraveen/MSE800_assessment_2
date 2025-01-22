@@ -213,6 +213,8 @@ SELECT_BOOKING_BY_ID = "SELECT * FROM Booking WHERE booking_id = %s"
 SELECT_BOOKINGS_BY_USER_ID = "SELECT * FROM Booking WHERE user_id = %s"
 SELECT_BOOKINGS_BY_CAR_ID = "SELECT * FROM Booking WHERE car_id = %s"
 SELECT_BOOKINGS_BY_STATUS_ID = "SELECT * FROM Booking WHERE booking_status_id = %s"
+SELECT_BOOKINGS_AND_DETAILS_BY_USER_ID = "SELECT Booking.booking_id, Booking.start_date, Booking.end_date, Booking.total_amount, Booking.note, Car.number_plate, Car.model_name, Car.daily_rate, Car.year, BookingStatus.booking_status_type, User.user_name, User.user_email FROM Booking INNER JOIN Car ON Booking.car_id = Car.car_id INNER JOIN BookingStatus ON Booking.booking_status_id = BookingStatus.booking_status_id INNER JOIN User ON Booking.user_id = User.user_id WHERE Booking.user_id = %s AND Booking.is_active = 1;"
+
 
 # AdditionalServices Table
 INSERT_ADDITIONAL_SERVICE = "INSERT INTO AdditionalServices (services_description, services_amount, is_active, create_at, updated_at) VALUES (%s, %s, %s, %s, %s)"
@@ -237,6 +239,8 @@ SELECT_ALL_INVOICES = "SELECT * FROM Invoice"
 SELECT_INVOICE_BY_ID = "SELECT * FROM Invoice WHERE invoice_id = %s"
 SELECT_INVOICES_BY_USER_ID = "SELECT * FROM Invoice WHERE user_id = %s"
 SELECT_INVOICES_BY_BOOKING_ID = "SELECT * FROM Invoice WHERE booking_id = %s"
+SELECT_ALL_USER_INVOICES = """SELECT Invoice.invoice_id, Invoice.booking_id, Invoice.user_id, Invoice.amount, Invoice.payment_method, Invoice.payment_date, Invoice.is_paid, Invoice.is_active, Booking.start_date, Booking.end_date, Car.number_plate, Car.daily_rate, User.user_name, User.user_email, User.user_phone_number FROM Invoice JOIN Booking ON Invoice.booking_id = Booking.booking_id JOIN Car ON Booking.car_id = Car.car_id JOIN User ON Invoice.user_id = User.user_id WHERE Invoice.is_active = 1;"""
+SELECT_ALL_INVOICES_FOR_USER = """SELECT Invoice.invoice_id, Invoice.booking_id, Invoice.user_id, Invoice.amount, Invoice.payment_method, Invoice.payment_date, Invoice.is_paid, Invoice.is_active, Booking.start_date, Booking.end_date, Car.number_plate, Car.daily_rate, User.user_name, User.user_email, User.user_phone_number FROM Invoice JOIN Booking ON Invoice.booking_id = Booking.booking_id JOIN Car ON Booking.car_id = Car.car_id JOIN User ON Invoice.user_id = User.user_id WHERE Invoice.user_id = %s AND Invoice.is_active = 1;"""
 
 CREATE_DB = "CREATE DATABASE IF NOT EXISTS"
 DEFAULT_OB_NAME = "MSE800"
