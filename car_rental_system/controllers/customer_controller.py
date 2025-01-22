@@ -22,7 +22,20 @@ class CustomerController:
             cars = Car.select_with_details_and_display(self.db)
 
             car_id = int(input("Enter Selected Car Index: ").strip()) - 1
-            booking_days = int(input(f"Booking Days min {cars[car_id]["min_rental_period"]} to max {cars[car_id]["max_rental_period"]}%: ").strip())
+
+            while True:
+                try:
+                    booking_days = int(input( f"Booking Days min {cars[car_id]["min_rental_period"]} to max {cars[car_id]["max_rental_period"]}: ").strip())
+                    # Validate the input is within the allowed range
+                    if int(cars[car_id]['min_rental_period']) <= booking_days <= int(cars[car_id]['max_rental_period']):
+                        break  # Valid input, exit the loop
+                    else:
+                        print("Please enter a value between min and max days.")
+                        continue
+
+                except Exception as e:
+                    # Handle the exception
+                    print("Invalid input. Please enter a number.")
 
             start_date = ""
             while True:
