@@ -15,8 +15,6 @@ def main():
 
     while True:
         user_controller = UserController(db)
-        customer_controller = CustomerController(db)
-        admin_controller = AdminController(db)
 
         print("Welcome to the Car Rental System!")
         user = user_controller.login_or_register()
@@ -24,9 +22,11 @@ def main():
         if isinstance(user, User):
             if user.user_type_id == 1:
                 print("Admin")
+                admin_controller = AdminController(db, user)
                 admin_controller.display_menu()
             else:
                 print("Customer")
+                customer_controller = CustomerController(db, user)
                 customer_controller.display_menu()
 
 

@@ -6,8 +6,9 @@ from car_rental_system.controllers.manage_services_controller import *
 
 
 class AdminController:
-    def __init__(self, db):
+    def __init__(self, db, admin):
         self.db = db
+        self.admin = admin
         self.manage_customers_controller = ManageCustomersController(db)
         self.manage_cars_controller = ManageCarsController(db)
         self.manage_bookings_controller = ManageBookingController(db)

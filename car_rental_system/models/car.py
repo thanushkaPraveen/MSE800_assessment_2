@@ -1,5 +1,7 @@
 import time
 
+from tabulate import tabulate
+
 from car_rental_system.database.sql_statement import *
 
 
@@ -84,5 +86,62 @@ class Car:
             )
             cars.append(car_obj)
 
+        return cars
+
+    @staticmethod
+    def select_with_details(db):
+        sql = SELECT_ALL_CARS_WITH_DETAILS
+        rows = db.select_from_database(sql)
+
+        cars = [
+            {
+                "car_id": row[0],
+                "number_plate": row[1],
+                "model_name": row[2],
+                "daily_rate": row[3],
+                "year": row[4],
+                "mileage": row[5],
+                "min_rental_period": row[6],
+                "max_rental_period": row[7],
+                "is_active": row[8],
+                "created_at": row[9],
+                "updated_at": row[10],
+                "brand_name": row[11],
+                "brand_model_name": row[12],
+                "car_type": row[13],
+                "car_status_type": row[14],
+            } for row in rows
+        ]
+        return cars
+
+    @staticmethod
+    def select_with_details_and_display(db):
+        cars = Car.select_with_details(db)
+
+        table_data = [
+            [
+                idx + 1,
+                car["number_plate"],
+                car["model_name"],
+                car["brand_name"],
+                car["brand_model_name"],
+                car["car_type"],
+                car["car_status_type"],
+                car["daily_rate"],
+                car["year"],
+                car["mileage"],
+                car["min_rental_period"],
+                car["max_rental_period"],
+                "Active" if car["is_active"] else "Inactive"
+            ] for idx, car in enumerate(cars)
+        ]
+
+        headers = [
+            "Index", "Number Plate", "Model Name", "Brand", "Brand Model", "Car Type",
+            "Status", "Daily Rate", "Year", "Mileage", "Min Rental Period",
+            "Max Rental Period", "Is Active"
+        ]
+
+        print(tabulate(table_data, headers=headers, tablefmt="fancy_grid"))
         return cars
 
