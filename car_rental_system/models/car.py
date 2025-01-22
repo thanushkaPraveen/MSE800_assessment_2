@@ -118,6 +118,8 @@ class Car:
                 "brand_model_name": row[12],
                 "car_type": row[13],
                 "car_status_type": row[14],
+                "brand_model_id": row[15],
+                "car_status_Id":row[16]
             } for row in rows
         ]
         return cars

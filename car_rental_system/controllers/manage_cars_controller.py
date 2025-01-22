@@ -46,9 +46,9 @@ class ManageCarsController:
         if user_choice == 1:
             update_car.car_id = car_model["car_id"]
             Car.update(self.db, update_car)
-            print("The car has been added to the database successfully.")
+            print("The car has been updated to the database successfully.")
         else:
-            print("The action has been canceled. The car was not added to the database.")
+            print("The action has been canceled. The car was not updated.")
 
         cars = Car.select_with_details_and_display(self.db)
         print("Checked updated car details from the table...")
@@ -56,9 +56,42 @@ class ManageCarsController:
 
     def delete_car(self):
         print("Deleting a car...")
+        cars = Car.select_with_details_and_display(self.db)
+        car_model = cars[
+            get_valid_integer(f"Enter Car Index to Delete (1-{len(cars)}): ", 1, len(cars)) - 1]
+
+        delete_car = self.get_delete_car_data(car_model)
+
+        user_choice = get_user_confirmation()
+        if user_choice == 1:
+
+            Car.update(self.db, delete_car)
+            print("The car has been deleted successfully.")
+        else:
+            print("The action has been canceled. The car was not deleted.")
+
+        cars = Car.select_with_details_and_display(self.db)
+        print("Current available cars ...")
+        input("Press Enter to go back to the previous screen...")
 
     def home(self):
         print("Returning to the Admin - HOME...")
+
+    @staticmethod
+    def get_delete_car_data(delete_car):
+        return Car (
+            car_brand_model_id=int(delete_car["brand_model_id"]),
+            car_status_id= int(delete_car["car_status_Id"]),  # Default value
+            number_plate=delete_car["number_plate"],
+            model_name=delete_car["model_name"],
+            daily_rate=str(delete_car["daily_rate"]),
+            year=str(delete_car["year"]),
+            mileage=str(delete_car["mileage"]),
+            min_rental_period=str(delete_car["min_rental_period"]),
+            max_rental_period=str(delete_car["max_rental_period"]),
+            is_active=0,
+            car_id= int(delete_car["car_id"])
+        )
 
     def collect_car_data(self):
         car_brands = CarBrandModel.display_car_brands_with_type(self.db)
@@ -85,7 +118,7 @@ class ManageCarsController:
             mileage=str(mileage),
             min_rental_period=str(min_rental_period),
             max_rental_period=str(max_rental_period),
-            is_active=is_active
+            is_active=int(is_active)
         )
 
     def display_menu(self):
