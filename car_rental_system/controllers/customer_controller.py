@@ -13,7 +13,7 @@ class CustomerController:
         self.customer = customer
 
     def select_car(self):
-        global selected_services
+        selected_services = []
         print("Selecting a car...")
 
         try:
@@ -62,7 +62,6 @@ class CustomerController:
                     print(
                         f"{service.additional_services_id:<5} {service.services_description:<30} {service.services_amount:<10} {status:<10}")
 
-                selected_services = []
                 while True:
                     # Get user input
                     selected_ids = self.get_user_selection()
@@ -174,10 +173,10 @@ class CustomerController:
             print(f"Name: {self.customer.user_name}")
             print(f"Email: {self.customer.user_email}")
             print("-----------------------")
-            print("1. Select Car")
-            print("2. View Booked Car")
+            print("1. Make a Booking")
+            print("2. My Bookings")
             print("3. Manage Booking")
-            print("4. View Invoice")
+            print("4. Invoices & Payments")
             print("5. Logout")
             print("-----------------------")
 
