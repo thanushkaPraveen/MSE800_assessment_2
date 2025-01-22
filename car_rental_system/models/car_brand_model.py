@@ -1,7 +1,7 @@
 import time
 
 from car_rental_system.database.sql_statement import *
-
+from tabulate import tabulate
 
 class CarBrandModel:
     def __init__(self, car_type_id, brand_name, model_name, is_active=1, car_brand_model_id = None):
@@ -67,6 +67,45 @@ class CarBrandModel:
             car_brand_models.append(car_brand_model_obj)
 
         return car_brand_models
+
+    @staticmethod
+    def display_all_car_brands(db):
+        car_brands = CarBrandModel.select(db)
+
+        if not car_brands:
+            print("No car brands and models available.")
+            return
+
+        headers = ["Brand Model ID", "Car Type ID", "Brand Name", "Model Name", "Is Active"]
+        rows_formatted = []
+        for row in car_brands:
+            rows_formatted.append([
+                row.car_brand_model_id,  # Brand Model ID
+                row.car_type_id,  # Car Type ID
+                row.brand_name,  # Brand Name
+                row.model_name,  # Model Name
+                "Yes" if row.is_active else "No"  # Is Active
+            ])
+
+        print(tabulate(rows_formatted, headers=headers, tablefmt="grid"))
+        return car_brands
+
+    @staticmethod
+    def display_car_brands_with_type(db):
+        sql = SELECT_CAR_BRANDS_WITH_TYPE
+        rows = db.select_from_database(sql)
+
+        if not rows:
+            print("No car brands and models available.")
+            return
+
+        headers = ["Index", "Car Type", "Brand Name", "Model Name"]
+        rows_formatted = [
+            [row[0], row[1], row[2], row[3]] for row in rows
+        ]
+
+        print(tabulate(rows_formatted, headers=headers, tablefmt="grid"))
+        return rows
 
 
 

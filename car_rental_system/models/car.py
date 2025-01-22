@@ -89,8 +89,16 @@ class Car:
         return cars
 
     @staticmethod
-    def select_with_details(db):
-        sql = SELECT_ALL_CARS_WITH_DETAILS
+    def select_with_details(db, is_available=None):
+
+        sql = ""
+        if is_available is None:
+            sql = SELECT_ALL_CARS_WITH_DETAILS
+        elif is_available is True:
+            sql = SELECT_AVAILABLE_CARS_WITH_DETAILS
+        elif is_available is False:
+            sql = SELECT_UNAVAILABLE_CARS_WITH_DETAILS
+
         rows = db.select_from_database(sql)
 
         cars = [
@@ -115,8 +123,8 @@ class Car:
         return cars
 
     @staticmethod
-    def select_with_details_and_display(db):
-        cars = Car.select_with_details(db)
+    def select_with_details_and_display(db, is_available=None):
+        cars = Car.select_with_details(db, is_available)
 
         table_data = [
             [

@@ -1,18 +1,37 @@
+from car_rental_system.models.car import Car
+from car_rental_system.models.car_brand_model import CarBrandModel
+from car_rental_system.utils.input_validation import *
+from car_rental_system.utils.populate_db import car_brand_model
+
+
 class ManageCarsController:
     def __init__(self, db):
         self.db = db
 
     def view_all_cars(self):
         print("Viewing all cars...")
+        cars = Car.select_with_details_and_display(self.db)
 
     def view_available_cars(self):
         print("Viewing available cars...")
+        cars = Car.select_with_details_and_display(self.db, is_available=True)
 
     def view_all_booked_cars(self):
         print("Viewing all booked cars...")
+        cars = Car.select_with_details_and_display(self.db, is_available=False)
 
     def add_car(self):
         print("Adding a new car...")
+        new_car = self.collect_car_data()
+
+        user_choice = get_user_confirmation()
+        if user_choice == 1:
+            Car.insert(self.db, new_car)
+            print("The car has been added to the database successfully.")
+        else:
+            print("The action has been canceled. The car was not added to the database.")
+
+        input("Press Enter to go back to the previous screen...")
 
     def edit_car(self):
         print("Editing car details...")
@@ -22,6 +41,32 @@ class ManageCarsController:
 
     def home(self):
         print("Returning to the Admin - HOME...")
+
+    def collect_car_data(self):
+        car_brands = CarBrandModel.display_car_brands_with_type(self.db)
+
+        car_brand_model_id = car_brands[
+            get_valid_integer(f"Enter Car Brand Model ID (1-{len(car_brands)}): ", 1, len(car_brands)) - 1]
+        number_plate = get_valid_number_plate()
+        model_name = get_non_empty_input("Enter Model Name (e.g., Toyota RAV4): ")
+        daily_rate = get_valid_float("Enter Daily Rate (e.g., 120.50): ", 0)
+        year = get_valid_year("Enter Year (e.g., 2021): ", 1900, 2025)
+        mileage = get_valid_positive_integer("Enter Mileage (e.g., 10000): ")
+        min_rental_period = get_valid_positive_integer("Enter Minimum Rental Period (e.g., 1): ")
+        max_rental_period = get_valid_max_rental_period(min_rental_period)
+
+        return Car (
+            car_brand_model_id=int(car_brand_model_id[0]),
+            car_status_id=1,  # Default value
+            number_plate=number_plate,
+            model_name=model_name,
+            daily_rate=str(daily_rate),
+            year=str(year),
+            mileage=str(mileage),
+            min_rental_period=str(min_rental_period),
+            max_rental_period=str(max_rental_period),
+            is_active=1
+        )
 
     def display_menu(self):
         while True:
