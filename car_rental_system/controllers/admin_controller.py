@@ -3,6 +3,7 @@ from car_rental_system.controllers.manage_bookings_controller import *
 from car_rental_system.controllers.manage_cars_controller import *
 from car_rental_system.controllers.manage_customers_controller import *
 from car_rental_system.controllers.manage_services_controller import *
+from car_rental_system.models.invoice import Invoice
 
 
 class AdminController:
@@ -46,7 +47,8 @@ class AdminController:
             print("2. Manage Cars")
             print("3. Manage Bookings")
             print("4. Manage Services")
-            print("5. Logout")
+            print("5. Invoices")
+            print("6. Logout")
             print("-----------------------")
 
             try:
@@ -60,6 +62,8 @@ class AdminController:
                 elif choice == 4:
                     self.manage_services()
                 elif choice == 5:
+                    Invoice.display_all_user_invoices(self.db)
+                elif choice == 6:
                     self.logout()
                     break
                 else:

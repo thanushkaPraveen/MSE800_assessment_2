@@ -8,7 +8,6 @@ class InvoicePaymentController:
     def pay_invoice(self):
         print("Processing invoice payment...")
         Invoice.display_user_invoices(self.db, self.customer.user_id)
-        Invoice.display_all_user_invoices(self.db)
         invoice_id = input("Enter the Invoice ID to pay: ")
         try:
             success = Invoice.pay_invoice(self.db, self.customer.user_id, invoice_id)
