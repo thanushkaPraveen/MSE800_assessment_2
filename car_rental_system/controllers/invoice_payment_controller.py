@@ -5,6 +5,10 @@ class InvoicePaymentController:
         self.db = db
         self.customer = customer
 
+    def paid_invoice(self):
+        print("Processing invoice payment...")
+        Invoice.display_user_invoices(self.db, self.customer.user_id)
+
     def pay_invoice(self):
         print("Processing invoice payment...")
         Invoice.display_user_invoices(self.db, self.customer.user_id)
@@ -26,14 +30,17 @@ class InvoicePaymentController:
             print("\nInvoice & Payments")
             print("------------------")
             print("1. Pay Invoice")
-            print("2. Home")
+            print("2. Paid Invoice")
+            print("3. Home")
             print("------------------")
 
             try:
                 choice = int(input("Enter your choice (1 or 2): "))
                 if choice == 1:
                     self.pay_invoice()
-                elif choice == 2:
+                if choice == 2:
+                    self.pay_invoice()
+                elif choice == 3:
                     self.home()
                     break  # Exit the loop to return to the User home menu
                 else:
