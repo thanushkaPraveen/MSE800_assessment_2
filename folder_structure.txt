@@ -1,0 +1,90 @@
+.
+├── README.md
+├── car_rental_system
+│   ├── __init__.py
+│   ├── __pycache__
+│   │   ├── __init__.cpython-312.pyc
+│   │   └── insert_data.cpython-312.pyc
+│   ├── config
+│   ├── configfile.ini
+│   ├── controllers
+│   │   ├── __init__.py
+│   │   ├── __pycache__
+│   │   │   ├── __init__.cpython-312.pyc
+│   │   │   ├── admin_controller.cpython-312.pyc
+│   │   │   ├── customer_controller.cpython-312.pyc
+│   │   │   ├── invoice_payment_controller.cpython-312.pyc
+│   │   │   ├── manage_bookings_controller.cpython-312.pyc
+│   │   │   ├── manage_cars_controller.cpython-312.pyc
+│   │   │   ├── manage_customers_controller.cpython-312.pyc
+│   │   │   ├── manage_services_controller.cpython-312.pyc
+│   │   │   ├── my_bookings_controller.cpython-312.pyc
+│   │   │   └── user_controller.cpython-312.pyc
+│   │   ├── admin_controller.py
+│   │   ├── customer_controller.py
+│   │   ├── invoice_payment_controller.py
+│   │   ├── manage_bookings_controller.py
+│   │   ├── manage_cars_controller.py
+│   │   ├── manage_customers_controller.py
+│   │   ├── manage_services_controller.py
+│   │   ├── my_bookings_controller.py
+│   │   └── user_controller.py
+│   ├── database
+│   │   ├── __init__.py
+│   │   ├── __pycache__
+│   │   │   ├── __init__.cpython-312.pyc
+│   │   │   ├── connection.cpython-312.pyc
+│   │   │   └── sql_statement.cpython-312.pyc
+│   │   ├── connection.py
+│   │   └── sql_statement.py
+│   ├── insert_data.py
+│   ├── main.py
+│   ├── models
+│   │   ├── __init__.py
+│   │   ├── __pycache__
+│   │   │   ├── __init__.cpython-312.pyc
+│   │   │   ├── additional_services.cpython-312.pyc
+│   │   │   ├── booking.cpython-312.pyc
+│   │   │   ├── booking_additional_services.cpython-312.pyc
+│   │   │   ├── booking_status.cpython-312.pyc
+│   │   │   ├── car.cpython-312.pyc
+│   │   │   ├── car_brand_model.cpython-312.pyc
+│   │   │   ├── car_status.cpython-312.pyc
+│   │   │   ├── car_type.cpython-312.pyc
+│   │   │   ├── invoice.cpython-312.pyc
+│   │   │   ├── user.cpython-312.pyc
+│   │   │   └── user_type.cpython-312.pyc
+│   │   ├── additional_services.py
+│   │   ├── booking.py
+│   │   ├── booking_additional_services.py
+│   │   ├── booking_status.py
+│   │   ├── car.py
+│   │   ├── car_brand_model.py
+│   │   ├── car_status.py
+│   │   ├── car_type.py
+│   │   ├── invoice.py
+│   │   ├── user.py
+│   │   └── user_type.py
+│   ├── services
+│   │   └── __init__.py
+│   ├── test_proj
+│   │   ├── __pycache__
+│   │   ├── config.py
+│   │   └── sql_statement_help.py
+│   ├── utils
+│   │   ├── __init__.py
+│   │   ├── __pycache__
+│   │   │   ├── __init__.cpython-312.pyc
+│   │   │   ├── input_validation.cpython-312.pyc
+│   │   │   └── populate_db.cpython-312.pyc
+│   │   ├── input_validation.py
+│   │   └── populate_db.py
+│   └── views
+│       └── __init__.py
+├── docs
+│   └── __init__.py
+├── folder_structure.txt
+└── tests
+    └── __init__.py
+
+18 directories, 70 files
