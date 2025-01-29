@@ -1,6 +1,6 @@
 import time
 
-from car_rental_system.database.sql_statement import *
+from database.sql_statement import *
 from tabulate import tabulate
 
 class CarBrandModel:

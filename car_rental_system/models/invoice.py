@@ -1,11 +1,13 @@
 import time
 
 from tabulate import tabulate
-from car_rental_system.database.sql_statement import *
+
+from database.sql_statement import *
 
 
 class Invoice:
-    def __init__(self, booking_id, user_id, amount, payment_method=None, payment_date=None, is_paid=0, is_active=1, invoice_id=None):
+    def __init__(self, booking_id, user_id, amount, payment_method=None, payment_date=None, is_paid=0, is_active=1,
+                 invoice_id=None):
         self.booking_id = booking_id
         self.user_id = user_id
         self.amount = amount
@@ -13,7 +15,7 @@ class Invoice:
         self.payment_date = payment_date
         self.is_paid = is_paid
         self.is_active = is_active
-        self.invoice_id = invoice_id # Will be set after insertion in the database
+        self.invoice_id = invoice_id  # Will be set after insertion in the database
 
     @staticmethod
     def insert(db, invoice):
@@ -200,6 +202,3 @@ class Invoice:
             ])
 
         print(tabulate(rows, headers=headers, tablefmt="grid"))
-
-
-

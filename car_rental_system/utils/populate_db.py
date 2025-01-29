@@ -1,15 +1,15 @@
-from car_rental_system.database.connection import Database
-from car_rental_system.models.additional_services import *
-from car_rental_system.models.booking import *
-from car_rental_system.models.booking_additional_services import *
-from car_rental_system.models.booking_status import *
-from car_rental_system.models.car import *
-from car_rental_system.models.car_brand_model import *
-from car_rental_system.models.car_status import *
-from car_rental_system.models.car_type import *
-from car_rental_system.models.invoice import Invoice
-from car_rental_system.models.user import *
-from car_rental_system.models.user_type import *
+from database.connection import Database
+from models.additional_services import *
+from models.booking import *
+from models.booking_additional_services import *
+from models.booking_status import *
+from models.car import *
+from models.car_brand_model import *
+from models.car_status import *
+from models.car_type import *
+from models.invoice import Invoice
+from models.user import *
+from models.user_type import *
 
 def user_types(db):
     user_types = UserType.select(db)

@@ -1,0 +1,16 @@
+{
+  "en": {
+    "print_error_invalid_input_try_again": "Invalid input. Please enter a valid number.",
+    "print_manage_bookings_main": "\nManage Bookings\n------------------\n1. View All Bookings\n2. Requested Bookings\n3. Home\n------------------",
+    "print_manage_bookings_see_details": "\nEnter Booking ID to see the Booking Details: ",
+    "print_manage_bookings_retry": "\nEntered Booking ID is not match. Please retry: ",
+    "print_request_enter_your_choice_1_to_3": "Enter your choice (1-3): ",
+    "print_request_invalid_choice_enter_your_choice_1_to_3": "Invalid choice. Please enter a number between 1 and 3: ",
+    "print_request_invalid_choice_enter_your_choice_1_to_2": "Invalid choice. Please enter a number between 1 and 2: ",
+    "print_booking_details": "\nBooking Details\n------------------",
+    "print_additional_service_details": "\nAdditional Service Details\n------------------",
+    "print_enter_choice_confirm_or_reject": "Enter your choice (1 - Confirm, 2 - Reject, 3 - Back): ",
+    "print_enter_choice_reject": "Enter your choice (1 - Reject, 2 - Back): ",
+    "print_booking_requested_vehicle_not_available_reject": "This booking requested vehicle not available at the moment, Please reject the request."
+  }
+}

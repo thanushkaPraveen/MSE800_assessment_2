@@ -1,4 +1,4 @@
-from car_rental_system.models.booking import Booking
+from models.booking import Booking
 
 
 class MyBookingsController:

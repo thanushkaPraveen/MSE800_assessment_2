@@ -2,7 +2,7 @@ import time
 
 from tabulate import tabulate
 
-from car_rental_system.database.sql_statement import *
+from database.sql_statement import *
 
 
 class Car:

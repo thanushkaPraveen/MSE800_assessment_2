@@ -1,18 +1,18 @@
 import os
 import time
 
-from car_rental_system.database.connection import Database
-from car_rental_system.models.additional_services import AdditionalServices
-from car_rental_system.models.booking import Booking
-from car_rental_system.models.booking_additional_services import BookingAdditionalServices
-from car_rental_system.models.booking_status import BookingStatus
-from car_rental_system.models.car import Car
-from car_rental_system.models.car_brand_model import CarBrandModel
-from car_rental_system.models.car_status import CarStatus
-from car_rental_system.models.car_type import CarType
-from car_rental_system.models.invoice import Invoice
-from car_rental_system.models.user import User
-from car_rental_system.models.user_type import UserType
+from database.connection import Database
+from models.additional_services import AdditionalServices
+from models.booking import Booking
+from models.booking_additional_services import BookingAdditionalServices
+from models.booking_status import BookingStatus
+from models.car import Car
+from models.car_brand_model import CarBrandModel
+from models.car_status import CarStatus
+from models.car_type import CarType
+from models.invoice import Invoice
+from models.user import User
+from models.user_type import UserType
 
 def insert_data():
     # Create a Database object

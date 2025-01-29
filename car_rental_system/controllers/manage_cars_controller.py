@@ -1,8 +1,8 @@
-from car_rental_system.insert_data import update_data
-from car_rental_system.models.car import Car
-from car_rental_system.models.car_brand_model import CarBrandModel
-from car_rental_system.utils.input_validation import *
-from car_rental_system.utils.populate_db import car_brand_model
+from insert_data import update_data
+from models.car import Car
+from models.car_brand_model import CarBrandModel
+from utils.input_validation import *
+from utils.populate_db import car_brand_model
 
 
 class ManageCarsController:

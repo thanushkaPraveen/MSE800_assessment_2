@@ -99,3 +99,7 @@ def get_valid_is_status():
             return int(is_active)
         else:
             print("Invalid input. Please enter 1 (Yes) or 0 (No).")
+
+# Check for overlapping date ranges
+def check_overlap(start1, end1, start2, end2):
+    return max(start1, start2) <= min(end1, end2)

@@ -1,19 +1,19 @@
-from car_rental_system.controllers import manage_customers_controller
-from car_rental_system.controllers.manage_bookings_controller import *
-from car_rental_system.controllers.manage_cars_controller import *
-from car_rental_system.controllers.manage_customers_controller import *
-from car_rental_system.controllers.manage_services_controller import *
-from car_rental_system.models.invoice import Invoice
+from controllers.manage_bookings_controller import *
+from controllers.manage_cars_controller import *
+from controllers.manage_customers_controller import *
+from controllers.manage_services_controller import *
+from models.invoice import Invoice
+from presenter.user_interface import UserInterface
 
 
 class AdminController:
-    def __init__(self, db, admin):
+    def __init__(self, ui: UserInterface, db, admin):
         self.db = db
         self.admin = admin
         self.manage_customers_controller = ManageCustomersController(db)
         self.manage_cars_controller = ManageCarsController(db)
-        self.manage_bookings_controller = ManageBookingController(db)
-        self.manage_services_controller =  ManageServicesController(db)
+        self.manage_bookings_controller = ManageBookingController(db, ui)
+        self.manage_services_controller = ManageServicesController(db)
 
     @staticmethod
     def manage_customers(self):

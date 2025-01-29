@@ -1,6 +1,6 @@
 # import time
 #
-# from car_rental_system.database.sql_statement import *
+# from database.sql_statement import *
 #
 #
 # class BookingStatus:
@@ -51,7 +51,7 @@
 #             print(row)
 
 import time
-from car_rental_system.database.sql_statement import *
+from database.sql_statement import *
 class BookingStatus:
     def __init__(self, booking_status_type, is_active=1, booking_status_id=None):
         self.booking_status_type = booking_status_type

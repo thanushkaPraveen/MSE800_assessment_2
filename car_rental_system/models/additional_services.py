@@ -1,6 +1,8 @@
 import time
 
-from car_rental_system.database.sql_statement import *
+from tabulate import tabulate
+
+from database.sql_statement import *
 
 
 class AdditionalServices:
@@ -63,4 +65,47 @@ class AdditionalServices:
             additional_services.append(service_obj)
 
         return additional_services
+
+    @staticmethod
+    def get_additional_services_by_booking_id(db, query, booking_id):
+        """
+        Fetch all additional services by booking id.
+        """
+        sql = query
+        values = (booking_id,)
+        rows = db.select_from_database(sql, values)
+
+        services = [
+            {
+                "additional_service_id": row[5],
+                "service_description": row[7],
+                "service_amount": row[8],
+            }
+            for row in rows
+        ]
+
+        return services
+
+    @classmethod
+    def display_additional_services_by_booking_id(cls, db, booking_id):
+        """
+        Fetch additional services by booking id.
+        """
+        services = AdditionalServices.get_additional_services_by_booking_id(db, SELECT_ADDITIONAL_SERVICES_BY_BOOKING_ID, booking_id)
+        if not services:
+            print("No additional services found.")
+            return
+        table_data = [
+            [
+                idx + 1,
+                service["additional_service_id"],
+                service["service_description"],
+                service["service_amount"],
+            ]
+            for idx, service in enumerate(services)
+        ]
+        headers = [
+            "Index", "Additional Service ID", "Service Description", "Amount"
+        ]
+        print(tabulate(table_data, headers=headers, tablefmt="fancy_grid"))
 

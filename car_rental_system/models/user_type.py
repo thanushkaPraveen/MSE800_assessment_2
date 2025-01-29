@@ -1,5 +1,5 @@
 import time
-from car_rental_system.database.sql_statement import *
+from database.sql_statement import *
 
 class UserType:
     def __init__(self, user_type, is_active=1, user_type_id=None):

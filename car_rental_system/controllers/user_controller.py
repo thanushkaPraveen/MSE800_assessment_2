@@ -1,7 +1,7 @@
 from webbrowser import register
 
-from car_rental_system.database.connection import Database
-from car_rental_system.models.user import User
+from database.connection import Database
+from models.user import User
 
 class UserController:
     def __init__(self, db):
@@ -28,6 +28,8 @@ class UserController:
     def login(self):
         user_email = input("Enter your email: ")
         user_password = input("Enter password: ")
+        user_email = "user@user.com" # TODO
+        user_password = "user" # TODO
 
         check_user = User.find_by_email_and_password(self.db, user_email, user_password)
 

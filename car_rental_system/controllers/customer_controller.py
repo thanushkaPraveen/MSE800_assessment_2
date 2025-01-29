@@ -1,18 +1,21 @@
 import time
 
-from car_rental_system.controllers.invoice_payment_controller import InvoicePaymentController
-from car_rental_system.controllers.my_bookings_controller import MyBookingsController
-from car_rental_system.models.additional_services import AdditionalServices
-from car_rental_system.models.booking import Booking
-from car_rental_system.models.booking_additional_services import BookingAdditionalServices
-from car_rental_system.models.car import Car
+from controllers.invoice_payment_controller import InvoicePaymentController
+from controllers.my_bookings_controller import MyBookingsController
+from models.additional_services import AdditionalServices
+from models.booking import Booking
+from models.booking_additional_services import BookingAdditionalServices
+from models.car import Car
 from datetime import datetime, timedelta
+
+from presenter.user_interface import UserInterface
 
 
 class CustomerController:
-    def __init__(self, db, customer):
+    def __init__(self, ui: UserInterface, db, customer):
         self.db = db
         self.customer = customer
+        self.invoice_payment_controller = InvoicePaymentController(db, ui, customer)
 
     def select_car(self):
         selected_services = []
@@ -179,8 +182,7 @@ class CustomerController:
 
     def invoice_payment(self):
         print("Viewing invoice...")
-        invoice_payment_controller = InvoicePaymentController(self.db, self.customer)
-        invoice_payment_controller.display_menu()
+        self.invoice_payment_controller.display_menu()
 
     def logout(self):
         print("Logging out...")

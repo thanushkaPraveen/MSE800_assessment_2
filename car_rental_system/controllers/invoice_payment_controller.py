@@ -1,7 +1,12 @@
-from car_rental_system.models.invoice import Invoice
-class InvoicePaymentController:
+from controllers.base_controller import BaseController
+from models.invoice import Invoice
+from presenter.user_interface import UserInterface
 
-    def __init__(self, db, customer):
+
+class InvoicePaymentController(BaseController):
+
+    def __init__(self, db, ui: UserInterface, customer):
+        super().__init__(db, ui)
         self.db = db
         self.customer = customer
 
@@ -23,11 +28,7 @@ class InvoicePaymentController:
 
     def display_menu(self):
         while True:
-            print("\nInvoice & Payments")
-            print("------------------")
-            print("1. Pay Invoice")
-            print("2. Home")
-            print("------------------")
+            print("\nInvoice & Payments\n------------------\n1. Pay Invoice\n2. Home\n------------------")
 
             try:
                 choice = int(input("Enter your choice (1 or 2): "))
@@ -40,3 +41,6 @@ class InvoicePaymentController:
                     print("Invalid choice. Please enter either 1 or 2.")
             except ValueError:
                 print("Invalid input. Please enter a valid number.")
+
+    def on_input_callback(self, callback_type, choice, params=None):
+        pass
