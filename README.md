@@ -349,3 +349,13 @@ This project is licensed under the MIT License - see the [LICENSE](./LICENSE) fi
 - **Developer:** Thansushka Praveen Wickramarachchi
 - **Contact:** [270599091@yoobeestudent.ac.nz](mailto:270599091@yoobeestudent.ac.nz)
 - **GitHub:** [https://github.com/thanushkaPraveen](https://github.com/thanushkaPraveen)
+
+---
+
+## Acknowledgments
+
+Special thanks to **Yoobee College** for guidance and resources in software development.
+
+
+
+
