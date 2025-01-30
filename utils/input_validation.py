@@ -1,12 +1,5 @@
-# def get_valid_integer(user_input, min_value, max_value):
-#     if not user_input.isdigit():
-#         print("Invalid input. Please try again.")
-#         return False  # Return False if the input is not an integer
-#     user_input = int(user_input)
-#     if min_value <= user_input <= max_value:
-#         return user_input  # Return valid integer
-#     print(f"Please enter a number between {min_value} and {max_value}.")
-#     return False  # Return False if the input is outside the range
+import re
+import bcrypt
 
 def get_valid_integer(prompt, min_value, max_value):
     while True:
@@ -103,3 +96,42 @@ def get_valid_is_status():
 # Check for overlapping date ranges
 def check_overlap(start1, end1, start2, end2):
     return max(start1, start2) <= min(end1, end2)
+
+def get_valid_email():
+    email_pattern = r'^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$'
+
+    while True:
+        email = input("Enter your email address: ").strip()
+        if re.match(email_pattern, email):
+            return email
+        else:
+            print("Invalid email format. Please enter a valid email address.")
+
+def get_valid_user_type():
+    while True:
+        is_active = input("Enter User Type ID (e.g., 1 for Admin, 2 for Regular User):").strip()
+        if is_active in {"1", "2"}:
+            return int(is_active)
+        else:
+            print("Invalid input. Please enter 1 (Yes) or 2 (No).")
+
+def hash_password(password: str) -> str:
+    """Hashes the password using bcrypt and returns the hashed password."""
+    salt = bcrypt.gensalt()
+    hashed_password = bcrypt.hashpw(password.encode('utf-8'), salt)
+    return hashed_password.decode('utf-8')  # Store as a string in DB
+
+def verify_password(input_password: str, stored_hashed_password: str) -> bool:
+    """Compares the input password with the stored hashed password."""
+    return bcrypt.checkpw(input_password.encode('utf-8'), stored_hashed_password.encode('utf-8'))
+
+def get_valid_phone_number():
+    """Prompts user to enter a valid phone number and validates it."""
+    phone_pattern = r'^\+?[0-9]{7,15}$'  # Allows optional "+" at the start and 7-15 digits
+
+    while True:
+        phone_number = input("Enter your phone number: ").strip()
+        if re.match(phone_pattern, phone_number):
+            return phone_number  # Valid number
+        else:
+            print("Invalid phone number. Please enter a valid number (7-15 digits, optional +).")

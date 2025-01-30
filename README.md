@@ -165,7 +165,7 @@ Refer to the `setup_instructions.tex` file for detailed setup instructions.
 **Columns:**
 - `user_id` (Primary Key): Unique identifier for users.
 - `user_type_id` (Foreign Key): Links to `UserType(user_type_id)`.
-- `user_name`, `user_email`, `user_phone_number`, `user_password`: User details.
+- `user_name`, `user_email`, `user_phone_number`, `user_password`: User details with hashed password
 - `is_active`: Indicates if the user is active (1 = Active, 0 = Inactive).
 - `create_at` and `updated_at`: Timestamps for record creation and modification.
 

@@ -2,6 +2,8 @@ from webbrowser import register
 
 from database.connection import Database
 from models.user import User
+from utils.input_validation import *
+
 
 class UserController:
     def __init__(self, db):
@@ -26,27 +28,35 @@ class UserController:
             return True
 
     def login(self):
-        user_email = input("Enter your email: ")
-        user_password = input("Enter password: ")
+        """Handles user login by validating credentials."""
+        # user_email = get_valid_email()
+        # user_password = get_non_empty_input("Enter your password: ")
+
         user_email = "user@user.com" # TODO
         user_password = "user" # TODO
 
-        check_user = User.find_by_email_and_password(self.db, user_email, user_password)
+        # Fetch user details from the database
+        check_user = User.find_by_email_and_password(self.db, user_email)
 
-        if len(check_user) == 1:
-            print("Login successful!")
-            return check_user[0]
+        if check_user and len(check_user) == 1:
+            stored_hashed_password = check_user[0].user_password
+            if verify_password(user_password, stored_hashed_password):
+                print("✅ Login successful!")
+                return check_user[0]  # Return user object
+            else:
+                print("❌ Invalid password. Please try again.")
         else:
-            print("Invalid credentials.")
-            return True
+            print("❌ User not found. Please check your email and try again.")
+
+        return None  # Return None instead of True for failed login
 
     def register(self):
 
         # Register
         print("\n-- Register --")
-        user_type_id = input("Enter User Type ID (e.g., 1 for Admin, 2 for Regular User): ")
-        user_name = input("Enter your name: ")
-        user_email = input("Enter your email: ")
+        user_type_id = get_valid_user_type()
+        user_name = get_non_empty_input("Enter your name: ")
+        user_email = get_valid_email()
 
         check_user = User.find_by_email_and_password(self.db, user_email)
 
@@ -54,13 +64,15 @@ class UserController:
             print("Errr: Entered email is already registered")
             return True
 
-        user_phone_number = input("Enter your phone number: ")
-        user_password = input("Enter your password: ")
+        user_phone_number = get_valid_phone_number()
+        user_password = get_non_empty_input("Enter your password: ")
+        user_password = user_password.strip()
+        hashed_password = hash_password(user_password)
 
-        if user_type_id in ("1", "2"):
+        if user_type_id in (1, 2):
             register_user = User(user_type_id=user_type_id, user_name=user_name,
                         user_email= user_email, user_phone_number=user_phone_number,
-                        user_password=user_password, is_active=1)
+                        user_password=hashed_password, is_active=1)
 
             return User.insert(self.db, register_user)
         else:

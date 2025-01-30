@@ -10,6 +10,8 @@ from models.car_type import *
 from models.invoice import Invoice
 from models.user import *
 from models.user_type import *
+from utils.input_validation import hash_password
+
 
 def user_types(db):
     user_types = UserType.select(db)
@@ -28,11 +30,11 @@ def user_model(db):
     if len(users) < 2:  # Check if there are fewer than 2 users in the database
 
         user_list = [
-            User(user_type_id=1, user_name="Alice Smith", user_email="admin@admin.com", user_phone_number="1234567890", user_password="admin", is_active=1),
-            User(user_type_id=2, user_name="Bob Johnson", user_email="user@user.com", user_phone_number="0987654321", user_password="user", is_active=1),
-            User(user_type_id=2, user_name="Charlie Brown", user_email="charlie@brown.com", user_phone_number="1122334455", user_password="securePass789", is_active=1),
-            User(user_type_id=2, user_name="Diana Prince", user_email="diana@prince.com", user_phone_number="9988776655", user_password="wonder123", is_active=1),
-            User(user_type_id=2, user_name="Evan Parker", user_email="evan@parker.com", user_phone_number="6677889900", user_password="evan123", is_active=1)
+            User(user_type_id=1, user_name="Alice Smith", user_email="admin@admin.com", user_phone_number="1234567890", user_password= hash_password("admin"), is_active=1),
+            User(user_type_id=2, user_name="Bob Johnson", user_email="user@user.com", user_phone_number="0987654321", user_password=hash_password("user"), is_active=1),
+            User(user_type_id=2, user_name="Charlie Brown", user_email="charlie@brown.com", user_phone_number="1122334455", user_password=hash_password("securePass789"), is_active=1),
+            User(user_type_id=2, user_name="Diana Prince", user_email="diana@prince.com", user_phone_number="9988776655", user_password=hash_password("wonder123"), is_active=1),
+            User(user_type_id=2, user_name="Evan Parker", user_email="evan@parker.com", user_phone_number="6677889900", user_password=hash_password("evan123"), is_active=1)
         ]
 
         for user in user_list:
