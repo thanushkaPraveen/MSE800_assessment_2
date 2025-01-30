@@ -21,7 +21,7 @@ from models.user_type import UserType
 
 
 # Load database configurations
-def load_config(filename='configfile.ini'):
+def load_config(filename='../configfile.ini'):
     config = configparser.ConfigParser()
     config.read(filename)
     return {key: value for key, value in config['mysql'].items()}
