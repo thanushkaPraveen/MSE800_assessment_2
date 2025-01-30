@@ -1,5 +1,6 @@
 import time
 
+from select import select
 from tabulate import tabulate
 
 from database.sql_statement import *
@@ -202,3 +203,114 @@ class Invoice:
             ])
 
         print(tabulate(rows, headers=headers, tablefmt="grid"))
+        pass
+
+    @classmethod
+    def get_invoice_by_invoice_id(cls, db, query, invoice_id):
+        """
+        Return invoice by invoice Id.
+        """
+        sql = query
+        values = (invoice_id,)
+        rows = db.select_from_database(sql, values)
+
+        invoices = [
+            {
+                "invoice_id": row[0],
+                "booking_id": row[1],
+                "user_id": row[2],
+                "amount": row[3],
+                "payment_method": row[4],
+                "payment_date": row[5],
+                "is_paid": row[6]
+            }
+            for row in rows
+        ]
+
+        return None if not invoices else invoices[0]
+
+    @classmethod
+    def get_invoiceuser_by_invoice_id(cls, db, query, invoice_id):
+        """
+        Return invoice by invoice Id.
+        """
+        sql = query
+        values = (invoice_id,)
+        rows = db.select_from_database(sql, values)
+
+        invoices = [
+            {
+                "invoice_id": row[0],
+                "booking_id": row[1],
+                "user_id": row[2],
+                "amount": row[3],
+                "payment_method": row[4],
+                "payment_date": row[5],
+                "is_paid": row[6],
+                "number_plate": row[10],
+                "daily_rate": row[11],
+                "user_name": row[12],
+                "user_email": row[13],
+                "user_phone_number": row[14],
+            }
+            for row in rows
+        ]
+
+        return None if not invoices else invoices[0]
+
+    @classmethod
+    def retrieve_invoice_by_invoice_id(cls, db, invoice_id):
+        return Invoice.get_invoice_by_invoice_id(db, SELECT_INVOICE_BY_ID, invoice_id)
+
+    @classmethod
+    def retrieve_invoice_for_payments(cls, db, invoice_id):
+        return Invoice.get_invoiceuser_by_invoice_id(db, SELECT_ALL_INVOICES_FOR_PAYMENT, invoice_id)
+
+    @classmethod
+    def display_invoice_by_invoice_id(cls, db, invoice_id):
+        """
+        Fetch invoice by invoice id and print invoice details.
+        """
+
+        invoice = Invoice.get_invoice_by_invoice_id(db, SELECT_INVOICE_BY_ID, invoice_id)
+        if not invoice:
+            print("No invoices found.")
+            return invoice
+
+        all_invoices = [invoice]
+        table_data_all_invoices = [
+            [
+                idx + 1,
+                invoice["invoice_id"],
+                booking["booking_id"],
+                booking["user_id"],
+                booking["amount"],
+                booking["payment_method"],
+                booking["payment_date"],
+                booking["is_paid"],
+            ]
+            for idx, booking in enumerate(all_invoices)
+        ]
+
+        headers = [
+            "Index", "Invoice ID", "Booking Id", "User Id", "Total Amount", "Payment Method",
+            "Payment Method", "Payment Date", "Is Paid"
+        ]
+        print(tabulate(table_data_all_invoices, headers=headers, tablefmt="fancy_grid"))
+
+        return invoice
+
+    @classmethod
+    def update_payment_confirm(cls, db, invoice_id, payment_method, payment_date):
+        invoice = Invoice.retrieve_invoice_by_invoice_id(db, invoice_id)
+
+        updated_invoice = Invoice(invoice_id=invoice["invoice_id"],
+                                  booking_id=invoice["booking_id"],
+                                  user_id=invoice["user_id"],
+                                  amount=invoice["amount"],
+                                  payment_method=payment_method,
+                                  payment_date=payment_date,
+                                  is_paid=1, is_active=1)
+        Invoice.update(db, updated_invoice)
+        return Invoice.retrieve_invoice_by_invoice_id(db, invoice_id)
+        pass

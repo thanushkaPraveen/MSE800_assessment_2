@@ -76,7 +76,7 @@ class ManageBookingController(BaseController):
             self.nav_home()
         else:
             self.ui.display_input(UiTypes.REQUEST_INT_INPUT,
-                                  self.string_resource.get(Constants.PRINT_MANAGE_BOOKING_INPUT_INVALID),
+                                  self.string_resource.get(Constants.PRINT_MANAGE_INPUT_INVALID_1_3),
                                   Constants.CALLBACK_NAVIGATION)
 
     def nav_home(self):
@@ -86,7 +86,7 @@ class ManageBookingController(BaseController):
         self.ui.display(UiTypes.MESSAGE,
                         self.string_resource.get(Constants.PRINT_MANAGE_BOOKING_MAIN))
         self.ui.display_input(UiTypes.REQUEST_INT_INPUT,
-                              self.string_resource.get(Constants.PRINT_MANAGE_BOOKING_INPUT),
+                              self.string_resource.get(Constants.PRINT_ENTER_CHOICE_INPUT_1_3),
                               Constants.CALLBACK_NAVIGATION)
 
     def booking_confirm_navigation(self, choice, booking_id):
@@ -101,7 +101,7 @@ class ManageBookingController(BaseController):
             self.nav_home()
         else:
             self.ui.display_input(UiTypes.REQUEST_INT_INPUT,
-                                  self.string_resource.get(Constants.PRINT_MANAGE_BOOKING_INPUT_INVALID),
+                                  self.string_resource.get(Constants.PRINT_MANAGE_INPUT_INVALID_1_3),
                                   Constants.CALLBACK_REQUEST_BOOKING_CONFIRM_AND_REJECT, booking_id)
 
     def booking_reject_navigation(self, choice, booking_id):
@@ -111,5 +111,5 @@ class ManageBookingController(BaseController):
             self.nav_home()
         else:
             self.ui.display_input(UiTypes.REQUEST_INT_INPUT,
-                                  self.string_resource.get(Constants.PRINT_MANAGE_BOOKING_INPUT_INVALID_1_2),
+                                  self.string_resource.get(Constants.PRINT_MANAGE_INPUT_INVALID_1_2),
                                   Constants.CALLBACK_NAVIGATION)

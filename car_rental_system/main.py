@@ -8,6 +8,7 @@ from insert_data import *
 from models.user import User
 from presenter.user_interface import UserInterface
 from services.chatbot import ChatBot
+from services.web_server import WebServer
 from utils.populate_db import insert_records
 
 
@@ -17,6 +18,9 @@ def main():
     ui = UserInterface()
     chatbot = ChatBot(api_key="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")
     # chatbot.run()
+
+    web_server = WebServer(db)
+    web_server.run()
 
     while True:
         user_controller = UserController(db)
