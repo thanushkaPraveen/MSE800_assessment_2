@@ -9,6 +9,7 @@ from models.car import Car
 from datetime import datetime, timedelta
 
 from presenter.user_interface import UserInterface
+from services.email_service import EmailService
 from services.sms import Sms
 
 
@@ -140,6 +141,16 @@ class CustomerController:
 
                 send_sms = Sms()
                 send_sms.send_sms(booking.booking_id)
+
+                send_email = EmailService()
+                send_email.send_car_booking_email(customer_name=self.customer.user_name,
+                                                  booking_id=booking.booking_id,
+                                                  car_brand=cars[car_id]['brand_name'],
+                                                  car_model=cars[car_id]['brand_model_name'],
+                                                  pickup_date = start_date_str,
+                                                  return_date = end_date.strftime('%Y-%m-%d'),
+                                                  total_price = f"{total:.2f}",
+                                                  user_email= self.customer.user_email, additional_services=selected_services)
 
 
         except Exception as e:
