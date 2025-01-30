@@ -1,5 +1,18 @@
-/car_rental_system/utils/__pycache__
+/utils/__pycache__
 /.idea
 /car_rental_system/.idea
 /car_rental_system/__pycache__
 *.pyc
+
+
+# Ignore PyCharm settings
+.idea/
+
+# Ignore compiled Python files
+__pycache__/
+*.pyo
+*.pyd
+
+# Ignore virtual environments
+venv/
+.env/
