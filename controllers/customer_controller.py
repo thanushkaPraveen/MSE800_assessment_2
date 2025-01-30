@@ -9,6 +9,7 @@ from models.car import Car
 from datetime import datetime, timedelta
 
 from presenter.user_interface import UserInterface
+from services.sms import Sms
 
 
 class CustomerController:
@@ -136,6 +137,9 @@ class CustomerController:
                                                                                 is_active=1)
 
                         BookingAdditionalServices.insert(self.db, booking_additional_services)
+
+                send_sms = Sms()
+                send_sms.send_sms(booking.booking_id)
 
 
         except Exception as e:
