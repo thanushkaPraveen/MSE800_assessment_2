@@ -4,6 +4,8 @@ from email.mime.multipart import MIMEMultipart
 import smtplib
 from email.message import EmailMessage
 
+from utils.datetime_utils import format_timestamp
+
 
 class EmailService:
 
@@ -39,10 +41,7 @@ class EmailService:
         except Exception as e:
             print(f"Failed to send email: {e}")
 
-
-
-    def send_car_booking_email(self, customer_name, booking_id, car_brand, car_model, pickup_date, return_date,
-                               total_price, user_email, additional_services=None):
+    def send_car_booking_email(self, customer, booking, car, additional_services=None):
         """
         Sends a car booking confirmation email, including additional services if booked.
         """
@@ -52,21 +51,21 @@ class EmailService:
         sender_password = self.password
 
         # Email Subject
-        subject = f"Your Car Booking Details - {booking_id}"
+        subject = f"Your Car Booking Details - {booking.booking_id}"
 
         # Email Body - Main Details
         email_body = f"""
-        Dear {customer_name},
-    
+        Dear {customer.user_name},
+
         Thank you for booking with us! Here are your booking details:
-    
-        Booking ID: {booking_id}
-        Car Model: {car_model}
-        Car Brand: {car_brand}
-        Pickup Date: {pickup_date}
-        Return Date: {return_date}
-        Total Price: {total_price}
-    
+
+        Booking ID: {booking.booking_id}
+        Car Model: {car["brand_model_name"]}
+        Car Brand: {car["brand_name"]}
+        Pickup Date: {format_timestamp(booking.start_date)}
+        Return Date: {format_timestamp(booking.end_date)}
+        Total Price: {booking.total_amount}
+
         """
 
         # Add Additional Services if Booked
@@ -77,11 +76,11 @@ class EmailService:
 
         # Footer
         email_body += """
-    
+
         Please ensure to carry your valid driving license and ID during pickup.
-    
+
         If you have any questions, feel free to contact our support team.
-    
+
         Safe travels!
         Best Regards,
         Car Rental Team
@@ -92,9 +91,9 @@ class EmailService:
         msg.set_content(email_body)
         msg["Subject"] = subject
         msg["From"] = sender_email
-        msg["To"] = user_email
+        msg["To"] = customer.user_email
 
-        # user_email = "thanushkawickramarachchi@gmail.com"
+        user_email = "thanushkawickramarachchi@gmail.com"
 
         # Sending the email
         try:

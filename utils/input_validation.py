@@ -1,5 +1,6 @@
 import re
 import bcrypt
+from datetime import datetime, timedelta
 
 def get_valid_integer(prompt, min_value, max_value):
     while True:
@@ -69,9 +70,9 @@ def get_valid_max_rental_period(min_rental_period):
         else:
             print("Maximum rental period must be greater than or equal to the minimum rental period.")
 
-def get_valid_is_active():
+def get_valid_is_active(input_text = "Is the car active?"):
     while True:
-        is_active = input("Is the car active? (1 for Yes, 0 for No): ").strip()
+        is_active = input(f"{input_text} (1 for Yes, 0 for No): ").strip()
         if is_active in {"0", "1"}:
             return int(is_active)
         else:
@@ -135,3 +136,39 @@ def get_valid_phone_number():
             return phone_number  # Valid number
         else:
             print("Invalid phone number. Please enter a valid number (7-15 digits, optional +).")
+
+
+def get_future_date():
+    """
+    Prompts the user to enter a valid future date in 'YYYY-MM-DD' format.
+    Ensures the input is a valid date and is in the future.
+
+    Returns:
+        datetime: A valid future date as a datetime object.
+    """
+    while True:
+        try:
+            # Get the start date from the user in "YYYY-MM-DD" format
+            start_date_str = input("Enter Start Date (YYYY-MM-DD): ").strip()
+            start_date = datetime.strptime(start_date_str, "%Y-%m-%d")
+
+            # Check if the entered date is in the future
+            if start_date > datetime.now():
+                print(f"Valid future date entered: {start_date.strftime('%Y-%m-%d')}")
+                return start_date
+            else:
+                print("Error: The date must be in the future. Please enter a valid future date.")
+        except ValueError:
+            print("Invalid format! Please enter the date in 'YYYY-MM-DD' format.")
+
+
+def get_user_selection():
+    """Prompts the user to enter service IDs and returns a list of valid integers."""
+    while True:
+        user_input = input("\nEnter the IDs of the services you want to select (comma-separated): ")
+        try:
+            selected_ids = [int(id.strip()) for id in user_input.split(",")]
+            return selected_ids
+        except ValueError:
+            print("Invalid input. Please enter numeric IDs separated by commas.")
+
