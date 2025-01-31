@@ -1,7 +1,5 @@
-from webbrowser import register
-
-from database.connection import Database
 from models.user import User
+
 
 class UserController:
     def __init__(self, db):
@@ -28,8 +26,8 @@ class UserController:
     def login(self):
         user_email = input("Enter your email: ")
         user_password = input("Enter password: ")
-        user_email = "user@user.com" # TODO
-        user_password = "user" # TODO
+        user_email = "user@user.com"  # TODO
+        user_password = "user"  # TODO
 
         check_user = User.find_by_email_and_password(self.db, user_email, user_password)
 
@@ -50,7 +48,7 @@ class UserController:
 
         check_user = User.find_by_email_and_password(self.db, user_email)
 
-        if len(check_user) > 0 :
+        if len(check_user) > 0:
             print("Errr: Entered email is already registered")
             return True
 
@@ -59,8 +57,8 @@ class UserController:
 
         if user_type_id in ("1", "2"):
             register_user = User(user_type_id=user_type_id, user_name=user_name,
-                        user_email= user_email, user_phone_number=user_phone_number,
-                        user_password=user_password, is_active=1)
+                                 user_email=user_email, user_phone_number=user_phone_number,
+                                 user_password=user_password, is_active=1)
 
             return User.insert(self.db, register_user)
         else:

@@ -34,7 +34,7 @@ class InvoicePaymentController(BaseController):
         Invoice.display_invoice_by_invoice_id(self.db, invoice_id)
 
         # Construct payment URL
-        payment_url = f"http://localhost/carrentalsystem/payment/index.php?invoice_id={invoice_id}"
+        payment_url = f"http://localhost/carrentalsystem-frontend/payment/index.php?invoice_id={invoice_id}"
         print("Generated Payment URL:", payment_url)
 
         pass

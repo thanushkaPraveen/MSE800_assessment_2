@@ -1,5 +1,5 @@
-import os
-import time
+import multiprocessing
+import threading
 
 from controllers.admin_controller import AdminController
 from controllers.customer_controller import CustomerController
@@ -7,25 +7,32 @@ from controllers.user_controller import UserController
 from insert_data import *
 from models.user import User
 from presenter.user_interface import UserInterface
-from services.chatbot import ChatBot
 from services.web_server import WebServer
 from utils.populate_db import insert_records
 
 
-def main():
-    # Create a Database object
-    db = Database()
-    ui = UserInterface()
-    chatbot = ChatBot(api_key="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")
-    # chatbot.run()
-
+def run_flask():
+    """Runs the Flask web server."""
+    db = Database()  # Create a new Database object inside this process
     web_server = WebServer(db)
     web_server.run()
 
+
+def main():
+    """Main function for handling user interactions and chatbot."""
+    # Create Database and UI objects inside the main function
+    db = Database()
+    ui = UserInterface()
+
+    # Start Flask in a separate process
+    run_flask()
+
     while True:
-        user_controller = UserController(db)
+        ui.loading_animation()
+        ui.clear_console()
 
         print("Welcome to the Car Rental System!")
+        user_controller = UserController(db)
         user = user_controller.login_or_register()
 
         if isinstance(user, User):
@@ -39,11 +46,7 @@ def main():
                 customer_controller.display_menu()
 
 
-def create_db():
-    return
-
 if __name__ == "__main__":
-
     # populate data base
     insert_records()
 
@@ -53,4 +56,3 @@ if __name__ == "__main__":
     # get_data()
 
     main()
-

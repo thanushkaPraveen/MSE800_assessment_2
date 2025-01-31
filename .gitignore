@@ -3,3 +3,10 @@
 /car_rental_system/.idea
 /car_rental_system/__pycache__
 *.pyc
+/car_rental_system
+*.pyc
+__init__.py
+/car_rental_system
+car_rental_system/__init__.py
+car_rental_system/__init__.py
+/car_rental_system/__pycache__

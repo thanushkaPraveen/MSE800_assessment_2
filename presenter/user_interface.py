@@ -1,3 +1,6 @@
+import os
+import sys
+import time
 from enum import Enum
 
 from constants import Constants
@@ -23,6 +26,15 @@ class UserInterface:
 
     def __init__(self):
         self.callback = None
+
+    def loading_animation(self, duration=10):
+        for _ in range(duration):
+            time.sleep(0.5)
+            sys.stdout.write("*")
+            sys.stdout.flush()
+
+    def clear_console(self):
+        print("\n" * 20)
 
     def register_callback(self, callback):
         self.callback = callback

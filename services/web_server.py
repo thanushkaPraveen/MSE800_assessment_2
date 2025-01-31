@@ -1,3 +1,5 @@
+import threading
+
 from flask import Flask, request, jsonify
 from datetime import datetime
 
@@ -53,4 +55,5 @@ class WebServer:
 
     def run(self, port=5000, debug=True):
         """Run the Flask app."""
-        self.app.run(port=port, debug=debug)
+        # self.app.run(port=port, debug=debug)
+        threading.Thread(target=lambda: self.app.run(host="0.0.0.0", port=port, debug=False, use_reloader=False)).start()
