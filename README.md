@@ -87,6 +87,15 @@ The Car Rental System automates the rental process for a fictional car rental co
   - `bcrypt`: For secure password hashing
   - `datetime`: For managing date and time fields
   - `tabulate`: For tabular data display in CLI
+  - `Flask`: For web application development
+  - `requests`: For handling API calls
+  - `openai`: For AI-powered features
+  - `httpx`: For asynchronous HTTP requests
+  - `aiohttp`: For efficient networking operations
+  - `Jinja2`: For templating support
+  - `Werkzeug`: For secure application handling
+  - `twilio`: For SMS notifications
+  - `yagmail`: For email automation
 
 ---
 
@@ -101,9 +110,47 @@ The Car Rental System automates the rental process for a fictional car rental co
 
 ## Installation Guide
 
-Refer to the `setup_instructions.tex` file for detailed setup instructions.
+### 1. Clone the Repository
 
----
+```bash
+git clone https://github.com/thanushkaPraveen/car_rental_system.git
+cd car_rental_system
+```
+
+### 2. Create a Virtual Environment (Recommended)
+
+```bash
+python -m venv venv
+source venv/bin/activate  # On macOS/Linux
+venv\Scripts\activate  # On Windows
+```
+
+### 3. Install Dependencies
+
+All dependencies are listed in `requirements.txt`. Install them using:
+
+```bash
+pip install -r requirements.txt
+```
+
+### 4. Set Up the Database
+
+Install MySQL and create a new database.
+
+Import the database schema using:
+
+```bash
+mysql -u your_username -p your_database < database_schema.sql
+```
+
+### 5. Run the Application
+
+To start the application, use:
+
+```bash
+python main.py
+```
+
 
 ## Usage Instructions
 
