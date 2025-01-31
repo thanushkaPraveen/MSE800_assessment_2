@@ -46,13 +46,20 @@ class Database:
         self._init_database()
 
     def _init_database(self):
-        config = self.load_config()
-        self.connection = mysql.connector.connect(**config, autocommit=True)
-        if self.connection.is_connected():
-            self._check_database_exist()
+
+        try:
+            config = self.load_config()
+            self.connection = mysql.connector.connect(**config, autocommit=True)
+            if self.connection.is_connected():
+                self._check_database_exist()
+                self._check_table_exist()
+                return True
+            return False
+        except Error as e:
+            self._check_database_exist_if_db_error_occur()
             self._check_table_exist()
             return True
-        return False
+
 
     def create_connection_parser(self):
 
@@ -251,6 +258,36 @@ class Database:
         except Error as e:
             print(f"Error: {e}")
             return []
+
+    def _check_database_exist_if_db_error_occur(self):
+        config = self.load_config()
+
+        # Create a temporary connection without specifying a database
+        temp_config = config.copy()
+        temp_config.pop("database", None)  # Remove database from config to connect to MySQL server
+
+        try:
+            temp_connection = mysql.connector.connect(**temp_config, autocommit=True)
+            temp_cursor = temp_connection.cursor()
+
+            # Check if the database exists
+            temp_cursor.execute("SHOW DATABASES;")
+            databases = [db[0] for db in temp_cursor.fetchall()]
+
+            if DEFAULT_OB_NAME not in databases:
+                print(f"Database {DEFAULT_OB_NAME} not found. Creating...")
+                temp_cursor.execute(f"CREATE DATABASE {DEFAULT_OB_NAME};")
+
+            # Close the temporary connection
+            temp_cursor.close()
+            temp_connection.close()
+
+            # Update the config with the correct database name and reconnect
+            config['database'] = DEFAULT_OB_NAME
+            self.save_config(config)  # Save the updated config
+
+        except Error as e:
+            print(f"Error while checking/creating database: {e}")
 
 
 

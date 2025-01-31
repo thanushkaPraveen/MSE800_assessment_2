@@ -105,7 +105,7 @@ def car_model(db):
             Car(car_brand_model_id=2, car_status_id=1, number_plate="XYZ-5678", model_name="Toyota Corolla", daily_rate="100.00", year="2020", mileage="15000", min_rental_period="1", max_rental_period="30", is_active=1),
             Car(car_brand_model_id=3, car_status_id=2, number_plate="LMN-3456", model_name="Honda Civic", daily_rate="110.00", year="2019", mileage="20000", min_rental_period="2", max_rental_period="30", is_active=1),
             Car(car_brand_model_id=4, car_status_id=1, number_plate="DEF-7890", model_name="Ford Explorer", daily_rate="130.75", year="2022", mileage="5000", min_rental_period="1", max_rental_period="30", is_active=1),
-            Car(car_brand_model_id=5, car_status_id=3, number_plate="GHI-2345", model_name="Jeep Grand Cherokee", daily_rate="140.00", year="2021", mileage="8000", min_rental_period="3", max_rental_period="30", is_active=1),
+            Car(car_brand_model_id=5, car_status_id=2, number_plate="GHI-2345", model_name="Jeep Grand Cherokee", daily_rate="140.00", year="2021", mileage="8000", min_rental_period="3", max_rental_period="30", is_active=1),
         ]
 
         for car in car_list:
