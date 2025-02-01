@@ -3,6 +3,8 @@ import sys
 import time
 from enum import Enum
 
+from colorama import Fore, Style
+
 from constants import Constants
 from res.string_resources import StringResources
 
@@ -18,7 +20,7 @@ class UiTypes(Enum):
 
 
 def show_error_message(inputs):
-    print(inputs)
+    print(Fore.RED + str(inputs) + Style.RESET_ALL)
 
 
 class UserInterface:
