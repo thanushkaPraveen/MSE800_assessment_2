@@ -2,40 +2,10 @@
 import configparser
 import time
 from sys import flags
-
 import mysql.connector
 from mysql.connector import Error
-
 from database.sql_statement import *
-from models.additional_services import AdditionalServices
-from models.booking import Booking
-from models.booking_additional_services import BookingAdditionalServices
-from models.booking_status import BookingStatus
-from models.car import Car
-from models.car_brand_model import CarBrandModel
-from models.car_status import CarStatus
-from models.car_type import CarType
-from models.invoice import Invoice
-from models.user import User
-from models.user_type import UserType
 
-
-# Load database configurations
-# def load_config(filename='../configfile.ini'):
-#     config = configparser.ConfigParser()
-#     config.read(filename)
-#     return {key: value for key, value in config['mysql'].items()}
-
-# # Database connection
-# def create_connection_parser():
-#     config = load_config()
-#
-#     try:
-#         connection = mysql.connector.connect(**config, autocommit=True)
-#         if connection.is_connected():
-#             return connection
-#     except Error as e:
-#         print(f"Error while connecting to MySQL: {e}")
 
 class Database:
     _instance = None  # Singleton instance
