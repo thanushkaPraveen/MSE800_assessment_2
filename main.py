@@ -6,7 +6,7 @@ from controllers.customer_controller import CustomerController
 from controllers.user_controller import UserController
 from insert_data import *
 from models.user import User
-from presenter.user_interface import UserInterface
+from presenter.user_interface import UserInterface, UiTypes
 from services.web_server import WebServer
 from utils.populate_db import insert_records
 
@@ -36,6 +36,7 @@ def main():
         user = user_controller.login_or_register()
 
         if isinstance(user, User):
+            ui.clear_console()
             if user.user_type_id == 1:
                 admin_controller = AdminController(ui, db, user)
                 admin_controller.display_menu()

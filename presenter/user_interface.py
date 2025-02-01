@@ -19,10 +19,6 @@ class UiTypes(Enum):
     ERROR = 6
 
 
-def show_error_message(inputs):
-    print(Fore.RED + str(inputs) + Style.RESET_ALL)
-
-
 class UserInterface:
     StringResources.load_strings(Constants.STRING_PATH)
 
@@ -47,10 +43,12 @@ class UserInterface:
         else:
             print(inputs)
 
-    def display_input(self, input_type: UiTypes, inputs, callback_type, params=None):
+    def display_input(self, input_type: UiTypes, inputs, callback_type = None, params=None):
         print(callback_type)
         if input_type == UiTypes.REQUEST_INT_INPUT:
             self.display_int_input(inputs, callback_type, params)
+        elif input_type == UiTypes.SUCCESS_MESSAGE:
+            self.success(inputs)
         else:
             print(inputs)
 
@@ -64,4 +62,10 @@ class UserInterface:
                     self.callback(callback_type, choice, params)
                     break
             except ValueError:
-                show_error_message(StringResources.get(Constants.PRINT_ERROR_INVALID_INPUT_TRY_AGAIN))
+                self.show_error_message(StringResources.get(Constants.PRINT_ERROR_INVALID_INPUT_TRY_AGAIN))
+
+    def show_error_message(self, inputs):
+        print(Fore.RED + str(inputs) + Style.RESET_ALL)
+
+    def success(self, inputs):
+        print(Fore.GREEN + str(inputs) + Style.RESET_ALL)
