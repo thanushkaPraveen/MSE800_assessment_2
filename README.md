@@ -135,13 +135,22 @@ pip install -r requirements.txt
 
 ### 4. Set Up the Database
 
-Install MySQL and create a new database.
-
-Import the database schema using:
+Install MySQL and set configurations and set your [configfile.ini](configfile.ini) file.
 
 ```bash
-mysql -u your_username -p your_database < database_schema.sql
+[mysql]
+host = [localhost]
+user = [root]
+password = [password]
 ```
+
+### 4. Set Up Payment Front-end implementation
+
+- Install Apache by using [Apache](https://httpd.apache.org/docs/2.4/install.html).
+- Install php by using [php.net](https://www.php.net/manual/en/install.php).
+- Place your PHP files inside `/usr/local/var/www/` (macOS) `/var/www/html/` (Linux) or `/htdocs`(Windows/XAMPP)
+- Copy the folder([carrentalsystem-frontend](carrentalsystem-frontend)) and contents to your host 
+`./htdocs/carrentalsystem-frontend` folder.
 
 ### 5. Run the Application
 
@@ -150,7 +159,6 @@ To start the application, use:
 ```bash
 python main.py
 ```
-
 
 ## Usage Instructions
 
@@ -327,6 +335,18 @@ python main.py
 ### Database Screenshots
 
 **NOTE:** All database-related queries can be checked in the `sql_statement` file.
+
+---
+
+## Architecture Patterns
+
+- **MVC:** Model-View-Controller (MVC) Architecture.
+- **Model:** Data & Business Logic - The Model represents the data, business logic, and rules of the application. It 
+communicates with the database and processes the data.
+- **View:** User Interface (UI) - The View is responsible for displaying data and rendering the user interface. It 
+interacts with the Model indirectly through the Controller.
+- **Controller:** Controller (C) - Handles User Interaction - The Controller acts as a mediator between the Model and 
+the View. It processes user input, retrieves data from the Model, and updates the View accordingly.
 
 ---
 

@@ -7,6 +7,7 @@ from controllers.user_controller import UserController
 from insert_data import *
 from models.user import User
 from presenter.user_interface import UserInterface, UiTypes
+from services.chatbot import ChatBot
 from services.web_server import WebServer
 from utils.populate_db import insert_records
 

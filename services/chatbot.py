@@ -35,7 +35,7 @@ class ChatBot:
         # Use OpenAI GPT for natural conversation
         try:
             response = openai.ChatCompletion.create(
-                model="gpt-3.5-turbo",
+                model="gpt-3.5-turbo-1106",
                 messages=[{"role": "user", "content": "Hello, are you working?"}]
             )
 
