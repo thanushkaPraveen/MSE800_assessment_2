@@ -4,13 +4,19 @@ from flask import Flask, request, jsonify
 from datetime import datetime
 
 from models.invoice import Invoice
-
+import os
+import logging
 
 class WebServer:
 
     def __init__(self, db):
         self.db = db
         self.app = Flask(__name__)
+
+        # Redirect logs to null
+        log = logging.getLogger('werkzeug')
+        log.disabled = True
+        os.environ['FLASK_ENV'] = 'production'  # Set Flask environment to production to minimize logs
 
         # Define routes
         self.setup_routes()

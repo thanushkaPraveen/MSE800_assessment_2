@@ -36,7 +36,8 @@ class InvoicePaymentController(BaseController):
         # Construct payment URL
         payment_url = f"Generated Payment URL: {Constants.PAYMENT_URL}{invoice_id}"
         self.ui.display(UiTypes.MESSAGE, payment_url)
-
+        self.ui.press_any_key_to_continue()
+        self._nav_home()
         pass
 
     def display_menu(self):
