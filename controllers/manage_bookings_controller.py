@@ -1,6 +1,5 @@
 from constants import Constants
 from controllers.base_controller import BaseController
-from controllers.customer_controller import CustomerController
 from database.sql_statement import SELECT_INVOICES_BY_BOOKING_ID
 from models.additional_services import AdditionalServices
 from models.booking import Booking

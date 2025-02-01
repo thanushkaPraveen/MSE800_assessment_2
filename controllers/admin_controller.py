@@ -65,7 +65,7 @@ class AdminController(BaseController):
                     self._manage_services()
                 elif choice == 5:
                     Invoice.display_all_user_invoices(self.db)
-                    input("Press any key to go back to home...")
+                    self.ui.press_any_key_to_continue()
                     self.ui.clear_console()
                 elif choice == 6:
                     self._logout()

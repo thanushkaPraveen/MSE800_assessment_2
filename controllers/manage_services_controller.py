@@ -1,6 +1,10 @@
-class ManageServicesController:
+from controllers.base_controller import BaseController
+
+
+class ManageServicesController(BaseController):
+
     def __init__(self, db):
-        self.db = db
+        super().__init__(db)
 
     def view_services(self):
         print("Viewing all services...")
@@ -15,7 +19,7 @@ class ManageServicesController:
         print("Deleting a service...")
 
     def home(self):
-        print("Returning to the Admin - HOME...")
+        self.ui.clear_console()
 
     def display_menu(self):
         while True:
@@ -45,3 +49,9 @@ class ManageServicesController:
                     print("Invalid choice. Please enter a number between 1 and 4.")
             except ValueError:
                 print("Invalid input. Please enter a valid number.")
+                
+    def on_input_callback(self, callback_type, choice, params=None):
+        pass
+
+    def on_back_callback(self, data=None):
+        pass
