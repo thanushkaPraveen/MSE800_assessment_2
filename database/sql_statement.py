@@ -163,6 +163,8 @@ SELECT_USER_BY_ID = "SELECT * FROM User WHERE user_id = %s"
 SELECT_USERS_BY_USER_TYPE_ID = "SELECT * FROM User WHERE user_type_id = %s"
 FIND_USER_BY_EMAIL = "SELECT * FROM User WHERE user_email = %s"
 FIND_USER_BY_EMAIL_AND_PASSWORD = "SELECT * FROM User WHERE user_email = %s AND user_password = %s"
+FIND_USER_BY_USER_TYPE = "SELECT User.user_id, User.user_name, User.user_email, User.user_phone_number FROM User JOIN UserType ON User.user_type_id = UserType.user_type_id WHERE UserType.user_type =%s AND User.is_active=1;"
+FIND_USER_BY_BOOKING_ID = "SELECT User.user_id, User.user_name, User.user_email, User.user_phone_number FROM User JOIN Booking ON User.user_id = Booking.user_id WHERE Booking.booking_id =%s AND User.is_active=1;;"
 
 # CarType Table
 INSERT_CAR_TYPE = "INSERT INTO CarType (car_type, is_active, create_at, updated_at) VALUES (%s, %s, %s, %s)"
@@ -243,6 +245,7 @@ INSERT_INVOICE = "INSERT INTO Invoice (booking_id, user_id, amount, payment_meth
 UPDATE_INVOICE = "UPDATE Invoice SET booking_id = %s, user_id = %s, amount = %s, payment_method = %s, payment_date = %s, is_paid = %s, is_active = %s, updated_at = %s WHERE invoice_id = %s"
 DELETE_INVOICE = "DELETE FROM Invoice WHERE invoice_id = %s"
 SELECT_ALL_INVOICES = "SELECT * FROM Invoice"
+SELECT_ALL_INVOICES_WITH_USERS = "SELECT Invoice.invoice_id, Invoice.booking_id, User.user_name, User.user_email, Invoice.amount, Invoice.payment_method, Invoice.payment_date, Invoice.is_paid FROM Invoice INNER JOIN User ON User.user_id = Invoice.user_id;"
 SELECT_INVOICE_BY_ID = "SELECT * FROM Invoice WHERE invoice_id = %s"
 SELECT_INVOICES_BY_USER_ID = "SELECT * FROM Invoice WHERE user_id = %s"
 SELECT_INVOICES_BY_BOOKING_ID = "SELECT * FROM Invoice WHERE booking_id = %s"

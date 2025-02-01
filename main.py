@@ -39,10 +39,10 @@ def main():
         if isinstance(user, User):
             ui.clear_console()
             if user.user_type_id == 1:
-                admin_controller = AdminController(ui, db, user)
+                admin_controller = AdminController(db, user)
                 admin_controller.display_menu()
             else:
-                customer_controller = CustomerController(ui, db, user)
+                customer_controller = CustomerController(db, user)
                 customer_controller.display_menu()
 
 

@@ -24,7 +24,8 @@ class ManageServicesController:
             print("1. Add Service")
             print("2. Edit Service")
             print("3. Delete Service")
-            print("4. Home")
+            print("4. View All Service")
+            print("5. Home")
             print("------------------")
 
             try:
@@ -36,6 +37,8 @@ class ManageServicesController:
                 elif choice == 3:
                     self.delete_service()
                 elif choice == 4:
+                    self.view_services()
+                elif choice == 5:
                     self.home()
                     break  # Exit the loop to return to the Admin home menu
                 else:

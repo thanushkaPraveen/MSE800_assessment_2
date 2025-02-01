@@ -30,8 +30,8 @@ class UserController:
         # user_email = get_valid_email()
         # user_password = get_non_empty_input("Enter your password: ")
 
-        user_email = "user@user.com" # TODO
-        user_password = "user" # TODO
+        user_email = "admin@admin.com" # TODO
+        user_password = "admin" # TODO
 
         # Fetch user details from the database
         check_user = User.find_by_email_and_password(self.db, user_email)

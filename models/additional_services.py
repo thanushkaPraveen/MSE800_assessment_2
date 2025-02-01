@@ -108,6 +108,7 @@ class AdditionalServices:
             "Index", "Additional Service ID", "Service Description", "Amount"
         ]
         print(tabulate(table_data, headers=headers, tablefmt="fancy_grid"))
+        return services
 
     def display_additional_services(db):
         """Displays the available additional services in a structured format."""

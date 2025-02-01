@@ -1,5 +1,7 @@
 import time
 
+from tabulate import tabulate
+
 from database.sql_statement import *
 
 
@@ -102,4 +104,64 @@ class User:
             users.append(user)
 
         return users
+
+    @staticmethod
+    def fetch_all_users(db):
+        sql = FIND_USER_BY_USER_TYPE
+        values = ("User", )
+        rows = db.select_from_database(sql, values)
+
+        users = []
+        for row in rows:
+            user = {
+                "user_id": row[0],
+                "user_name": row[1],
+                "user_email": row[2],
+                "user_phone_number": row[3],
+            }
+            users.append(user)
+
+        return users
+
+    @staticmethod
+    def display_all_users(db):
+        users = User.fetch_all_users(db)
+
+        if not users:
+            print("No users available.")
+            return
+
+        headers = [
+            "User ID", "User Name", "User Email", "User Phone Number"
+        ]
+
+        rows = []
+        for user in users:
+            rows.append([
+                user["user_id"],
+                user["user_name"],
+                user["user_email"],
+                user["user_phone_number"],
+            ])
+
+        print(tabulate(rows, headers=headers, tablefmt="fancy_grid"))
+        return users
+
+    @staticmethod
+    def get_user_by_booking_id(db, booking_id):
+        sql = FIND_USER_BY_BOOKING_ID
+        values = (booking_id, )
+        rows = db.select_from_database(sql, values)
+
+        users = []
+        for row in rows:
+            user = {
+                "user_id": row[0],
+                "user_name": row[1],
+                "user_email": row[2],
+                "user_phone_number": row[3],
+            }
+            users.append(user)
+
+        return users[0]
 

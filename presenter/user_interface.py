@@ -1,4 +1,3 @@
-import os
 import sys
 import time
 from enum import Enum
@@ -22,17 +21,31 @@ class UiTypes(Enum):
 class UserInterface:
     StringResources.load_strings(Constants.STRING_PATH)
 
-    def __init__(self):
-        self.callback = None
-
-    def loading_animation(self, duration=10):
+    @staticmethod
+    def loading_animation(duration=1):
         for _ in range(duration):
             time.sleep(0.5)
             sys.stdout.write("*")
             sys.stdout.flush()
 
-    def clear_console(self):
+    @staticmethod
+    def clear_console():
         print("\n" * 20)
+
+    @staticmethod
+    def _show_error_message(inputs):
+        print(Fore.RED + str(inputs) + Style.RESET_ALL)
+
+    @staticmethod
+    def _show_success_message(inputs):
+        print(Fore.GREEN + str(inputs) + Style.RESET_ALL)
+
+    @staticmethod
+    def press_any_key_to_continue():
+        input("Press any key to continue...")
+
+    def __init__(self):
+        self.callback = None
 
     def register_callback(self, callback):
         self.callback = callback
@@ -40,19 +53,20 @@ class UserInterface:
     def display(self, input_type: UiTypes, inputs):
         if input_type == UiTypes.MESSAGE:
             print(inputs)
+        elif input_type == UiTypes.ERROR:
+            self._show_error_message(inputs)
+        elif input_type == UiTypes.SUCCESS_MESSAGE:
+            self._show_error_message(inputs)
         else:
             print(inputs)
 
     def display_input(self, input_type: UiTypes, inputs, callback_type = None, params=None):
-        print(callback_type)
         if input_type == UiTypes.REQUEST_INT_INPUT:
-            self.display_int_input(inputs, callback_type, params)
-        elif input_type == UiTypes.SUCCESS_MESSAGE:
-            self.success(inputs)
+            self._display_int_input(inputs, callback_type, params)
         else:
             print(inputs)
 
-    def display_int_input(self, inputs, callback_type, params=None):
+    def _display_int_input(self, inputs, callback_type, params=None):
         while True:
             try:
                 choice = int(input(inputs))
@@ -62,10 +76,4 @@ class UserInterface:
                     self.callback(callback_type, choice, params)
                     break
             except ValueError:
-                self.show_error_message(StringResources.get(Constants.PRINT_ERROR_INVALID_INPUT_TRY_AGAIN))
-
-    def show_error_message(self, inputs):
-        print(Fore.RED + str(inputs) + Style.RESET_ALL)
-
-    def success(self, inputs):
-        print(Fore.GREEN + str(inputs) + Style.RESET_ALL)
+                self._show_error_message(StringResources.get(Constants.PRINT_ERROR_INVALID_INPUT_TRY_AGAIN))

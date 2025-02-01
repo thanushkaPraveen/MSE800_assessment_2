@@ -1,22 +1,26 @@
 from constants import Constants
 from controllers.base_controller import BaseController
+from controllers.customer_controller import CustomerController
+from database.sql_statement import SELECT_INVOICES_BY_BOOKING_ID
 from models.additional_services import AdditionalServices
 from models.booking import Booking
 from models.invoice import Invoice
-from presenter.user_interface import UserInterface, UiTypes
+from models.user import User
+from presenter.user_interface import UiTypes
+from services.email_service import EmailService
 
 
 class ManageBookingController(BaseController):
 
-    def __init__(self, db, ui: UserInterface):
-        super().__init__(db, ui)
+    def __init__(self, db):
+        super().__init__(db)
 
-    def view_all_bookings(self):
+    def _view_all_bookings(self):
         print("Viewing all bookings...")
         Booking.display_all_bookings(self.db)
         self.display_menu()
 
-    def view_requested_bookings(self):
+    def _view_requested_bookings(self):
         print("Viewing all requested bookings...")
 
         Booking.display_all_requested_bookings(self.db)
@@ -24,7 +28,7 @@ class ManageBookingController(BaseController):
                               self.string_resource.get(Constants.PRINT_MANAGE_BOOKING_SEE_DETAILS),
                               Constants.CALLBACK_REQUEST_BOOKING_ID)
 
-    def view_booking_details(self, booking_id):
+    def _view_booking_details(self, booking_id):
         print("Viewing booking details...")
 
         booking = Booking.retrieve_booking_by_booking_id(self.db, booking_id)
@@ -54,33 +58,49 @@ class ManageBookingController(BaseController):
                                       self.string_resource.get(Constants.PRINT_ENTER_CHOICE_CONFIRM_OR_REJECT),
                                       Constants.CALLBACK_REQUEST_BOOKING_CONFIRM_AND_REJECT, booking_id)
 
+    def _send_email(self, booking_id):
+        print("Sending invoice details...")
+        user = User.get_user_by_booking_id(self.db, booking_id)
+        booking = Booking.select(self.db, booking_id)
+        services = AdditionalServices.display_additional_services_by_booking_id(self.db, booking_id)
+        invoice = Invoice.get_invoice_by_booking_id(self.db, SELECT_INVOICES_BY_BOOKING_ID, booking_id)
+
+        send_email = EmailService()
+        send_email.send_car_invoice_email(customer=user, invoice=invoice, booking=booking[0], additional_services=services)
+        self.ui.press_any_key_to_continue()
+        pass
 
     def on_input_callback(self, callback_type, choice, params=None):
         if callback_type == Constants.CALLBACK_NAVIGATION:
-            self.menu_navigation(choice)
+            self._menu_navigation(choice)
         elif callback_type == Constants.CALLBACK_REQUEST_BOOKING_ID:
-            self.view_booking_details(choice)
+            self._view_booking_details(choice)
         elif callback_type == Constants.CALLBACK_REQUEST_BOOKING_CONFIRM_AND_REJECT:
-            self.booking_confirm_navigation(choice, params)
+            self._booking_confirm_navigation(choice, params)
         elif callback_type == Constants.CALLBACK_REQUEST_BOOKING_REJECT:
-            self.booking_reject_navigation(choice, params)
+            self._booking_reject_navigation(choice, params)
         else:
-            print("Error this input callback not mapped.")
+            self.ui.display(UiTypes.ERROR, "Error this input callback not mapped..")
 
-    def menu_navigation(self, choice):
+    def on_back_callback(self, data=None):
+        pass
+
+    def _menu_navigation(self, choice):
         if choice == 1:
-            self.view_all_bookings()
+            self._view_all_bookings()
         elif choice == 2:
-            self.view_requested_bookings()
+            self._view_requested_bookings()
         elif choice == 3:
-            self.nav_home()
+            self._nav_home()
         else:
             self.ui.display_input(UiTypes.REQUEST_INT_INPUT,
                                   self.string_resource.get(Constants.PRINT_MANAGE_INPUT_INVALID_1_3),
                                   Constants.CALLBACK_NAVIGATION)
 
-    def nav_home(self):
-        print("Returning to the Admin - HOME...")
+    def _nav_home(self):
+        self.ui.clear_console()
+        self.notify_callback()
+        self.remove_callback()
 
     def display_menu(self):
         self.ui.display(UiTypes.MESSAGE,
@@ -89,7 +109,7 @@ class ManageBookingController(BaseController):
                               self.string_resource.get(Constants.PRINT_ENTER_CHOICE_INPUT_1_3),
                               Constants.CALLBACK_NAVIGATION)
 
-    def booking_confirm_navigation(self, choice, booking_id):
+    def _booking_confirm_navigation(self, choice, booking_id):
         if choice == 1 or choice == 2:
             booking = Booking.update_booking_by_booking_id(self.db, booking_id, choice)
             # Create Invoice
@@ -97,18 +117,21 @@ class ManageBookingController(BaseController):
                               amount=booking.total_amount,
                               is_paid=0, is_active=1)
             Invoice.insert(self.db, invoice)
+            if choice == 1:
+                self._send_email(booking_id)
+            self.display_menu()
         elif choice == 3:
-            self.nav_home()
+            self.display_menu()
         else:
             self.ui.display_input(UiTypes.REQUEST_INT_INPUT,
                                   self.string_resource.get(Constants.PRINT_MANAGE_INPUT_INVALID_1_3),
                                   Constants.CALLBACK_REQUEST_BOOKING_CONFIRM_AND_REJECT, booking_id)
 
-    def booking_reject_navigation(self, choice, booking_id):
+    def _booking_reject_navigation(self, choice, booking_id):
         if choice == 1:
             Booking.update_booking_by_booking_id(self.db, booking_id, choice)
         elif choice == 2:
-            self.nav_home()
+            self.display_menu()
         else:
             self.ui.display_input(UiTypes.REQUEST_INT_INPUT,
                                   self.string_resource.get(Constants.PRINT_MANAGE_INPUT_INVALID_1_2),

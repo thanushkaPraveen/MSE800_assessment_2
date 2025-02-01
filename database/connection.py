@@ -84,7 +84,7 @@ class Database:
             cursor = self.create_connection_parser()
             cursor.execute(sql, values)
             added_id = cursor.lastrowid
-            print(f"added ID: {sql, values, added_id}")
+            # print(f"added ID: {sql, values, added_id}")
             return added_id
 
         except Error as e:
@@ -100,7 +100,7 @@ class Database:
             cursor = self.create_connection_parser()
             cursor.execute(sql, values)
             self.connection.commit()
-            print(f"Updated rows: {sql, values, cursor.rowcount}")
+            # print(f"Updated rows: {sql, values, cursor.rowcount}")
         except Error as e:
             print(f"Error: {e}")
 

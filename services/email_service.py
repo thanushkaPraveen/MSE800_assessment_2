@@ -4,6 +4,7 @@ from email.mime.multipart import MIMEMultipart
 import smtplib
 from email.message import EmailMessage
 
+from constants import Constants
 from utils.datetime_utils import format_timestamp
 
 
@@ -100,6 +101,87 @@ class EmailService:
             with smtplib.SMTP_SSL(self.smtp_server, self.smtp_port, context=self.context) as server:
                 server.login(sender_email, sender_password)
                 server.sendmail(sender_email, user_email, msg.as_string())
+            print("Please check your email regarding the booking details.")
+        except Exception as e:
+            print(f"Failed to send email: {e}")
+
+    def send_car_invoice_email(self, customer, invoice, booking, additional_services=None):
+        """
+        Sends a car booking confirmation email, including additional services if booked.
+        """
+
+        # Email sender details
+        sender_email = self.sender_email
+        sender_password = self.password
+
+        # Email Subject
+        subject = f"Invoice ID: {invoice["invoice_id"]} - Invoice Details."
+
+        # Email Body - Main Details
+        email_body = f"""
+        Dear {customer["user_name"]},
+
+        Please find the invoice for your booking details:
+        
+        ==========================================
+                          INVOICE
+        ==========================================
+        
+        Invoice Number: {invoice["invoice_id"]}
+        Invoice Date: {invoice["updated_at"]}
+        
+        ------------------------------------------
+        Itemized Details:
+        ------------------------------------------
+
+        Booking ID: {booking.booking_id}
+        Pickup Date: {format_timestamp(booking.start_date)}
+        Return Date: {format_timestamp(booking.end_date)}
+        Total Price: {booking.total_amount}
+
+        """
+
+        # Add Additional Services if Booked
+        if additional_services:
+            email_body += "Additional Services Booked:\n"
+            for service in additional_services:
+                email_body += f"\t  - {service["service_description"]}          {service["service_amount"]}\n"
+
+        # Footer
+        email_body += f"""
+        ------------------------------------------
+
+        Total Amount: {invoice["amount"]}
+        Amount Paid:  $0.00
+        Balance Due:  {invoice["amount"]}
+        
+        ------------------------------------------
+        Payment Method:
+        Visa / Credit Card
+        
+        Payment URL: {Constants.PAYMENT_URL}{invoice["invoice_id"]}
+
+        If you have any questions, feel free to contact our support team.
+
+        Safe travels!
+        Best Regards,
+        Car Rental Team
+        """
+
+        # Creating Email Message
+        msg = EmailMessage()
+        msg.set_content(email_body)
+        msg["Subject"] = subject
+        msg["From"] = sender_email
+        msg["To"] = customer["user_email"]
+
+        user_email = "thanushkawickramarachchi@gmail.com"
+
+        # Sending the email
+        try:
+            with smtplib.SMTP_SSL(self.smtp_server, self.smtp_port, context=self.context) as server:
+                server.login(sender_email, sender_password)
+                server.sendmail(sender_email, customer["user_email"], msg.as_string())
             print("Please check your email regarding the booking details.")
         except Exception as e:
             print(f"Failed to send email: {e}")

@@ -3,6 +3,7 @@ import time
 from tabulate import tabulate
 
 from database.sql_statement import *
+from utils.datetime_utils import format_timestamp
 from utils.input_validation import check_overlap
 
 
@@ -35,7 +36,7 @@ class Booking:
                   booking.end_date, booking.total_amount, booking.note, booking.is_active, int(time.time()),
                   booking.booking_id)
         db.update_database(sql, values)
-        print(f"Booking with ID {booking.booking_id} updated.")
+        # print(f"Booking with ID {booking.booking_id} updated.")
 
     @staticmethod
     def deactivate(db, booking):
@@ -223,8 +224,8 @@ class Booking:
             [
                 idx + 1,
                 booking["booking_id"],
-                booking["start_date"],
-                booking["end_date"],
+                format_timestamp(booking["start_date"]),
+                format_timestamp(booking["end_date"]),
                 booking["total_amount"],
                 booking["status"],
                 booking["number_plate"],
@@ -237,30 +238,6 @@ class Booking:
             ]
             for idx, booking in enumerate(bookings)
         ]
-
-        # overlap_rows = set()
-        # for i in range(len(table_data)):
-        #     for j in range(i + 1, len(table_data)):
-        #         start1 = table_data[i][2]
-        #         end1 = table_data[i][3]
-        #         number_plate1 = table_data[i][6]
-        #         start2 = table_data[j][2]
-        #         end2 = table_data[j][3]
-        #         number_plate2 = table_data[j][6]
-        #
-        #         if check_overlap(start1, end1, start2, end2) and number_plate1 == number_plate2:
-        #             overlap_rows.add(i)
-        #             overlap_rows.add(j)
-        #
-        # # Highlight overlapping rows in red
-        # highlighted_table = []
-        # for idx, row in enumerate(table_data):
-        #     if idx in overlap_rows:
-        #         # Add ANSI escape code for red color
-        #         highlighted_row = [f"\033[91m{cell}\033[0m" for cell in row]
-        #         highlighted_table.append(highlighted_row)
-        #     else:
-        #         highlighted_table.append(row)
 
         headers = [
             "Index", "Booking ID", "Start Date", "End Date", "Total Amount", "Status",
@@ -284,8 +261,8 @@ class Booking:
             [
                 idx + 1,
                 booking["booking_id"],
-                booking["start_date"],
-                booking["end_date"],
+                format_timestamp(booking["start_date"]),
+                format_timestamp(booking["end_date"]),
                 booking["total_amount"],
                 booking["status"],
                 booking["number_plate"],
@@ -370,13 +347,16 @@ class Booking:
             id1 = table_data_all_bookings[i][1]
             start1 = table_data_all_bookings[i][2]
             end1 = table_data_all_bookings[i][3]
+            status1 = table_data_all_bookings[i][5]
             number_plate1 = table_data_all_bookings[i][6]
+
             id2 = booking["booking_id"]
             start2 = booking["start_date"]
             end2 = booking["end_date"]
+            status2 = booking["status"]
             number_plate2 = booking["number_plate"]
 
-            if id1 != id2 and check_overlap(start1, end1, start2, end2) and number_plate1 == number_plate2:
+            if id1 != id2 and check_overlap(start1, end1, start2, end2) and number_plate1 == number_plate2 and (status1 == "Confirmed" or status2 == "Confirmed"):
                 return True
 
         return False

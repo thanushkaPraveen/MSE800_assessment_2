@@ -1,3 +1,4 @@
+from controllers.base_controller import BaseController
 from insert_data import update_data
 from models.car import Car
 from models.car_brand_model import CarBrandModel
@@ -5,8 +6,10 @@ from utils.input_validation import *
 from utils.populate_db import car_brand_model
 
 
-class ManageCarsController:
+class ManageCarsController(BaseController):
+
     def __init__(self, db):
+        super().__init__(db)
         self.db = db
 
     def view_all_cars(self):
@@ -76,6 +79,7 @@ class ManageCarsController:
 
     def home(self):
         print("Returning to the Admin - HOME...")
+        self.ui.clear_console()
 
     @staticmethod
     def get_delete_car_data(delete_car):
@@ -155,4 +159,10 @@ class ManageCarsController:
                     print("Invalid choice. Please enter a number between 1 and 7.")
             except ValueError:
                 print("Invalid input. Please enter a valid number.")
+
+    def on_input_callback(self, callback_type, choice, params=None):
+        pass
+
+    def on_back_callback(self, data=None):
+        pass
 

@@ -3,7 +3,9 @@ import time
 from select import select
 from tabulate import tabulate
 
+from constants import Constants
 from database.sql_statement import *
+from res.string_resources import StringResources
 
 
 class Invoice:
@@ -141,7 +143,8 @@ class Invoice:
                 "Yes" if invoice["is_paid"] else "No"
             ])
 
-        print(tabulate(rows, headers=headers, tablefmt="grid"))
+        print(StringResources.get(Constants.PRINT_INVOICE_DETAILS))
+        print(tabulate(rows, headers=headers, tablefmt="fancy_grid"))
         return invoices
 
     @staticmethod
@@ -202,7 +205,7 @@ class Invoice:
                 if invoice["end_date"] else "N/A"
             ])
 
-        print(tabulate(rows, headers=headers, tablefmt="grid"))
+        print(tabulate(rows, headers=headers, tablefmt="fancy_grid"))
         pass
 
     @classmethod
@@ -223,6 +226,32 @@ class Invoice:
                 "payment_method": row[4],
                 "payment_date": row[5],
                 "is_paid": row[6]
+            }
+            for row in rows
+        ]
+
+        return None if not invoices else invoices[0]
+
+    @classmethod
+    def get_invoice_by_booking_id(cls, db, query, booking_id):
+        """
+        Return invoice by invoice Id.
+        """
+        sql = query
+        values = (booking_id,)
+        rows = db.select_from_database(sql, values)
+
+        invoices = [
+            {
+                "invoice_id": row[0],
+                "booking_id": row[1],
+                "user_id": row[2],
+                "amount": row[3],
+                "payment_method": row[4],
+                "payment_date": row[5],
+                "is_paid": row[6],
+                "create_at": row[8],
+                "updated_at": row[9]
             }
             for row in rows
         ]
@@ -314,3 +343,52 @@ class Invoice:
         Invoice.update(db, updated_invoice)
         return Invoice.retrieve_invoice_by_invoice_id(db, invoice_id)
         pass
+
+    @staticmethod
+    def fetch_all_invoices(db):
+        sql = SELECT_ALL_INVOICES_WITH_USERS
+        values = ()
+        rows = db.select_from_database(sql, values)
+
+        list = []
+        for row in rows:
+            data = {
+                "invoice_id": row[0],
+                "booking_id": row[1],
+                "user_name": row[2],
+                "user_email": row[3],
+                "amount": row[4],
+                "payment_method": row[5],
+                "payment_date": row[6],
+                "is_paid": row[7],
+            }
+            list.append(data)
+
+        return list
+
+    @staticmethod
+    def display_all_invoices(db):
+        data = Invoice.fetch_all_invoices(db)
+
+        if not data:
+            print("No invoices available.")
+            return
+
+        headers = [
+            "Invoice ID","Booking ID", "User Name", "User Email", "Amount", "Payment Method", "Is Paid"
+        ]
+
+        rows = []
+        for invoice in data:
+            rows.append([
+                invoice["invoice_id"],
+                invoice["booking_id"],
+                invoice["user_name"],
+                invoice["user_email"],
+                invoice["amount"],
+                invoice["payment_method"],
+                "Paid" if invoice["is_paid"] else "Pending",
+            ])
+
+        print(tabulate(rows, headers=headers, tablefmt="fancy_grid"))
+        return data

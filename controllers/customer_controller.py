@@ -1,5 +1,7 @@
 import time
 
+from constants import Constants
+from controllers.base_controller import BaseController
 from controllers.invoice_payment_controller import InvoicePaymentController
 from controllers.my_bookings_controller import MyBookingsController
 from models.additional_services import AdditionalServices
@@ -7,17 +9,17 @@ from models.booking import Booking
 from models.booking_additional_services import BookingAdditionalServices
 from models.car import Car
 
-from presenter.user_interface import UserInterface
+from presenter.user_interface import UserInterface, UiTypes
 from services.email_service import EmailService
 from services.sms import Sms
 from utils.input_validation import *
 
 
-class CustomerController:
-    def __init__(self, ui: UserInterface, db, customer):
-        self.db = db
+class CustomerController(BaseController):
+
+    def __init__(self, db, customer):
+        super().__init__(db)
         self.customer = customer
-        self.invoice_payment_controller = InvoicePaymentController(db, ui, customer)
 
     def select_car(self):
         selected_services = []
@@ -85,7 +87,7 @@ class CustomerController:
                 send_sms.send_sms(booking.booking_id)
 
                 send_email = EmailService()
-                send_email.send_car_booking_email(customer=self.customer, booking=booking, car= selected_car, additional_services=selected_services)
+                send_email.send_car_booking_email(customer=self.customer, booking=booking, car=selected_car, additional_services=selected_services)
 
 
         except Exception as e:
@@ -119,36 +121,44 @@ class CustomerController:
 
     def invoice_payment(self):
         print("Viewing invoice...")
-        self.invoice_payment_controller.display_menu()
+        invoice_payment_controller = InvoicePaymentController(self.db, self.customer)
+        invoice_payment_controller.add_callback(self.on_back_callback)
+        invoice_payment_controller.display_menu()
 
     def logout(self):
         print("Logging out...")
 
     def display_menu(self):
-        while True:
-            print(f"\nUSER - HOME")
-            print("-----------------------")
-            print(f"Name: {self.customer.user_name}")
-            print(f"Email: {self.customer.user_email}")
-            print("-----------------------")
-            print("1. Booking a car")
-            print("2. My Bookings")
-            print("3. Invoices & Payments")
-            print("4. Logout")
-            print("-----------------------")
+        self.ui.display(UiTypes.MESSAGE, self.string_resource.get(Constants.PRINT_MANAGE_CUSTOMER_MAIN_1))
+        user_details = f"Name: {self.customer.user_name} \nEmail: {self.customer.user_email}"
+        self.ui.display(UiTypes.MESSAGE, user_details)
+        self.ui.display(UiTypes.MESSAGE, self.string_resource.get(Constants.PRINT_MANAGE_CUSTOMER_MAIN_2))
+        self.ui.display_input(UiTypes.REQUEST_INT_INPUT,
+                              self.string_resource.get(Constants.PRINT_ENTER_CHOICE_INPUT_1_4),
+                              Constants.CALLBACK_NAVIGATION)
 
-            try:
-                choice = int(input("Enter your choice (1-5): "))
-                if choice == 1:
-                    self.select_car()
-                elif choice == 2:
-                    self.my_bookings()
-                elif choice == 3:
-                    self.invoice_payment()
-                elif choice == 4:
-                    self.logout()
-                    break
-                else:
-                    print("Invalid choice. Please enter a number between 1 and 5.")
-            except ValueError:
-                print("Invalid input. Please enter a valid number.")
+
+    def on_input_callback(self, callback_type, choice, params=None):
+        if callback_type == Constants.CALLBACK_NAVIGATION:
+            self.menu_navigation(choice)
+        else:
+            self.ui.display(UiTypes.ERROR, "Error this input callback not mapped....")
+        pass
+
+    def on_back_callback(self, data=None):
+        self.display_menu()
+        pass
+
+    def menu_navigation(self, choice):
+        if choice == 1:
+            self.select_car()
+        elif choice == 2:
+            self.my_bookings()
+        elif choice == 3:
+            self.invoice_payment()
+        elif choice == 4:
+            self.logout()
+        else:
+            self.ui.display_input(UiTypes.REQUEST_INT_INPUT,
+                                  self.string_resource.get(Constants.PRINT_MANAGE_INPUT_INVALID_1_4),
+                                  Constants.CALLBACK_NAVIGATION)

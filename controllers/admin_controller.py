@@ -3,38 +3,40 @@ from controllers.manage_cars_controller import *
 from controllers.manage_customers_controller import *
 from controllers.manage_services_controller import *
 from models.invoice import Invoice
-from presenter.user_interface import UserInterface
 
 
-class AdminController:
-    def __init__(self, ui: UserInterface, db, admin):
-        self.db = db
+class AdminController(BaseController):
+
+    def __init__(self,db, admin):
+        super().__init__(db)
         self.admin = admin
         self.manage_customers_controller = ManageCustomersController(db)
         self.manage_cars_controller = ManageCarsController(db)
-        self.manage_bookings_controller = ManageBookingController(db, ui)
         self.manage_services_controller = ManageServicesController(db)
 
-    @staticmethod
-    def manage_customers(self):
+    def _manage_customers(self):
         print("Managing customers...")
+        self.ui.clear_console()
         self.manage_customers_controller.display_menu()
 
-    @staticmethod
-    def manage_cars(self):
+    def _manage_cars(self):
         print("Managing cars...")
+        self.ui.clear_console()
         self.manage_cars_controller.display_menu()
 
-    @staticmethod
-    def manage_bookings(self):
+    def _manage_bookings(self):
         print("Managing bookings...")
-        self.manage_bookings_controller.display_menu()
+        self.ui.clear_console()
+        manage_bookings_controller = ManageBookingController(self.db)
+        manage_bookings_controller.add_callback(self.on_back_callback)
+        manage_bookings_controller.display_menu()
 
-    def manage_services(self):
+    def _manage_services(self):
         print("Managing services...")
+        self.ui.clear_console()
         self.manage_services_controller.display_menu()
 
-    def logout(self):
+    def _logout(self):
         print("Logging out...")
 
     def display_menu(self):
@@ -54,19 +56,28 @@ class AdminController:
             try:
                 choice = int(input("Enter your choice (1-5): "))
                 if choice == 1:
-                    self.manage_customers(self)
+                    self._manage_customers()
                 elif choice == 2:
-                    self.manage_cars(self)
+                    self._manage_cars()
                 elif choice == 3:
-                    self.manage_bookings(self)
+                    self._manage_bookings()
                 elif choice == 4:
-                    self.manage_services()
+                    self._manage_services()
                 elif choice == 5:
                     Invoice.display_all_user_invoices(self.db)
+                    input("Press any key to go back to home...")
+                    self.ui.clear_console()
                 elif choice == 6:
-                    self.logout()
+                    self._logout()
                     break
                 else:
                     print("Invalid choice. Please enter a number between 1 and 5.")
             except ValueError:
                 print("Invalid input. Please enter a valid number.")
+
+    def on_input_callback(self, callback_type, choice, params=None):
+        pass
+
+    def on_back_callback(self, data=None):
+        self.display_menu()
+        pass
