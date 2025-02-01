@@ -1,12 +1,6 @@
-# def get_valid_integer(user_input, min_value, max_value):
-#     if not user_input.isdigit():
-#         print("Invalid input. Please try again.")
-#         return False  # Return False if the input is not an integer
-#     user_input = int(user_input)
-#     if min_value <= user_input <= max_value:
-#         return user_input  # Return valid integer
-#     print(f"Please enter a number between {min_value} and {max_value}.")
-#     return False  # Return False if the input is outside the range
+import re
+import bcrypt
+from datetime import datetime, timedelta
 
 def get_valid_integer(prompt, min_value, max_value):
     while True:
@@ -76,9 +70,9 @@ def get_valid_max_rental_period(min_rental_period):
         else:
             print("Maximum rental period must be greater than or equal to the minimum rental period.")
 
-def get_valid_is_active():
+def get_valid_is_active(input_text = "Is the car active?"):
     while True:
-        is_active = input("Is the car active? (1 for Yes, 0 for No): ").strip()
+        is_active = input(f"{input_text} (1 for Yes, 0 for No): ").strip()
         if is_active in {"0", "1"}:
             return int(is_active)
         else:
@@ -103,3 +97,78 @@ def get_valid_is_status():
 # Check for overlapping date ranges
 def check_overlap(start1, end1, start2, end2):
     return max(start1, start2) <= min(end1, end2)
+
+def get_valid_email():
+    email_pattern = r'^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$'
+
+    while True:
+        email = input("Enter your email address: ").strip()
+        if re.match(email_pattern, email):
+            return email
+        else:
+            print("Invalid email format. Please enter a valid email address.")
+
+def get_valid_user_type():
+    while True:
+        is_active = input("Enter User Type ID (e.g., 1 for Admin, 2 for Regular User):").strip()
+        if is_active in {"1", "2"}:
+            return int(is_active)
+        else:
+            print("Invalid input. Please enter 1 (Yes) or 2 (No).")
+
+def hash_password(password: str) -> str:
+    """Hashes the password using bcrypt and returns the hashed password."""
+    salt = bcrypt.gensalt()
+    hashed_password = bcrypt.hashpw(password.encode('utf-8'), salt)
+    return hashed_password.decode('utf-8')  # Store as a string in DB
+
+def verify_password(input_password: str, stored_hashed_password: str) -> bool:
+    """Compares the input password with the stored hashed password."""
+    return bcrypt.checkpw(input_password.encode('utf-8'), stored_hashed_password.encode('utf-8'))
+
+def get_valid_phone_number():
+    """Prompts user to enter a valid phone number and validates it."""
+    phone_pattern = r'^\+?[0-9]{7,15}$'  # Allows optional "+" at the start and 7-15 digits
+
+    while True:
+        phone_number = input("Enter your phone number: ").strip()
+        if re.match(phone_pattern, phone_number):
+            return phone_number  # Valid number
+        else:
+            print("Invalid phone number. Please enter a valid number (7-15 digits, optional +).")
+
+
+def get_future_date():
+    """
+    Prompts the user to enter a valid future date in 'YYYY-MM-DD' format.
+    Ensures the input is a valid date and is in the future.
+
+    Returns:
+        datetime: A valid future date as a datetime object.
+    """
+    while True:
+        try:
+            # Get the start date from the user in "YYYY-MM-DD" format
+            start_date_str = input("Enter Start Date (YYYY-MM-DD): ").strip()
+            start_date = datetime.strptime(start_date_str, "%Y-%m-%d")
+
+            # Check if the entered date is in the future
+            if start_date > datetime.now():
+                print(f"Valid future date entered: {start_date.strftime('%Y-%m-%d')}")
+                return start_date
+            else:
+                print("Error: The date must be in the future. Please enter a valid future date.")
+        except ValueError:
+            print("Invalid format! Please enter the date in 'YYYY-MM-DD' format.")
+
+
+def get_user_selection():
+    """Prompts the user to enter service IDs and returns a list of valid integers."""
+    while True:
+        user_input = input("\nEnter the IDs of the services you want to select (comma-separated): ")
+        try:
+            selected_ids = [int(id.strip()) for id in user_input.split(",")]
+            return selected_ids
+        except ValueError:
+            print("Invalid input. Please enter numeric IDs separated by commas.")
+

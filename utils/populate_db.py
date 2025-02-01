@@ -10,6 +10,8 @@ from models.car_type import *
 from models.invoice import Invoice
 from models.user import *
 from models.user_type import *
+from utils.input_validation import hash_password
+
 
 def user_types(db):
     user_types = UserType.select(db)
@@ -28,11 +30,11 @@ def user_model(db):
     if len(users) < 2:  # Check if there are fewer than 2 users in the database
 
         user_list = [
-            User(user_type_id=1, user_name="Alice Smith", user_email="admin@admin.com", user_phone_number="1234567890", user_password="admin", is_active=1),
-            User(user_type_id=2, user_name="Bob Johnson", user_email="user@user.com", user_phone_number="0987654321", user_password="user", is_active=1),
-            User(user_type_id=2, user_name="Charlie Brown", user_email="charlie@brown.com", user_phone_number="1122334455", user_password="securePass789", is_active=1),
-            User(user_type_id=2, user_name="Diana Prince", user_email="diana@prince.com", user_phone_number="9988776655", user_password="wonder123", is_active=1),
-            User(user_type_id=2, user_name="Evan Parker", user_email="evan@parker.com", user_phone_number="6677889900", user_password="evan123", is_active=1)
+            User(user_type_id=1, user_name="Alice Smith", user_email="admin@admin.com", user_phone_number="1234567890", user_password= hash_password("admin"), is_active=1),
+            User(user_type_id=2, user_name="Bob Johnson", user_email="user@user.com", user_phone_number="0987654321", user_password=hash_password("user"), is_active=1),
+            User(user_type_id=2, user_name="Charlie Brown", user_email="charlie@brown.com", user_phone_number="1122334455", user_password=hash_password("securePass789"), is_active=1),
+            User(user_type_id=2, user_name="Diana Prince", user_email="diana@prince.com", user_phone_number="9988776655", user_password=hash_password("wonder123"), is_active=1),
+            User(user_type_id=2, user_name="Evan Parker", user_email="evan@parker.com", user_phone_number="6677889900", user_password=hash_password("evan123"), is_active=1)
         ]
 
         for user in user_list:
@@ -103,7 +105,7 @@ def car_model(db):
             Car(car_brand_model_id=2, car_status_id=1, number_plate="XYZ-5678", model_name="Toyota Corolla", daily_rate="100.00", year="2020", mileage="15000", min_rental_period="1", max_rental_period="30", is_active=1),
             Car(car_brand_model_id=3, car_status_id=2, number_plate="LMN-3456", model_name="Honda Civic", daily_rate="110.00", year="2019", mileage="20000", min_rental_period="2", max_rental_period="30", is_active=1),
             Car(car_brand_model_id=4, car_status_id=1, number_plate="DEF-7890", model_name="Ford Explorer", daily_rate="130.75", year="2022", mileage="5000", min_rental_period="1", max_rental_period="30", is_active=1),
-            Car(car_brand_model_id=5, car_status_id=3, number_plate="GHI-2345", model_name="Jeep Grand Cherokee", daily_rate="140.00", year="2021", mileage="8000", min_rental_period="3", max_rental_period="30", is_active=1),
+            Car(car_brand_model_id=5, car_status_id=2, number_plate="GHI-2345", model_name="Jeep Grand Cherokee", daily_rate="140.00", year="2021", mileage="8000", min_rental_period="3", max_rental_period="30", is_active=1),
         ]
 
         for car in car_list:

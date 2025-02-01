@@ -37,11 +37,9 @@ def main():
 
         if isinstance(user, User):
             if user.user_type_id == 1:
-                print("Admin")
                 admin_controller = AdminController(ui, db, user)
                 admin_controller.display_menu()
             else:
-                print("Customer")
                 customer_controller = CustomerController(ui, db, user)
                 customer_controller.display_menu()
 

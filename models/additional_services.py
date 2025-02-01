@@ -109,3 +109,21 @@ class AdditionalServices:
         ]
         print(tabulate(table_data, headers=headers, tablefmt="fancy_grid"))
 
+    def display_additional_services(db):
+        """Displays the available additional services in a structured format."""
+        all_services = AdditionalServices.select(db)
+        if not all_services:
+            print("\nNo additional services available.")
+            return
+
+        print("\nAvailable Additional Services:")
+        print(f"{'ID':<5} {'Description':<30} {'Amount':<10} {'Status':<10}")
+        print("-" * 60)
+
+        for service in all_services:
+            status = "Active" if service.is_active else "Inactive"
+            print(
+                f"{service.additional_services_id:<5} {service.services_description:<30} {service.services_amount:<10} {status:<10}"
+            )
+        return all_services
+

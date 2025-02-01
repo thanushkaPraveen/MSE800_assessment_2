@@ -87,6 +87,15 @@ The Car Rental System automates the rental process for a fictional car rental co
   - `bcrypt`: For secure password hashing
   - `datetime`: For managing date and time fields
   - `tabulate`: For tabular data display in CLI
+  - `Flask`: For web application development
+  - `requests`: For handling API calls
+  - `openai`: For AI-powered features
+  - `httpx`: For asynchronous HTTP requests
+  - `aiohttp`: For efficient networking operations
+  - `Jinja2`: For templating support
+  - `Werkzeug`: For secure application handling
+  - `twilio`: For SMS notifications
+  - `yagmail`: For email automation
 
 ---
 
@@ -101,9 +110,47 @@ The Car Rental System automates the rental process for a fictional car rental co
 
 ## Installation Guide
 
-Refer to the `setup_instructions.tex` file for detailed setup instructions.
+### 1. Clone the Repository
 
----
+```bash
+git clone https://github.com/thanushkaPraveen/car_rental_system.git
+cd car_rental_system
+```
+
+### 2. Create a Virtual Environment (Recommended)
+
+```bash
+python -m venv venv
+source venv/bin/activate  # On macOS/Linux
+venv\Scripts\activate  # On Windows
+```
+
+### 3. Install Dependencies
+
+All dependencies are listed in `requirements.txt`. Install them using:
+
+```bash
+pip install -r requirements.txt
+```
+
+### 4. Set Up the Database
+
+Install MySQL and create a new database.
+
+Import the database schema using:
+
+```bash
+mysql -u your_username -p your_database < database_schema.sql
+```
+
+### 5. Run the Application
+
+To start the application, use:
+
+```bash
+python main.py
+```
+
 
 ## Usage Instructions
 
@@ -165,7 +212,7 @@ Refer to the `setup_instructions.tex` file for detailed setup instructions.
 **Columns:**
 - `user_id` (Primary Key): Unique identifier for users.
 - `user_type_id` (Foreign Key): Links to `UserType(user_type_id)`.
-- `user_name`, `user_email`, `user_phone_number`, `user_password`: User details.
+- `user_name`, `user_email`, `user_phone_number`, `user_password`: User details with hashed password
 - `is_active`: Indicates if the user is active (1 = Active, 0 = Inactive).
 - `create_at` and `updated_at`: Timestamps for record creation and modification.
 
@@ -349,3 +396,13 @@ This project is licensed under the MIT License - see the [LICENSE](./LICENSE) fi
 - **Developer:** Thansushka Praveen Wickramarachchi
 - **Contact:** [270599091@yoobeestudent.ac.nz](mailto:270599091@yoobeestudent.ac.nz)
 - **GitHub:** [https://github.com/thanushkaPraveen](https://github.com/thanushkaPraveen)
+
+---
+
+## Acknowledgments
+
+Special thanks to **Yoobee College** for guidance and resources in software development.
+
+
+
+
