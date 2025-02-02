@@ -88,7 +88,8 @@ class CustomerController(BaseController):
 
                 send_email = EmailService()
                 send_email.send_car_booking_email(customer=self.customer, booking=booking, car=selected_car, additional_services=selected_services)
-
+                self.ui.press_any_key_to_continue()
+                self.display_menu()
 
         except Exception as e:
             # Handle the exception

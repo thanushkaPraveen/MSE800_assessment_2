@@ -10,7 +10,7 @@ config.set ('mysql', 'password', '')
 config.set ('mysql', 'database', 'mydatabase')
 
 # Write the new structure to a file using a relative path
-with open("configfile.ini", 'w') as configfile:
+with open("config.ini", 'w') as configfile:
     config.write(configfile)
 
 

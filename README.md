@@ -135,7 +135,7 @@ pip install -r requirements.txt
 
 ### 4. Set Up the Database
 
-Install MySQL and set configurations and set your [configfile.ini](configfile.ini) file.
+Install MySQL and set configurations and set your [configfile.ini](config.ini) file.
 
 ```bash
 [mysql]
