@@ -4,12 +4,13 @@ import threading
 from controllers.admin_controller import AdminController
 from controllers.customer_controller import CustomerController
 from controllers.user_controller import UserController
-from insert_data import *
+from database.connection import Database
 from models.user import User
 from presenter.user_interface import UserInterface, UiTypes
 from services.chatbot import ChatBot
 from services.web_server import WebServer
 from utils.populate_db import insert_records
+
 
 
 def run_flask():
@@ -49,10 +50,4 @@ def main():
 if __name__ == "__main__":
     # populate data base
     insert_records()
-
-    # insert_data()
-    # update_data()
-    # delete_data()
-    # get_data()
-
     main()

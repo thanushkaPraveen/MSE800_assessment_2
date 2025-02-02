@@ -1,5 +1,4 @@
 from controllers.base_controller import BaseController
-from insert_data import update_data
 from models.car import Car
 from models.car_brand_model import CarBrandModel
 from utils.input_validation import *
