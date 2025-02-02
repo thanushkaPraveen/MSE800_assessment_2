@@ -225,7 +225,8 @@ class Invoice:
                 "amount": row[3],
                 "payment_method": row[4],
                 "payment_date": row[5],
-                "is_paid": row[6]
+                "is_paid": row[6],
+                "updated_at": row[9],
             }
             for row in rows
         ]
