@@ -130,7 +130,7 @@ class EmailService:
         ==========================================
         
         Invoice Number: {invoice["invoice_id"]}
-        Invoice Date: {invoice["updated_at"]}
+        Invoice Date: {format_timestamp(invoice["updated_at"])}
         
         ------------------------------------------
         Itemized Details:

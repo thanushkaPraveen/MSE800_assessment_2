@@ -25,6 +25,7 @@
     "print_booking_requested_vehicle_not_available_reject": "This booking requested vehicle not available at the moment, Please reject the request.",
     "print_booking_cancel_success": "You have successfully cancelled your booking.",
     "print_booking_already_canceled": "This booking is already cancelled.",
-    "print_booking_could_not_cancel": "You could not cancel this booking already confirmed."
+    "print_booking_could_not_cancel": "You could not cancel this booking already confirmed.",
+    "print_invoice_already_paid": "You have already paid for this invoice."
   }
 }

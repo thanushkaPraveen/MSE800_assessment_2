@@ -39,3 +39,4 @@ class Constants:
     PRINT_BOOKING_CANCEL_SUCCESS = 'print_booking_cancel_success'
     PRINT_BOOKING_ALREADY_CANCELED = 'print_booking_already_canceled'
     PRINT_BOOKING_COULD_NOT_CANCEL = 'print_booking_could_not_cancel'
+    PRINT_INVOICE_ALREADY_PAID = 'print_invoice_already_paid'
