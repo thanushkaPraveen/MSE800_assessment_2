@@ -6,7 +6,19 @@ from database.sql_statement import *
 
 
 class AdditionalServices:
+    """
+    Represents additional services that can be added to bookings.
+    """
+
     def __init__(self, services_description, services_amount, is_active=1, additional_services_id=None):
+        """
+        Initializes an AdditionalService object.
+
+        :param services_description: Description of the service.
+        :param services_amount: Cost of the service.
+        :param is_active: Status of the service (1 = Active, 0 = Inactive).
+        :param additional_services_id: Unique identifier for the service (optional).
+        """
         self.services_description = services_description
         self.services_amount = services_amount
         self.is_active = is_active
@@ -14,15 +26,29 @@ class AdditionalServices:
 
     @staticmethod
     def insert(db, service):
+        """
+        Inserts a new additional service into the database.
+
+        :param db: Database connection object.
+        :param service: AdditionalServices object to be inserted.
+        :return: The inserted AdditionalServices object with an updated ID.
+        """
         sql = INSERT_ADDITIONAL_SERVICE
         values = (
-        service.services_description, service.services_amount, service.is_active, int(time.time()), int(time.time()))
+            service.services_description, service.services_amount, service.is_active, int(time.time()), int(time.time())
+        )
         added_id = db.add_to_database(sql, values)
         service.additional_services_id = added_id
         return service
 
     @staticmethod
     def update(db, service):
+        """
+        Updates an existing additional service in the database.
+
+        :param db: Database connection object.
+        :param service: AdditionalServices object with updated values.
+        """
         sql = UPDATE_ADDITIONAL_SERVICE
         values = (service.services_description, service.services_amount, service.is_active, int(time.time()),
                   service.additional_services_id)
@@ -31,6 +57,12 @@ class AdditionalServices:
 
     @staticmethod
     def deactivate(db, service):
+        """
+        Deactivates an additional service by setting its status to inactive.
+
+        :param db: Database connection object.
+        :param service: AdditionalServices object to be deactivated.
+        """
         sql = UPDATE_ADDITIONAL_SERVICE
         is_active = 0
         values = (service.services_description, service.services_amount, is_active, int(time.time()),
@@ -40,6 +72,12 @@ class AdditionalServices:
 
     @staticmethod
     def delete(db, service):
+        """
+        Deletes an additional service from the database.
+
+        :param db: Database connection object.
+        :param service: AdditionalServices object to be deleted.
+        """
         sql = DELETE_ADDITIONAL_SERVICE
         values = (service.additional_services_id,)
         db.delete_from_database(sql, values)
@@ -47,20 +85,24 @@ class AdditionalServices:
 
     @staticmethod
     def select(db, service=None):
+        """
+        Retrieves additional services from the database.
+
+        :param db: Database connection object.
+        :param service: Optional AdditionalServices object to filter by ID.
+        :return: List of AdditionalServices objects.
+        """
         sql = SELECT_ALL_ADDITIONAL_SERVICES if service is None else SELECT_ADDITIONAL_SERVICE_BY_ID
         values = (service.additional_services_id,) if service else None
         rows = db.select_from_database(sql, values)
 
-        # Create a list to hold AdditionalServices objects
         additional_services = []
         for row in rows:
-            # Assuming `row` is a tuple in the format:
-            # (additional_services_id, services_description, services_amount, is_active, ...)
             service_obj = AdditionalServices(
-                services_description=row[1],  # Assuming `services_description` is the second column
-                services_amount=row[2],  # Assuming `services_amount` is the third column
-                is_active=row[3],  # Assuming `is_active` is the fourth column
-                additional_services_id=row[0]  # Assuming `additional_services_id` is the first column
+                services_description=row[1],
+                services_amount=row[2],
+                is_active=row[3],
+                additional_services_id=row[0]
             )
             additional_services.append(service_obj)
 
@@ -69,7 +111,12 @@ class AdditionalServices:
     @staticmethod
     def get_additional_services_by_booking_id(db, query, booking_id):
         """
-        Fetch all additional services by booking id.
+        Fetches additional services associated with a specific booking ID.
+
+        :param db: Database connection object.
+        :param query: SQL query for fetching services.
+        :param booking_id: Booking ID to filter services.
+        :return: List of additional services associated with the booking.
         """
         sql = query
         values = (booking_id,)
@@ -89,9 +136,14 @@ class AdditionalServices:
     @classmethod
     def display_additional_services_by_booking_id(cls, db, booking_id):
         """
-        Fetch additional services by booking id.
+        Displays additional services for a given booking ID in a tabular format.
+
+        :param db: Database connection object.
+        :param booking_id: Booking ID for filtering services.
         """
-        services = AdditionalServices.get_additional_services_by_booking_id(db, SELECT_ADDITIONAL_SERVICES_BY_BOOKING_ID, booking_id)
+        services = AdditionalServices.get_additional_services_by_booking_id(db,
+                                                                            SELECT_ADDITIONAL_SERVICES_BY_BOOKING_ID,
+                                                                            booking_id)
         if not services:
             print("No additional services found.")
             return
@@ -111,7 +163,11 @@ class AdditionalServices:
         return services
 
     def display_additional_services(db):
-        """Displays the available additional services in a structured format."""
+        """
+        Displays all available additional services in a structured format.
+
+        :param db: Database connection object.
+        """
         all_services = AdditionalServices.select(db)
         if not all_services:
             print("\nNo additional services available.")
@@ -127,4 +183,3 @@ class AdditionalServices:
                 f"{service.additional_services_id:<5} {service.services_description:<30} {service.services_amount:<10} {status:<10}"
             )
         return all_services
-
