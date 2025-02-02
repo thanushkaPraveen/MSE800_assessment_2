@@ -86,9 +86,12 @@ class CustomerController(BaseController):
                 send_sms = Sms()
                 send_sms.send_sms(booking.booking_id)
 
+                self.ui.clear_console()
                 send_email = EmailService()
                 send_email.send_car_booking_email(customer=self.customer, booking=booking, car=selected_car, additional_services=selected_services)
-
+                self.ui.press_any_key_to_continue()
+                self.ui.clear_console()
+                self.display_menu()
 
         except Exception as e:
             # Handle the exception
@@ -114,6 +117,7 @@ class CustomerController(BaseController):
     def my_bookings(self):
         print("Viewing booked car...")
         my_bookings_controller = MyBookingsController(self.db, self.customer)
+        my_bookings_controller.add_callback(self.on_back_callback)
         my_bookings_controller.display_menu()
 
     def manage_booking(self):

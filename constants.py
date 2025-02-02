@@ -35,3 +35,7 @@ class Constants:
     PRINT_ENTER_CHOICE_REJECT = 'print_enter_choice_reject'
     PRINT_ENTER_CHOICE_CONFIRM_OR_REJECT = 'print_enter_choice_confirm_or_reject'
     PRINT_BOOKING_VEHICLE_NOT_AVAILABLE = 'print_booking_requested_vehicle_not_available_reject'
+    PRINT_CANCEL_BOOKING = 'print_cancel_bookings'
+    PRINT_BOOKING_CANCEL_SUCCESS = 'print_booking_cancel_success'
+    PRINT_BOOKING_ALREADY_CANCELED = 'print_booking_already_canceled'
+    PRINT_BOOKING_COULD_NOT_CANCEL = 'print_booking_could_not_cancel'

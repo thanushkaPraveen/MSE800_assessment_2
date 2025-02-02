@@ -101,7 +101,9 @@ class EmailService:
             with smtplib.SMTP_SSL(self.smtp_server, self.smtp_port, context=self.context) as server:
                 server.login(sender_email, sender_password)
                 server.sendmail(sender_email, user_email, msg.as_string())
+            print("------------------------------------------------------")
             print("Please check your email regarding the booking details.")
+            print("------------------------------------------------------")
         except Exception as e:
             print(f"Failed to send email: {e}")
 

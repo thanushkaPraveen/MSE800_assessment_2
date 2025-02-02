@@ -6,6 +6,7 @@
     "print_manage_bookings_main": "\nManage Bookings\n------------------\n1. View All Bookings\n2. Requested Bookings\n3. Home\n------------------",
     "print_invoice_payment_main": "\nInvoice & Payments\n------------------\n1. Pay Invoice\n2. Home\n------------------",
     "print_manage_bookings_see_details": "\nEnter Booking ID to see the Booking Details: ",
+    "print_cancel_bookings": "\nEnter Booking ID to cancel the Booking: ",
     "print_manage_invoice_see_details": "\nEnter the Invoice ID to see the Invoice Details: ",
     "print_manage_bookings_retry": "\nEntered Booking ID is not match. Please retry: ",
     "print_manage_invoice_retry": "\nEntered Invoice ID is not match. Please retry: ",
@@ -21,6 +22,9 @@
     "print_additional_service_details": "\nAdditional Service Details\n------------------",
     "print_enter_choice_confirm_or_reject": "Enter your choice (1 - Confirm, 2 - Reject, 3 - Back): ",
     "print_enter_choice_reject": "Enter your choice (1 - Reject, 2 - Back): ",
-    "print_booking_requested_vehicle_not_available_reject": "This booking requested vehicle not available at the moment, Please reject the request."
+    "print_booking_requested_vehicle_not_available_reject": "This booking requested vehicle not available at the moment, Please reject the request.",
+    "print_booking_cancel_success": "You have successfully cancelled your booking.",
+    "print_booking_already_canceled": "This booking is already cancelled.",
+    "print_booking_could_not_cancel": "You could not cancel this booking already confirmed."
   }
 }
