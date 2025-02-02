@@ -254,5 +254,5 @@ SELECT_ALL_INVOICES_FOR_USER = """SELECT Invoice.invoice_id, Invoice.booking_id,
 SELECT_ALL_INVOICES_FOR_PAYMENT = """SELECT Invoice.invoice_id, Invoice.booking_id, Invoice.user_id, Invoice.amount, Invoice.payment_method, Invoice.payment_date, Invoice.is_paid, Invoice.is_active, Booking.start_date, Booking.end_date, Car.number_plate, Car.daily_rate, User.user_name, User.user_email, User.user_phone_number FROM Invoice JOIN Booking ON Invoice.booking_id = Booking.booking_id JOIN Car ON Booking.car_id = Car.car_id JOIN User ON Invoice.user_id = User.user_id WHERE Invoice.is_active = 1 AND Invoice.invoice_id=%s;"""
 
 CREATE_DB = "CREATE DATABASE IF NOT EXISTS"
-DEFAULT_OB_NAME = "MSE800"
+DEFAULT_OB_NAME = "MSE800_270599091"
 
