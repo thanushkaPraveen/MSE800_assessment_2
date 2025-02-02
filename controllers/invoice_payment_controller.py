@@ -3,6 +3,7 @@ import requests
 
 from constants import Constants
 from controllers.base_controller import BaseController
+from database.sql_statement import SELECT_ADDITIONAL_SERVICES_BY_BOOKING_ID
 from models.additional_services import AdditionalServices
 from models.booking import Booking
 from models.invoice import Invoice
@@ -46,7 +47,7 @@ class InvoicePaymentController(BaseController):
 
         booking_id = invoice["booking_id"]
         booking = Booking.select(self.db, booking_id)[0]
-        services = AdditionalServices.display_additional_services_by_booking_id(self.db, booking_id)
+        services = AdditionalServices.get_additional_services_by_booking_id(self.db, SELECT_ADDITIONAL_SERVICES_BY_BOOKING_ID, booking_id)
         user = User.get_user_by_booking_id(self.db, booking_id)
 
         self.ui.display(UiTypes.MESSAGE, self.string_resource.get(Constants.PRINT_INVOICE_DETAILS))

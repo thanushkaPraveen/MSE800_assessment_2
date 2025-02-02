@@ -1,6 +1,6 @@
 from constants import Constants
 from controllers.base_controller import BaseController
-from database.sql_statement import SELECT_INVOICES_BY_BOOKING_ID
+from database.sql_statement import SELECT_INVOICES_BY_BOOKING_ID, SELECT_ADDITIONAL_SERVICES_BY_BOOKING_ID
 from models.additional_services import AdditionalServices
 from models.booking import Booking
 from models.invoice import Invoice
@@ -61,7 +61,7 @@ class ManageBookingController(BaseController):
         print("Sending invoice details...")
         user = User.get_user_by_booking_id(self.db, booking_id)
         booking = Booking.select(self.db, booking_id)
-        services = AdditionalServices.display_additional_services_by_booking_id(self.db, booking_id)
+        services = AdditionalServices.get_additional_services_by_booking_id(self.db, SELECT_ADDITIONAL_SERVICES_BY_BOOKING_ID, booking_id)
         invoice = Invoice.get_invoice_by_booking_id(self.db, SELECT_INVOICES_BY_BOOKING_ID, booking_id)
 
         send_email = EmailService()
