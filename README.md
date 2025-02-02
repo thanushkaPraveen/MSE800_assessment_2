@@ -1,4 +1,16 @@
+
 # README.md
+
+        Thanushka Praveen Wickramarachchchi
+        Student ID: 270599091
+
+        College: Yoobee College
+        Programme: Master of Software Engineering
+        Course: MSE800 Professional Software Engineering
+        Assignment 1: Object-Oriented Programming
+        Assignment Type: Individual Project
+
+        Date: 03-02-2025
 
 ## Car Rental System
 
@@ -170,12 +182,9 @@ python main.py
 #### Manage Customers
 - View customer records, delete customers, or view their invoices.
 
-![Customer Management Interface](usage_instructions/admin_home.png)
-
 #### Manage Cars
 - Add, edit, delete cars, or view car statuses.
 
-![Car Management Interface](usage_instructions/admin_home.png)
 
 #### Manage Bookings
 - Approve or reject booking requests.
@@ -190,8 +199,6 @@ python main.py
 
 #### Book a Car
 - Browse available cars, select the rental duration, and add additional services.
-
-![Booking Interface](usage_instructions/admin_home.png)
 
 #### View Booking History
 - Access previous booking details, including car information, dates, and rental history.
@@ -403,6 +410,25 @@ We welcome contributions to improve this project. Follow these steps to contribu
    ```
 5. **Open a Pull Request.**
 
+---
+
+##Documentation
+
+**README.md**: A comprehensive guide containing setup instructions, usage details, and system information.  
+
+**README.pdf**: A detailed guide with complete information, including screenshots, setup instructions, usage details, and system specifications.  
+
+**System Document**: This document provides a detailed explanation of the system’s design and architecture using UML diagrams. It includes:  
+- **Class Diagram** – Illustrates system structure and relationships.  
+- **Use Case Diagram** – Defines user interactions.  
+- **Sequence Diagram** – Depicts the flow of operations.  
+
+These diagrams ensure a clear understanding of system functionality and interactions.  
+
+**Maintenance and Support**: This document outlines a structured approach to software maintenance, versioning, and backward compatibility. It ensures software stability, regular updates, and long-term support.  
+
+ Note: All PDF-related files for this project 
+              are maintained using the LaTeX Overleaf tool.
 ---
 
 ## License

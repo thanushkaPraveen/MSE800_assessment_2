@@ -12,6 +12,7 @@ cachetools==5.5.1
 certifi==2024.12.14
 charset-normalizer==3.4.1
 click==8.1.8
+colorama==0.4.6
 cssselect==1.2.0
 cssutils==2.11.1
 distro==1.9.0
@@ -32,6 +33,7 @@ multidict==6.1.0
 mysql-connector-python==9.1.0
 openai==1.60.2
 packaging==24.2
+pillow==11.1.0
 premailer==3.10.0
 propcache==0.2.1
 pydantic==2.10.6
@@ -39,16 +41,17 @@ pydantic_core==2.27.2
 pyinstaller==6.11.1
 pyinstaller-hooks-contrib==2025.0
 PyJWT==2.10.1
+qrcode==8.0
 requests==2.32.3
 setuptools==75.8.0
 sniffio==1.3.1
+svgwrite==1.4.3
 tabulate==0.9.0
 tqdm==4.67.1
+Tree==0.2.4
 twilio==9.4.4
 typing_extensions==4.12.2
 urllib3==2.3.0
 Werkzeug==3.1.3
 yagmail==0.15.293
 yarl==1.18.3
-
-colorama~=0.4.6
