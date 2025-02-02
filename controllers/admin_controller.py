@@ -54,7 +54,7 @@ class AdminController(BaseController):
             print("-----------------------")
 
             try:
-                choice = int(input("Enter your choice (1-5): "))
+                choice = int(input("Enter your choice (1-6): "))
                 if choice == 1:
                     self._manage_customers()
                 elif choice == 2:

@@ -30,7 +30,7 @@ class UserInterface:
 
     @staticmethod
     def clear_console():
-        print("\n" * 20)
+        print("\n" * 1)
 
     @staticmethod
     def _show_error_message(inputs):
