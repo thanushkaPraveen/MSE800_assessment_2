@@ -2,6 +2,7 @@ class Constants:
     # String constants
     STRING_PATH = 'res/strings.json'
     PAYMENT_URL = 'http://localhost/carrentalsystem-frontend/payment/index.php?invoice_id='
+    PAYMENT_URL_PATH = '/carrentalsystem-frontend/payment/index.php?invoice_id='
 
     # Callback types
     CALLBACK_NAVIGATION = 'navigation'

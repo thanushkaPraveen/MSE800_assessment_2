@@ -1,3 +1,6 @@
+import qrcode
+import requests
+
 from constants import Constants
 from controllers.base_controller import BaseController
 from models.additional_services import AdditionalServices
@@ -121,4 +124,24 @@ Payment URL: {Constants.PAYMENT_URL}{invoice["invoice_id"]}
         """
 
         self.ui.display(UiTypes.MESSAGE, print_body)
+
+        public_ip = requests.get("https://api64.ipify.org?format=text").text
+
+        # Data to be encoded
+        data = f"http://{public_ip}{Constants.PAYMENT_URL_PATH}{invoice["invoice_id"]}"
+
+        # Generate the QR code
+        qr = qrcode.QRCode(version=3, box_size=20, border=10, error_correction=qrcode.constants.ERROR_CORRECT_H)
+        qr.add_data(data)
+        qr.make(fit=True)
+
+        # Create an image from the QR Code instance
+        img = qr.make_image(fill="black", back_color="white")
+
+        # Save the QR code as an image
+        img.save("qrcode.png")
+
+        # Show the QR code
+        img.show()
+
         pass

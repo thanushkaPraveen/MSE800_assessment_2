@@ -55,11 +55,10 @@ class WebServer:
                 return jsonify({"error": str(e)}), 500
 
     def retrieve_invoice_for_payments(self, invoice_id):
-        print(invoice_id)
         invoice = Invoice.retrieve_invoice_for_payments(self.db, invoice_id)
         return invoice
 
     def run(self, port=5000, debug=True):
         """Run the Flask app."""
         # self.app.run(port=port, debug=debug)
-        threading.Thread(target=lambda: self.app.run(host="0.0.0.0", port=port, debug=False, use_reloader=False)).start()
+        threading.Thread(target=lambda: self.app.run(port=port, debug=debug, use_reloader=False)).start()
