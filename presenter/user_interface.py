@@ -22,7 +22,7 @@ class UserInterface:
     StringResources.load_strings(Constants.STRING_PATH)
 
     @staticmethod
-    def loading_animation(duration=10):
+    def loading_animation(duration=5):
         for _ in range(duration):
             time.sleep(0.5)
             sys.stdout.write("*")
