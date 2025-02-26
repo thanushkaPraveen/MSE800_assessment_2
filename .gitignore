@@ -1,0 +1,22 @@
+# Flutter/Dart related files
+.dart_tool/
+.packages
+.pub-cache/
+.pub/
+build/
+
+# IDE files
+.idea/
+*.iml
+.vscode/
+
+# iOS and Android build artifacts
+ios/Flutter/
+ios/Runner.xcworkspace/
+ios/Pods/
+android/.gradle/
+android/app/build/
+
+# OS-specific files
+.DS_Store
+
