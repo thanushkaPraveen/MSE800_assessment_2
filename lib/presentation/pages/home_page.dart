@@ -71,6 +71,110 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
+  void showBookingDetailsPopup(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return Dialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20.0), // Rounded corners
+          ),
+          backgroundColor: Colors.transparent,
+          child: Container(
+            padding: EdgeInsets.all(20),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(20),
+            ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  "Booking Details",
+                  style: TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.brown,
+                  ),
+                ),
+                SizedBox(height: 10),
+
+                // Car Name
+                Text(
+                  "Honda Jazz",
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                ),
+                SizedBox(height: 10),
+
+                // Car Image
+                Image.asset(
+                  "assets/car_001.png", // Replace with actual image path
+                  width: 180,
+                  height: 120,
+                  fit: BoxFit.contain,
+                ),
+                SizedBox(height: 20),
+
+                // Booking Details
+                buildBookingInfo("Trip Date", "21 / 03 / 2025  To  25 / 03 / 2025"),
+                buildBookingInfo("Car Number\nPlate", "DEF - 2345"),
+                buildBookingInfo("Car Brand", "Harley-Davidson"),
+                buildBookingInfo("Car Model", "Sportster"),
+                buildBookingInfo("Vehicle Year", "2020"),
+
+                SizedBox(height: 20),
+
+                // Confirm Booking Button
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.pop(context); // Close popup
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.brown,
+                    padding: EdgeInsets.symmetric(vertical: 14, horizontal: 50),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(30),
+                    ),
+                  ),
+                  child: Text(
+                    "Confirm Booking",
+                    style: TextStyle(fontSize: 18, color: Colors.white),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  // Helper function to create booking details row
+  Widget buildBookingInfo(String title, String value) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 4.0),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Expanded(
+            flex: 2,
+            child: Text(
+              title,
+              style: TextStyle(fontSize: 14, color: Colors.grey),
+            ),
+          ),
+          Expanded(
+            flex: 3,
+            child: Text(
+              value,
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -216,6 +320,7 @@ class _HomePageState extends State<HomePage> {
                   onPressed: () {
                     // Handle booking logic here
                     print("Car booked: $_carName, Dates: $_startDate - $_endDate");
+                    showBookingDetailsPopup(context); // Show Popup
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.brown,
