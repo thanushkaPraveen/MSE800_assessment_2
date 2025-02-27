@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:rental_car_app/presentation/pages/main_page.dart';
 
 class RegisterPage extends StatelessWidget {
   const RegisterPage({super.key});
@@ -108,7 +109,12 @@ class RegisterPage extends StatelessWidget {
                     SizedBox(height: 30),
                     // Login Button
                     ElevatedButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => MainPage()),
+                        );
+                      },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.brown,
                         padding: EdgeInsets.symmetric(vertical: 14, horizontal: 80),

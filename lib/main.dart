@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:rental_car_app/presentation/pages/home_page.dart';
 import 'package:rental_car_app/presentation/pages/init_page.dart';
 import 'package:rental_car_app/presentation/pages/login_page.dart';
 import 'package:rental_car_app/presentation/pages/main_page.dart';
@@ -16,7 +17,7 @@ class RentalCarApp extends StatelessWidget {
     return MaterialApp(
       title: "Rental App",
       theme: ThemeData(primarySwatch: Colors.orange),
-      home: RegisterPage(),
+      home: LoginPage(),
     );
   }
 }

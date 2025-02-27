@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:rental_car_app/presentation/pages/register_page.dart';
 
 import '../../theme/styles.dart';
 
@@ -95,7 +96,12 @@ class LoginPage extends StatelessWidget {
                           style: TextStyle(fontSize: 14, color: Colors.black),
                         ),
                         GestureDetector(
-                          onTap: () {},
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => RegisterPage()),
+                            );
+                          },
                           child: Text(
                             "Register",
                             style: TextStyle(
