@@ -3,8 +3,19 @@ import 'package:rental_car_app/presentation/pages/register_page.dart';
 
 import '../../theme/styles.dart';
 
-class LoginPage extends StatelessWidget {
+class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
+
+  @override
+  State<LoginPage> createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
+  var name = TextEditingController();
+
+   tapOnLogin() {
+    print("Tap");
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -44,6 +55,7 @@ class LoginPage extends StatelessWidget {
                     SizedBox(height: 40),
                     // Email Input Field
                     TextField(
+                      controller: name,
                       decoration: InputDecoration(
                         hintText: 'Enter Your Email Address',
                         filled: true,
@@ -73,7 +85,7 @@ class LoginPage extends StatelessWidget {
                     SizedBox(height: 30),
                     // Login Button
                     ElevatedButton(
-                      onPressed: () {},
+                      onPressed: () {tapOnLogin();},
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.brown,
                         padding: EdgeInsets.symmetric(vertical: 14, horizontal: 80),
