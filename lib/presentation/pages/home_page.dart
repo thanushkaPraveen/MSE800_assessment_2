@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
+import '../../data/models/car_model.dart';
+import '../../data/services/api_service.dart';
+
 class HomePage extends StatefulWidget {
    HomePage({super.key});
 
@@ -9,6 +12,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  final ApiService _apiService = ApiService();
   DateTime? _startDate;
   DateTime? _endDate;
   String _selectedService = "No Need Additional Services";
@@ -16,6 +20,15 @@ class _HomePageState extends State<HomePage> {
   String _carYear = "2020";
   String _carPrice = "\$250";
   String _carImage = "assets/car.png"; // Replace with actual image path
+
+  late Future<List<Car>> _carsFuture;
+
+  @override
+  void initState() {
+    super.initState();
+    _carsFuture = _apiService.fetchAvailableCars();
+  }
+
 
   final List<Map<String, String>> cars = [
     {
@@ -384,7 +397,7 @@ class _HomePageState extends State<HomePage> {
                   ),
                   /// White View on Top
                   Visibility(
-                    visible: false,
+                    visible: true,
                     child: Positioned.fill(
                       top: 0,
                       left: 0,
