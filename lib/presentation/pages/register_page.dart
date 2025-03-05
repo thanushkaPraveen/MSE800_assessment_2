@@ -32,7 +32,10 @@ class _RegisterPageState extends State<RegisterPage> {
       userPassword: password,
       userPhoneNumber: phone,
     );
+  }
 
+  void navigateToRegisterPage() {
+    Navigator.push(context, MaterialPageRoute(builder: (context) => MainPage()));
   }
 
   @override
@@ -40,31 +43,34 @@ class _RegisterPageState extends State<RegisterPage> {
     return Scaffold(
       body: BlocConsumer<AuthCubit, AuthState>(
         listener: (context, state) {
-      if (state is AuthSuccess) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Welcome ${state.user.userName}!')),
-        );
-      } else if (state is AuthFailure) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(state.error.replaceAll('Exception: ', ''))),
-        );
-      }
-    },
+          if (state is AuthSuccess) {
+            navigateToRegisterPage();
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text('Welcome ${state.user.userName}!')),
+            );
+          } else if (state is AuthFailure) {
+            navigateToRegisterPage();
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(state.error.replaceAll('Exception: ', '')),
+              ),
+            );
+          }
+        },
         builder: (context, state) {
           return Stack(
             children: [
               // Background Image
               Positioned.fill(
                 child: Image.asset(
-                  'assets/bg_image.png', // Replace with your actual image path
+                  'assets/bg_image.png',
+                  // Replace with your actual image path
                   fit: BoxFit.cover,
                 ),
               ),
               // White Overlay for faded effect
               Positioned.fill(
-                child: Container(
-                  color: Colors.white.withOpacity(0.6),
-                ),
+                child: Container(color: Colors.white.withOpacity(0.6)),
               ),
               // Login Form
               Positioned.fill(
@@ -88,10 +94,7 @@ class _RegisterPageState extends State<RegisterPage> {
                         Text(
                           "Welcome back! Sign in to start\nmaking reservations.",
                           textAlign: TextAlign.center,
-                          style: TextStyle(
-                            fontSize: 20,
-                            color: Colors.black,
-                          ),
+                          style: TextStyle(fontSize: 20, color: Colors.black),
                         ),
                         SizedBox(height: 40),
                         // Name Input Field
@@ -105,7 +108,10 @@ class _RegisterPageState extends State<RegisterPage> {
                               borderRadius: BorderRadius.circular(30),
                               borderSide: BorderSide.none,
                             ),
-                            contentPadding: EdgeInsets.symmetric(vertical: 14, horizontal: 20),
+                            contentPadding: EdgeInsets.symmetric(
+                              vertical: 14,
+                              horizontal: 20,
+                            ),
                           ),
                         ),
                         SizedBox(height: 20),
@@ -120,7 +126,10 @@ class _RegisterPageState extends State<RegisterPage> {
                               borderRadius: BorderRadius.circular(30),
                               borderSide: BorderSide.none,
                             ),
-                            contentPadding: EdgeInsets.symmetric(vertical: 14, horizontal: 20),
+                            contentPadding: EdgeInsets.symmetric(
+                              vertical: 14,
+                              horizontal: 20,
+                            ),
                           ),
                         ),
                         SizedBox(height: 20),
@@ -135,7 +144,10 @@ class _RegisterPageState extends State<RegisterPage> {
                               borderRadius: BorderRadius.circular(30),
                               borderSide: BorderSide.none,
                             ),
-                            contentPadding: EdgeInsets.symmetric(vertical: 14, horizontal: 20),
+                            contentPadding: EdgeInsets.symmetric(
+                              vertical: 14,
+                              horizontal: 20,
+                            ),
                           ),
                         ),
                         SizedBox(height: 20),
@@ -151,7 +163,10 @@ class _RegisterPageState extends State<RegisterPage> {
                               borderRadius: BorderRadius.circular(30),
                               borderSide: BorderSide.none,
                             ),
-                            contentPadding: EdgeInsets.symmetric(vertical: 14, horizontal: 20),
+                            contentPadding: EdgeInsets.symmetric(
+                              vertical: 14,
+                              horizontal: 20,
+                            ),
                           ),
                         ),
                         SizedBox(height: 30),
@@ -166,7 +181,10 @@ class _RegisterPageState extends State<RegisterPage> {
                           },
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.brown,
-                            padding: EdgeInsets.symmetric(vertical: 14, horizontal: 80),
+                            padding: EdgeInsets.symmetric(
+                              vertical: 14,
+                              horizontal: 80,
+                            ),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(30),
                             ),
@@ -183,7 +201,8 @@ class _RegisterPageState extends State<RegisterPage> {
               ),
             ],
           );
-        }
-    ));
+        },
+      ),
+    );
   }
 }
