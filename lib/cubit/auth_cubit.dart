@@ -20,7 +20,36 @@ class AuthCubit extends Cubit<AuthState> {
       }
     } catch (e) {
       print("❌ Login Error: $e");
-      emit(AuthFailure(e.toString())); // ✅ Pass correct error message to UI
+      emit(AuthFailure(e.toString()));
+    }
+  }
+
+  // ✅ Register Function
+  Future<void> register({
+    required String userTypeId,
+    required String userName,
+    required String userEmail,
+    required String userPassword,
+    required String userPhoneNumber,
+  }) async {
+    emit(AuthLoading());
+
+    try {
+      final user = await authRepository.register(
+        userTypeId: userTypeId,
+        userName: userName,
+        userEmail: userEmail,
+        userPassword: userPassword,
+        userPhoneNumber: userPhoneNumber,
+      );
+
+      if (user != null) {
+        emit(AuthSuccess(user));
+      } else {
+        emit(AuthFailure("Registration failed"));
+      }
+    } catch (e) {
+      emit(AuthFailure(e.toString()));
     }
   }
 }
