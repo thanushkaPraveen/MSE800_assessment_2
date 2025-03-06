@@ -3,8 +3,13 @@ import 'dart:ffi';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
+import '../../data/models/additional_service.dart';
 import '../../data/models/car_model.dart';
 import '../../data/services/api_service.dart';
+import '../../utils/date_helper.dart';
+import '../widgets/additional_services_dropdown.dart';
+import '../widgets/error_message.dart';
+import '../widgets/loading_spinner.dart';
 
 class HomePage extends StatefulWidget {
    HomePage({super.key});
@@ -19,12 +24,13 @@ class _HomePageState extends State<HomePage> {
   late Car _selectedCar;
   DateTime? _startDate;
   DateTime? _endDate;
-  String _selectedService = "No Need Additional Services";
   String _carName = "Honda Jazz";
   String _carYear = "2020";
   String _carPrice = "\$250";
   String _carImage =  "assets/toyota_prius.png"; // Replace with actual image path
   bool isCarSelected = true;
+  late Future<List<AdditionalService>> _servicesFuture;
+  AdditionalService? _selectedService;
 
   late Future<List<Car>> _carsFuture;
 
@@ -32,10 +38,16 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
     _carsFuture = _apiService.fetchAvailableCars();
+    _servicesFuture = Future.value([]); //Assign default empty future
+    Future.delayed(Duration(seconds: 2), () {
+      _servicesFuture = _apiService.fetchAdditionalServices();
+      setState(() {}); //  FutureBuilder updates
+    });
 
     _apiService.fetchAvailableCars().then((cars) {
       setState(() {  // Ensure UI updates if _availableCars is part of state
         _availableCars = cars;
+        _servicesFuture = _servicesFuture;
       });
       print(cars); // You get the list of cars here
     }).catchError((error) {
@@ -84,7 +96,17 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
-  void showBookingDetailsPopup(BuildContext context) {
+  void showBookingDetailsPopup(BuildContext context, Car selectedCar, DateTime startDate, DateTime endDate, [AdditionalService? selectedService]) {
+    int numberOfDays = DateHelper.getDaysBetween(startDate, endDate);
+    double rentalCost = numberOfDays * selectedCar.dailyRate;
+    double total = rentalCost;
+    double selectedServiceTotal = 0;
+
+    if (selectedService != null) {
+      selectedServiceTotal = numberOfDays * selectedService.amount;
+      total = total + selectedServiceTotal;
+    }
+
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -130,11 +152,14 @@ class _HomePageState extends State<HomePage> {
 
                 // Booking Details
                 buildBookingInfo(
-                    "Trip Date", "21 / 03 / 2025  To  25 / 03 / 2025"),
-                buildBookingInfo("Car Number\nPlate", "DEF - 2345"),
-                buildBookingInfo("Car Brand", "Harley-Davidson"),
-                buildBookingInfo("Car Model", "Sportster"),
-                buildBookingInfo("Vehicle Year", "2020"),
+                    "Trip Date", "${DateHelper.formatDate(_startDate)}  To ${DateHelper.formatDate(_endDate)}"),
+                buildBookingInfo("Car Number\nPlate", selectedCar.numberPlate),
+                buildBookingInfo("Car Brand", selectedCar.brandName),
+                buildBookingInfo("Car Model", selectedCar.modelName),
+                buildBookingInfo("Vehicle Year", selectedCar.year),
+                buildBookingInfo("Car rental cost", rentalCost.toStringAsFixed(2)),
+                buildBookingInfo("Additional\nservice charge", selectedServiceTotal.toStringAsFixed(2)),
+                buildBookingInfo("Total", total.toStringAsFixed(2)),
 
                 SizedBox(height: 20),
 
@@ -222,23 +247,6 @@ class _HomePageState extends State<HomePage> {
                       ),
                     ),
                   ),
-
-                  // Bottom Section (Footer)
-                  Container(
-                    height: 60,
-                    decoration: BoxDecoration(
-                      color: Colors.brown,
-                      borderRadius: BorderRadius.vertical(
-                          bottom: Radius.circular(20)),
-                    ),
-                    alignment: Alignment.center,
-                    child: Text(
-                      "Confirm Selection",
-                      style: TextStyle(color: Colors.white,
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold),
-                    ),
-                  ),
                 ],
               ),
             ),
@@ -310,8 +318,7 @@ class _HomePageState extends State<HomePage> {
                   ),
                   child: Center(
                     child: Text(
-                      _startDate == null ? "Select Date" : DateFormat(
-                          "dd / MM / yyyy").format(_startDate!),
+                      _startDate == null ? "Select Date" : DateHelper.formatDate(_startDate),
                       style: TextStyle(fontSize: 16),
                     ),
                   ),
@@ -331,8 +338,7 @@ class _HomePageState extends State<HomePage> {
                   ),
                   child: Center(
                     child: Text(
-                      _endDate == null ? "Select Date" : DateFormat(
-                          "dd / MM / yyyy").format(_endDate!),
+                      _endDate == null ? "Select Date" : DateHelper.formatDate(_endDate),
                       style: TextStyle(fontSize: 16),
                     ),
                   ),
@@ -426,41 +432,35 @@ class _HomePageState extends State<HomePage> {
 
               SizedBox(height: 20),
 
-              // Dropdown for Additional Services
+              // 🛠 Additional Services Dropdown (Fetching from API)
               Text("Do you want to add additional services?"),
               SizedBox(height: 8),
-              Container(
-                padding: EdgeInsets.symmetric(horizontal: 12),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(30),
-                  border: Border.all(color: Colors.grey),
-                ),
-                child: DropdownButton<String>(
-                  isExpanded: true,
-                  value: _selectedService,
-                  underline: SizedBox(),
-                  // Remove default underline
-                  icon: Icon(Icons.arrow_drop_down),
-                  onChanged: (String? newValue) {
-                    setState(() {
-                      _selectedService = newValue!;
-                    });
-                  },
-                  items: [
-                    "No Need Additional Services",
-                    "GPS Navigation",
-                    "Child Seat",
-                    "Full Insurance",
-                    "Roadside Assistance"
-                  ].map((String value) {
-                    return DropdownMenuItem<String>(
-                      value: value,
-                      child: Text(value),
-                    );
-                  }).toList(),
-                ),
+              FutureBuilder<List<AdditionalService>>(
+                future: _servicesFuture,
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return LoadingSpinner(message: "Fetching services...");
+                  } else if (snapshot.hasError) {
+                    print( snapshot.error.toString());
+                    // return ErrorMessage(message: snapshot.error.toString(), onRetry: () {});
+                  } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                    print( snapshot.error.toString());
+                    // return ErrorMessage(message: "No services available", onRetry: () {});
+                  }
+
+                  final services = snapshot.data!;
+                  return AdditionalServicesDropdown(
+                    services: services,
+                    selectedService: _selectedService,
+                    onChanged: (service) {
+                      setState(() {
+                        _selectedService = service;
+                      });
+                    },
+                  );
+                },
               ),
+
               SizedBox(height: 30),
 
               // Book Now Button
@@ -470,7 +470,7 @@ class _HomePageState extends State<HomePage> {
                     // Handle booking logic here
                     print(
                         "Car booked: $_carName, Dates: $_startDate - $_endDate");
-                    showBookingDetailsPopup(context); // Show Popup
+                    showBookingDetailsPopup(context, _selectedCar, _startDate!, _endDate!, _selectedService); // Show Popup
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.brown,
