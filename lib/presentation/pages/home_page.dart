@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -13,13 +15,16 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   final ApiService _apiService = ApiService();
+  List<Car> _availableCars = [];
+  late Car _selectedCar;
   DateTime? _startDate;
   DateTime? _endDate;
   String _selectedService = "No Need Additional Services";
   String _carName = "Honda Jazz";
   String _carYear = "2020";
   String _carPrice = "\$250";
-  String _carImage = "assets/car.png"; // Replace with actual image path
+  String _carImage =  "assets/toyota_prius.png"; // Replace with actual image path
+  bool isCarSelected = true;
 
   late Future<List<Car>> _carsFuture;
 
@@ -27,29 +32,16 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
     _carsFuture = _apiService.fetchAvailableCars();
+
+    _apiService.fetchAvailableCars().then((cars) {
+      setState(() {  // Ensure UI updates if _availableCars is part of state
+        _availableCars = cars;
+      });
+      print(cars); // You get the list of cars here
+    }).catchError((error) {
+      print("Error fetching cars: $error");
+    });
   }
-
-
-  final List<Map<String, String>> cars = [
-    {
-      "name": "Honda Jazz",
-      "year": "2020",
-      "price": "\$250",
-      "image": "https://img.freepik.com/free-vector/red-car-with-big-eyes-carton-character-isolated_1308-46902.jpg?t=st=1740811740~exp=1740815340~hmac=233226e115b056176b29738a73cceba459d7954dc7103c0918dbc65e553eb4be&w=2000"
-    },
-    {
-      "name": "Toyota Corolla",
-      "year": "2021",
-      "price": "\$280",
-      "image": "https://img.freepik.com/free-vector/red-car-with-big-eyes-carton-character-isolated_1308-46902.jpg?t=st=1740811740~exp=1740815340~hmac=233226e115b056176b29738a73cceba459d7954dc7103c0918dbc65e553eb4be&w=2000"
-    },
-    {
-      "name": "Mazda CX-5",
-      "year": "2022",
-      "price": "\$300",
-      "image": "https://img.freepik.com/free-vector/red-car-with-big-eyes-carton-character-isolated_1308-46902.jpg?t=st=1740811740~exp=1740815340~hmac=233226e115b056176b29738a73cceba459d7954dc7103c0918dbc65e553eb4be&w=2000"
-    },
-  ];
 
   // Function to show date picker
   Future<void> _selectDate(BuildContext context, bool isStartDate) async {
@@ -76,21 +68,19 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
-  // Function to simulate car selection screen
-  void _selectCar() async {
-    // Here, you can navigate to another screen to select a car.
-    // For now, we'll just change car details manually.
-    setState(() {
-      _carName = "Toyota Prius";
-      _carYear = "2021";
-      _carPrice = "\$300";
-      _carImage = "assets/toyota_prius.png"; // Replace with actual image
-    });
-  }
-
   void _showCarSelection(BuildContext context) {
-    showSelectCarPopup(context, cars, (selectedCar) {
-      print("Selected Car: ${selectedCar["name"]} - ${selectedCar["year"]}"); // Process selection
+    showSelectCarPopup(context, (selectedCar) {
+      print(selectedCar.brandName);
+      setState(() {
+        isCarSelected = false;
+        _selectedCar = selectedCar;
+        _carName = _selectedCar.brandModelName;
+        _carYear = _selectedCar.year;
+        String formattedPrice = "\$${_selectedCar.dailyRate.toStringAsFixed(2)}";
+        _carPrice = formattedPrice;
+        _carImage = "assets/toyota_prius.png";
+      });
+      // print("Selected Car: ${selectedCar["name"]} - ${selectedCar["year"]}"); // Process selection
     });
   }
 
@@ -173,8 +163,7 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  void showSelectCarPopup(BuildContext context, List<Map<String, String>> cars,
-      Function(Map<String, String>) onCarSelected) {
+  void showSelectCarPopup(BuildContext context, Function(Car) onCarSelected) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -218,16 +207,14 @@ class _HomePageState extends State<HomePage> {
                     ),
                   ),
 
-                  // Middle Section (Expandable ListView)
                   Expanded(
                     child: Padding(
                       padding: EdgeInsets.symmetric(vertical: 10),
                       child: ListView.builder(
-                        itemCount: cars.length,
+                        itemCount: _availableCars.length,
                         itemBuilder: (context, index) {
-                          return _buildCarCard(cars[index], () {
-                            onCarSelected(
-                                cars[index]); // Pass selected car object
+                          return _buildCarCard(_availableCars[index], () {
+                            onCarSelected( _availableCars[index]); // Pass selected car object
                             Navigator.pop(
                                 context); // Close popup after selection
                           });
@@ -354,50 +341,57 @@ class _HomePageState extends State<HomePage> {
               // Car Selection (Clickable)
               Stack(
                 children: [
-                  Container(
-                    padding: EdgeInsets.all(15),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(16),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black12,
-                          blurRadius: 4,
-                          spreadRadius: 2,
-                        ),
-                      ],
-                    ),
-                    child: Row(
-                      children: [
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(_carName, style: TextStyle(
-                                  fontSize: 18, fontWeight: FontWeight.bold)),
-                              Text("Year – $_carYear"),
-                              SizedBox(height: 4),
-                              Text(
-                                _carPrice,
-                                style: TextStyle(fontSize: 18,
-                                    color: Colors.brown,
-                                    fontWeight: FontWeight.bold),
-                              ),
-                            ],
+                  GestureDetector(
+                    onTap: () {
+                      // Handle click event here
+                      print("Container clicked!");
+                      _showCarSelection(context);
+                    },
+                    child: Container(
+                      padding: EdgeInsets.all(15),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(16),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black12,
+                            blurRadius: 4,
+                            spreadRadius: 2,
                           ),
-                        ),
-                        SizedBox(width: 12),
-                        Image.asset(
-                          'assets/car_001.png',
-                          width: 80,
-                          height: 60,
-                        ),
-                      ],
+                        ],
+                      ),
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(_carName, style: TextStyle(
+                                    fontSize: 18, fontWeight: FontWeight.bold)),
+                                Text("Year – $_carYear"),
+                                SizedBox(height: 4),
+                                Text(
+                                  _carPrice,
+                                  style: TextStyle(fontSize: 18,
+                                      color: Colors.brown,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                              ],
+                            ),
+                          ),
+                          SizedBox(width: 12),
+                          Image.asset(
+                            'assets/car_001.png',
+                            width: 80,
+                            height: 60,
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                   /// White View on Top
                   Visibility(
-                    visible: true,
+                    visible: isCarSelected,
                     child: Positioned.fill(
                       top: 0,
                       left: 0,
@@ -499,7 +493,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   // Modified _buildCarCard to Support Selection
-  Widget _buildCarCard(Map<String, String> car, VoidCallback onTap) {
+  Widget _buildCarCard(Car car, VoidCallback onTap) {
     return GestureDetector(
       onTap: onTap, // Handles user selection
       child: Card(
@@ -522,18 +516,18 @@ class _HomePageState extends State<HomePage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        car["name"]!,
+                        car.brandModelName,
                         style: TextStyle(
                             fontSize: 18, fontWeight: FontWeight.bold),
                       ),
                       SizedBox(height: 4),
                       Text(
-                        "Year: ${car["year"]}",
+                        "Year: ${car}",
                         style: TextStyle(fontSize: 16, color: Colors.grey[700]),
                       ),
                       SizedBox(height: 10),
                       Text(
-                        car["price"]!,
+                        car.dailyRate.toString(),
                         style: TextStyle(fontSize: 20,
                             color: Colors.orange,
                             fontWeight: FontWeight.bold),
@@ -546,7 +540,8 @@ class _HomePageState extends State<HomePage> {
                 ClipRRect(
                   borderRadius: BorderRadius.circular(10),
                   child: Image.network(
-                    car["image"]!,
+                    // car.imegeurl
+                    "https://img.freepik.com/free-vector/red-car-with-big-eyes-carton-character-isolated_1308-46902.jpg?t=st=1740811740~exp=1740815340~hmac=233226e115b056176b29738a73cceba459d7954dc7103c0918dbc65e553eb4be&w=2000",
                     width: 120,
                     height: 80,
                     fit: BoxFit.cover,
