@@ -21,7 +21,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   final ApiService _apiService = ApiService();
   List<Car> _availableCars = [];
-  late Car _selectedCar;
+  Car? _selectedCar;
   DateTime? _startDate;
   DateTime? _endDate;
   String _carName = "Honda Jazz";
@@ -86,9 +86,9 @@ class _HomePageState extends State<HomePage> {
       setState(() {
         isCarSelected = false;
         _selectedCar = selectedCar;
-        _carName = _selectedCar.brandModelName;
-        _carYear = _selectedCar.year;
-        String formattedPrice = "\$${_selectedCar.dailyRate.toStringAsFixed(2)}";
+        _carName = _selectedCar!.brandModelName;
+        _carYear = _selectedCar!.year;
+        String formattedPrice = "\$${_selectedCar!.dailyRate.toStringAsFixed(2)}";
         _carPrice = formattedPrice;
         _carImage = "assets/toyota_prius.png";
       });
@@ -97,15 +97,22 @@ class _HomePageState extends State<HomePage> {
   }
 
   void showBookingDetailsPopup(BuildContext context, Car selectedCar, DateTime startDate, DateTime endDate, [AdditionalService? selectedService]) {
-    int numberOfDays = DateHelper.getDaysBetween(startDate, endDate);
-    double rentalCost = numberOfDays * selectedCar.dailyRate;
-    double total = rentalCost;
+    int numberOfDays = 0;
+    double rentalCost = 0;
+    double total = 0;
     double selectedServiceTotal = 0;
 
-    if (selectedService != null) {
-      selectedServiceTotal = numberOfDays * selectedService.amount;
-      total = total + selectedServiceTotal;
-    }
+    setState(() {
+      numberOfDays = DateHelper.getDaysBetween(startDate, endDate);
+      rentalCost = numberOfDays * selectedCar.dailyRate;
+      total = rentalCost;
+      selectedServiceTotal = 0;
+
+      if (selectedService != null) {
+        selectedServiceTotal = numberOfDays * selectedService.amount;
+        total = total + selectedServiceTotal;
+      }
+    });
 
     showDialog(
       context: context,
@@ -136,7 +143,7 @@ class _HomePageState extends State<HomePage> {
 
                 // Car Name
                 Text(
-                  "Honda Jazz",
+                  selectedCar.brandModelName,
                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                 ),
                 SizedBox(height: 10),
@@ -285,6 +292,8 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    bool isBookingAvailable = false;
+
     return Scaffold(
       backgroundColor: Color(0xFFF5E6DA), // Light Beige Background
       body: Padding(
@@ -464,27 +473,30 @@ class _HomePageState extends State<HomePage> {
               SizedBox(height: 30),
 
               // Book Now Button
-              Center(
-                child: ElevatedButton(
-                  onPressed: () {
-                    // Handle booking logic here
-                    print(
-                        "Car booked: $_carName, Dates: $_startDate - $_endDate");
-                    showBookingDetailsPopup(context, _selectedCar, _startDate!, _endDate!, _selectedService); // Show Popup
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.brown,
-                    padding: EdgeInsets.symmetric(vertical: 16, horizontal: 80),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(30),
-                    ),
-                  ),
-                  child: Text(
-                    "Book Now",
-                    style: TextStyle(fontSize: 18, color: Colors.white),
-                  ),
-                ),
+        Center(
+          child: ElevatedButton(
+            onPressed: (_selectedCar != null && _startDate != null && _endDate != null)
+                ? () {
+              // Handle booking logic here
+              print("Car booked: $_selectedCar, Dates: $_startDate - $_endDate");
+              showBookingDetailsPopup(context, _selectedCar!, _startDate!, _endDate!, _selectedService); // Show Popup
+            }
+                : null, // Disables button if conditions are not met
+            style: ElevatedButton.styleFrom(
+              backgroundColor: (_selectedCar != null && _startDate != null && _endDate != null)
+                  ? Colors.brown // Active color
+                  : Colors.grey, // Disabled color
+              padding: EdgeInsets.symmetric(vertical: 16, horizontal: 80),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(30),
               ),
+            ),
+            child: Text(
+              "Book Now",
+              style: TextStyle(fontSize: 18, color: Colors.white),
+            ),
+          ),
+        ),
             ],
           ),
         ),
