@@ -1,5 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../data/repositories/auth_repository.dart';
+import '../data/repositories/user_local_storage.dart';
 import 'auth_state.dart';
 
 class AuthCubit extends Cubit<AuthState> {
@@ -14,6 +15,7 @@ class AuthCubit extends Cubit<AuthState> {
       final user = await authRepository.login(email, password);
 
       if (user != null) {
+        UserLocalStorage.saveUser(user);
         emit(AuthSuccess(user));
       } else {
         emit(AuthFailure("Login failed: Invalid credentials"));
@@ -44,6 +46,7 @@ class AuthCubit extends Cubit<AuthState> {
       );
 
       if (user != null) {
+        UserLocalStorage.saveUser(user);
         emit(AuthSuccess(user));
       } else {
         emit(AuthFailure("Registration failed"));

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hive/hive.dart';
+import 'package:hive_flutter/adapters.dart';
 import 'package:rental_car_app/presentation/pages/home_page.dart';
 import 'package:rental_car_app/presentation/pages/init_page.dart';
 import 'package:rental_car_app/presentation/pages/login_page.dart';
@@ -7,9 +9,14 @@ import 'package:rental_car_app/presentation/pages/main_page.dart';
 import 'package:rental_car_app/presentation/pages/register_page.dart';
 
 import 'cubit/auth_cubit.dart';
+import 'data/models/user_model.dart';
 import 'data/repositories/auth_repository.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Hive.initFlutter();
+  Hive.registerAdapter(UserModelAdapter()); // Register adapter
+  await Hive.openBox<UserModel>('userBox'); // Open box
   runApp(const RentalCarApp());
 }
 

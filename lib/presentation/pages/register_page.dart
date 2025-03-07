@@ -4,6 +4,7 @@ import 'package:rental_car_app/presentation/pages/main_page.dart';
 
 import '../../cubit/auth_cubit.dart';
 import '../../cubit/auth_state.dart';
+import '../../data/repositories/user_local_storage.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});
@@ -193,6 +194,33 @@ class _RegisterPageState extends State<RegisterPage> {
                             "Register",
                             style: TextStyle(fontSize: 18, color: Colors.white),
                           ),
+                        ),
+                        SizedBox(height: 20),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              "If you already have an account  ",
+                              style: TextStyle(
+                                fontSize: 14,
+                                color: Colors.black,
+                              ),
+                            ),
+                            GestureDetector(
+                              onTap: () {
+                                print(UserLocalStorage.getUser()!.userName);
+                                Navigator.pop(context);
+                              },
+                              child: Text(
+                                "Login",
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  color: Colors.blue,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
                       ],
                     ),
