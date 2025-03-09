@@ -208,7 +208,6 @@ class _RegisterPageState extends State<RegisterPage> {
                             ),
                             GestureDetector(
                               onTap: () {
-                                print(UserLocalStorage.getUser()!.userName);
                                 Navigator.pop(context);
                               },
                               child: Text(

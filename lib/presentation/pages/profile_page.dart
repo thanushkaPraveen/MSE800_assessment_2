@@ -1,10 +1,25 @@
 import 'package:flutter/material.dart';
 
+import '../../data/repositories/user_local_storage.dart';
+import 'login_page.dart';
+
 class ProfilePage extends StatelessWidget {
   const ProfilePage({super.key});
 
   @override
   Widget build(BuildContext context) {
+
+    void tapOnLogOut() {
+      print("User Logged Out");
+      UserLocalStorage.deleteUser();
+
+      Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(builder: (context) => LoginPage()),
+            (route) => false, // This removes all previous routes from the stack
+      );
+    }
+
     return Scaffold(
       backgroundColor: Color(0xFFF5E6DA), // Light beige background
       body: Center(
@@ -55,7 +70,7 @@ class ProfilePage extends StatelessWidget {
               ElevatedButton(
                 onPressed: () {
                   // Handle logout logic here
-                  print("User Logged Out");
+                  tapOnLogOut();
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.brown,

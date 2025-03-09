@@ -64,7 +64,7 @@ class _RentalCarAppState extends State<RentalCarApp> {
           }
           return supportedLocales.first;
         },
-        home: LoginPage(),
+        home: InitPage(),
       ),
     );
   }
