@@ -13,29 +13,43 @@ import 'package:rental_car_app/utils/app_localizations.dart';
 import 'cubit/auth_cubit.dart';
 import 'data/models/user_model.dart';
 import 'data/repositories/auth_repository.dart';
+import 'data/repositories/language_storage.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Hive.initFlutter();
   Hive.registerAdapter(UserModelAdapter()); // Register adapter
-  await Hive.openBox<UserModel>('userBox'); // Open box
-  runApp(const RentalCarApp());
+  await Hive.openBox<UserModel>('userBox');
+  await Hive.openBox('settings');
+
+  // Get the saved language from Hive
+  Locale savedLocale = await LanguageStorage.getSavedLanguage();
+
+  // Open box
+  runApp(RentalCarApp(savedLocale: savedLocale));
 }
 
 class RentalCarApp extends StatefulWidget {
-  const RentalCarApp({super.key});
+  final Locale savedLocale;
+  const RentalCarApp({super.key, required this.savedLocale});
 
   @override
   State<RentalCarApp> createState() => _RentalCarAppState();
+
+  static void setLocale(BuildContext context, Locale newLocale) {
+    _RentalCarAppState? state = context.findAncestorStateOfType<_RentalCarAppState>();
+    state?.setLocale(newLocale);
+  }
 }
 
 class _RentalCarAppState extends State<RentalCarApp> {
-  Locale _locale = Locale('en', 'US');
+  late Locale _locale;
 
   void setLocale(Locale locale) {
     setState(() {
-      _locale = locale;
+      _locale = widget.savedLocale;
     });
+    LanguageStorage.saveLanguage(locale); // Save the selected language
   }
 
   @override
@@ -70,11 +84,4 @@ class _RentalCarAppState extends State<RentalCarApp> {
   }
 }
 
-//     return MaterialApp(
-//       title: "Rental App",
-//       theme: ThemeData(primarySwatch: Colors.orange),
-//       home: LoginPage(),
-//     );
-//   }
-// }
 

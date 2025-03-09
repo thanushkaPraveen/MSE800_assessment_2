@@ -6,6 +6,7 @@ import '../../cubit/auth_cubit.dart';
 import '../../cubit/auth_state.dart';
 import '../../theme/styles.dart';
 import '../../utils/app_localizations.dart';
+import 'main_page.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -34,6 +35,7 @@ class _LoginPageState extends State<LoginPage> {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(content: Text('Welcome ${state.user.userName}!')),
             );
+            MaterialPageRoute(builder: (context) => MainPage());
           } else if (state is AuthFailure) {
             print("🛑 UI Error: ${state.error}");
             ScaffoldMessenger.of(context).showSnackBar(

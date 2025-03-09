@@ -1,25 +1,65 @@
 import 'package:flutter/material.dart';
-
+import 'package:hive/hive.dart';
+import '../../data/repositories/language_storage.dart';
 import '../../data/repositories/user_local_storage.dart';
+import '../../main.dart'; // Import MyApp for localization
+import '../../utils/app_localizations.dart';
 import 'login_page.dart';
 
-class ProfilePage extends StatelessWidget {
+class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
 
   @override
+  _ProfilePageState createState() => _ProfilePageState();
+}
+
+class _ProfilePageState extends State<ProfilePage> {
+  Locale _selectedLocale = Locale('en', 'US'); // Default language
+  bool _isMounted = false; // Track if widget is still active
+
+  @override
+  void initState() {
+    super.initState();
+    _isMounted = true; // Mark widget as mounted
+    _loadSelectedLanguage();
+  }
+
+  @override
+  void dispose() {
+    _isMounted = false; // Mark widget as unmounted
+    super.dispose();
+  }
+
+  /// Load the previous language from Hive
+  Future<void> _loadSelectedLanguage() async {
+    Locale savedLocale = await LanguageStorage.getSavedLanguage();
+    setState(() {
+      _selectedLocale = savedLocale;
+    });
+    RentalCarApp.setLocale(context, _selectedLocale);
+  }
+
+  /// Change and save language to Hive
+  Future<void> _changeLanguage(Locale newLocale) async {
+    setState(() {
+      _selectedLocale = newLocale;
+    });
+    await LanguageStorage.saveLanguage(newLocale);
+    RentalCarApp.setLocale(context, newLocale);
+  }
+
+  void tapOnLogOut() {
+    print("User Logged Out");
+    UserLocalStorage.deleteUser();
+    Navigator.pushAndRemoveUntil(
+      context,
+      MaterialPageRoute(builder: (context) => LoginPage()),
+          (route) => false, // This removes all previous routes from the stack
+    );
+  }
+
+  @override
   Widget build(BuildContext context) {
-
-    void tapOnLogOut() {
-      print("User Logged Out");
-      UserLocalStorage.deleteUser();
-
-      Navigator.pushAndRemoveUntil(
-        context,
-        MaterialPageRoute(builder: (context) => LoginPage()),
-            (route) => false, // This removes all previous routes from the stack
-      );
-    }
-
     return Scaffold(
       backgroundColor: Color(0xFFF5E6DA), // Light beige background
       body: Center(
@@ -30,7 +70,7 @@ class ProfilePage extends StatelessWidget {
             children: [
               // Title
               Text(
-                "My Profile",
+                AppLocalizations.of(context).translate("my_profile"),
                 style: TextStyle(
                   fontSize: 28,
                   fontWeight: FontWeight.bold,
@@ -56,22 +96,48 @@ class ProfilePage extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    buildProfileItem("Name", "Vindya Sunali"),
+                    buildProfileItem(
+                        AppLocalizations.of(context).translate("name"),
+                        "Vindya Sunali"),
                     SizedBox(height: 12),
-                    buildProfileItem("Phone Number", "+94 123 456 789"),
+                    buildProfileItem(
+                        AppLocalizations.of(context)
+                            .translate("phone_number"),
+                        "+94 123 456 789"),
                     SizedBox(height: 12),
-                    buildProfileItem("Email Address", "vindya@gmail.com"),
+                    buildProfileItem(
+                        AppLocalizations.of(context)
+                            .translate("email_address"),
+                        "vindya@gmail.com"),
                   ],
                 ),
               ),
               SizedBox(height: 30),
 
+              // Language Selector
+              DropdownButton<Locale>(
+                value: _selectedLocale,
+                onChanged: (Locale? newLocale) {
+                  if (newLocale != null) {
+                    _changeLanguage(newLocale);
+                  }
+                },
+                items: [
+                  DropdownMenuItem(
+                    child: Text("English"),
+                    value: Locale('en', 'US'),
+                  ),
+                  DropdownMenuItem(
+                    child: Text("Māori"),
+                    value: Locale('mi', 'NZ'),
+                  ),
+                ],
+              ),
+              SizedBox(height: 20),
+
               // Logout Button
               ElevatedButton(
-                onPressed: () {
-                  // Handle logout logic here
-                  tapOnLogOut();
-                },
+                onPressed: tapOnLogOut,
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.brown,
                   padding: EdgeInsets.symmetric(vertical: 14, horizontal: 80),
@@ -80,7 +146,7 @@ class ProfilePage extends StatelessWidget {
                   ),
                 ),
                 child: Text(
-                  "Logout",
+                  AppLocalizations.of(context).translate("logout"),
                   style: TextStyle(fontSize: 18, color: Colors.white),
                 ),
               ),

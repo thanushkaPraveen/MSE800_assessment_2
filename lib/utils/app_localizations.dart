@@ -33,7 +33,7 @@ class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> 
 
   @override
   bool isSupported(Locale locale) {
-    return ['en', 'mi'].contains(locale.languageCode);
+    return ['en', 'mi'].contains(locale.languageCode); // Only English & Māori
   }
 
   @override
