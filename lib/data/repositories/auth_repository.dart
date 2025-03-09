@@ -1,11 +1,12 @@
 import 'package:dio/dio.dart';
+import '../../constants/app_strings.dart';
 import '../models/user_model.dart';
 
 class AuthRepository {
   final Dio _dio = Dio();
 
   Future<UserModel?> login(String email, String password) async {
-    final url = 'http://10.0.2.2:8000/api/v1/user/login';
+    final url = '${AppStrings.baseURL}/api/v1/user/login';
 
     try {
       final response = await _dio.post(

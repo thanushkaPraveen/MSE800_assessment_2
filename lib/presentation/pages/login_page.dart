@@ -5,6 +5,7 @@ import 'package:rental_car_app/presentation/pages/register_page.dart';
 import '../../cubit/auth_cubit.dart';
 import '../../cubit/auth_state.dart';
 import '../../theme/styles.dart';
+import '../../utils/app_localizations.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -65,7 +66,7 @@ class _LoginPageState extends State<LoginPage> {
                       children: [
                         // Title
                         Text(
-                          "VKT Car Rental",
+                          AppLocalizations.of(context).translate('app_name'),
                           style: TextStyle(
                             fontSize: 26,
                             fontWeight: FontWeight.bold,

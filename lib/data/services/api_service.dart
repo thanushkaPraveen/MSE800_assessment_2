@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import '../../constants/app_strings.dart';
 import '../models/additional_service.dart';
 import '../models/car_model.dart';
 
@@ -6,7 +7,7 @@ class ApiService {
   final Dio _dio = Dio();
 
   Future<List<Car>> fetchAvailableCars() async {
-    final String url = "http://10.0.2.2:8000/api/v1/booking/get-all-cars";
+    final String url = '${AppStrings.baseURL}/api/v1/booking/get-all-cars';
 
     try {
       final response = await _dio.get(url);
@@ -24,7 +25,7 @@ class ApiService {
 
   Future<List<AdditionalService>> fetchAdditionalServices() async {
 
-    final String url = "http://10.0.2.2:8000/api/v1/booking/get-all-additional-services";
+    final String url = '${AppStrings.baseURL}/api/v1/booking/get-all-additional-services';
 
     try {
       final response = await _dio.get(url);
