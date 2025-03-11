@@ -98,17 +98,17 @@ class _ProfilePageState extends State<ProfilePage> {
                   children: [
                     buildProfileItem(
                         AppLocalizations.of(context).translate("name"),
-                        UserLocalStorage.getUser()!.userName),
+                        "Vindya Sunali"),
                     SizedBox(height: 12),
                     buildProfileItem(
                         AppLocalizations.of(context)
                             .translate("phone_number"),
-                        UserLocalStorage.getUser()!.userPhoneNumber),
+                        "+94 123 456 789"),
                     SizedBox(height: 12),
                     buildProfileItem(
                         AppLocalizations.of(context)
                             .translate("email_address"),
-                        UserLocalStorage.getUser()!.userEmail),
+                        "vindya@gmail.com"),
                   ],
                 ),
               ),
