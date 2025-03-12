@@ -3,6 +3,7 @@ import '../../constants/app_strings.dart';
 import '../models/additional_service.dart';
 import '../models/booking.dart';
 import '../models/car_model.dart';
+import '../models/invoice.dart';
 
 class ApiService {
   final Dio _dio = Dio();
@@ -54,6 +55,21 @@ class ApiService {
       }
     } catch (e) {
       throw Exception("Error fetching bookings: $e");
+    }
+  }
+
+  Future<List<Invoice>> fetchInvoices(int userId) async {
+    final String url = "${AppStrings.baseURL}/api/v1/invoice/get-all-invoices";
+    try {
+      final response = await _dio.post(url, data: {"user_id": userId});
+      if (response.statusCode == 200) {
+        final List<dynamic> data = response.data['data'];
+        return data.map((json) => Invoice.fromJson(json)).toList();
+      } else {
+        throw Exception("Failed to load invoices");
+      }
+    } catch (e) {
+      throw Exception("Error fetching invoices: $e");
     }
   }
 }

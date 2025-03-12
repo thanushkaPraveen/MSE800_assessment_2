@@ -3,6 +3,7 @@ import 'dart:math';
 
 import 'package:rental_car_app/data/models/additional_service.dart';
 import 'package:rental_car_app/data/models/car_model.dart';
+import 'package:rental_car_app/data/models/invoice.dart';
 
 import '../data/models/booking.dart';
 import '../data/models/user_model.dart';
@@ -30,6 +31,15 @@ class InitiateBooking extends MainState {
 
   @override
   List<Object?> get props => [bookings];
+}
+
+class InitiateInvoice extends MainState {
+  final List<Invoice> invoices;
+
+  InitiateInvoice(this.invoices);
+
+  @override
+  List<Object?> get props => [invoices];
 }
 
 class Loading extends MainState {}
