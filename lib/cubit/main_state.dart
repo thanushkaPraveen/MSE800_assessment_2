@@ -4,6 +4,7 @@ import 'dart:math';
 import 'package:rental_car_app/data/models/additional_service.dart';
 import 'package:rental_car_app/data/models/car_model.dart';
 
+import '../data/models/booking.dart';
 import '../data/models/user_model.dart';
 import 'package:equatable/equatable.dart';
 
@@ -20,6 +21,15 @@ class Initiate extends MainState {
 
   @override
   List<Object?> get props => [cars, services];
+}
+
+class InitiateBooking extends MainState {
+  final List<Booking> bookings;
+
+  InitiateBooking(this.bookings);
+
+  @override
+  List<Object?> get props => [bookings];
 }
 
 class Loading extends MainState {}

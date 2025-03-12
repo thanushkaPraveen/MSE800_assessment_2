@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import '../../constants/app_strings.dart';
 import '../models/additional_service.dart';
+import '../models/booking.dart';
 import '../models/car_model.dart';
 
 class ApiService {
@@ -38,6 +39,21 @@ class ApiService {
       }
     } catch (e) {
       throw Exception("Error fetching additional services: $e");
+    }
+  }
+
+  Future<List<Booking>> fetchBookings(int userId) async {
+    final String url = "${AppStrings.baseURL}/api/v1/booking/get-all-bookings";
+    try {
+      final response = await _dio.post(url, data: {"user_id": userId});
+      if (response.statusCode == 200) {
+        final List<dynamic> data = response.data['data'];
+        return data.map((json) => Booking.fromJson(json)).toList();
+      } else {
+        throw Exception("Failed to load bookings");
+      }
+    } catch (e) {
+      throw Exception("Error fetching bookings: $e");
     }
   }
 }

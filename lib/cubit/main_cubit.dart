@@ -1,5 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rental_car_app/data/models/additional_service.dart';
+import 'package:rental_car_app/data/models/booking.dart';
 import 'package:rental_car_app/data/models/car_model.dart';
 
 import '../data/services/api_service.dart';
@@ -16,6 +17,13 @@ class MainCubit extends Cubit<MainState> {
     List<AdditionalService> services = await _apiService.fetchAdditionalServices();
     
     emit(Initiate(cars, services));
+  }
+
+  Future<void> fetchInitialBookingApis() async {
+    emit(Loading());
+    List<Booking> bookings = await _apiService.fetchBookings(2);
+
+    emit(InitiateBooking(bookings));
   }
 
   void setSelectedCar(Car selectedCar) {

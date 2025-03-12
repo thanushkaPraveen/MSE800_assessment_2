@@ -43,7 +43,7 @@ class _HomePageState extends State<HomePage> {
       body: BlocConsumer<MainCubit, MainState>(
         listener: (context, state) {
           if (state is Loading) {
-            _showProgressDialog();
+            // _showProgressDialog();
           } else if (state is ShowCarsPopup) {
             _showSelectCarPopup(context, state.cars, (selectedCar) {
               _cubit.setSelectedCar(selectedCar);
@@ -55,7 +55,7 @@ class _HomePageState extends State<HomePage> {
         },
         builder: (context, state) {
           if (state is Initiate) {
-            Navigator.pop(context);
+            // Navigator.pop(context);
             return _mainWidget(state.cars, state.services);
           } else {
             return const SizedBox();
