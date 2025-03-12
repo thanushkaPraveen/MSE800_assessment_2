@@ -103,5 +103,7 @@ flutter:
   assets:
     - assets/bg_image.png
     - assets/car_001.png
-    - lib/localization/en.json
-    - lib/localization/mi_NZ.json
+    - assets/localization/en.json
+    - assets/localization/mi.json
+    - assets/localization/mi_NZ.json
+    - assets/localization/fr.json

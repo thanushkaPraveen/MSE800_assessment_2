@@ -42,9 +42,15 @@ class RentalCarApp extends StatefulWidget {
 class _RentalCarAppState extends State<RentalCarApp> {
   late Locale _locale;
 
+  @override
+  void initState() {
+    super.initState();
+    _locale = widget.savedLocale ?? Locale('en', 'US'); // ✅ Initialize with default value
+  }
+
   void setLocale(Locale locale) {
     setState(() {
-      _locale = widget.savedLocale;
+      _locale = locale;
     });
     LanguageStorage.saveLanguage(locale); // Save the selected language
   }
@@ -60,21 +66,21 @@ class _RentalCarAppState extends State<RentalCarApp> {
         supportedLocales: [
           Locale('en', 'US'),
           Locale('mi', 'NZ'),
+          Locale('fr', 'FR')
         ],
         localizationsDelegates: [
-          AppLocalizations.delegate,
-          GlobalMaterialLocalizations.delegate,
+          AppLocalizations.delegate, // ✅ Custom localization
           GlobalWidgetsLocalizations.delegate,
+          GlobalMaterialLocalizations.delegate, // ✅ Ensure Material widgets work
           GlobalCupertinoLocalizations.delegate,
         ],
+        locale: _locale, // ✅ Apply updated locale
         localeResolutionCallback: (locale, supportedLocales) {
-          for (var supportedLocale in supportedLocales) {
-            if (supportedLocale.languageCode == locale?.languageCode &&
-                supportedLocale.countryCode == locale?.countryCode) {
-              return supportedLocale;
-            }
+          // ✅ Ensure Māori defaults to English for Material & Cupertino localizations
+          if (locale?.languageCode == 'mi') {
+            return Locale('en', 'US'); // Fallback to English
           }
-          return supportedLocales.first;
+          return locale;
         },
         home: const InitPage(),
       ),

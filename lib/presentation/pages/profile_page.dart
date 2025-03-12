@@ -128,8 +128,8 @@ class _ProfilePageState extends State<ProfilePage> {
                     value: Locale('en', 'US'),
                   ),
                   DropdownMenuItem(
-                    child: Text("Māori"),
-                    value: Locale('mi', 'NZ'),
+                    child: Text("Māori"), // ✅ French added
+                    value: Locale('fr', 'FR'),
                   ),
                 ],
               ),
