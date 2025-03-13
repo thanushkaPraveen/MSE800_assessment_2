@@ -5,7 +5,9 @@ import 'package:rental_car_app/data/models/booking.dart';
 import '../../cubit/main_cubit.dart';
 import '../../cubit/main_state.dart';
 import '../../data/models/car_model.dart';
+import '../../utils/app_localizations.dart';
 import '../../utils/date_helper.dart';
+
 
 class MyBookingPage extends StatefulWidget {
   const MyBookingPage({super.key});
@@ -62,13 +64,17 @@ Widget _mainWidget(List<Booking> bookings) {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Center(
-              child: Text(
-                "My Booking",
-                style: TextStyle(
-                  fontSize: 28,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.brown,
-                ),
+              child: Builder(
+                builder: (context) {
+                  return Text(
+                    AppLocalizations.of(context).translate("booking_details"),
+                    style: TextStyle(
+                      fontSize: 28,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.brown,
+                    ),
+                  );
+                }
               ),
             ),
             SizedBox(height: 20),

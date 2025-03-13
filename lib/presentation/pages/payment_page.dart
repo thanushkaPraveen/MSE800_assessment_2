@@ -6,6 +6,7 @@ import 'package:rental_car_app/data/models/invoice.dart';
 import '../../cubit/main_cubit.dart';
 import '../../cubit/main_state.dart';
 import '../../data/models/car_model.dart';
+import '../../utils/app_localizations.dart';
 import '../../utils/date_helper.dart';
 
 class PaymentPage extends StatefulWidget {
@@ -63,13 +64,17 @@ Widget _mainWidget(List<Invoice> invoices) {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Center(
-              child: Text(
-                "Payment",
-                style: TextStyle(
-                  fontSize: 28,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.brown,
-                ),
+              child: Builder(
+                builder: (context) {
+                  return Text(
+                    AppLocalizations.of(context).translate("payment"),
+                    style: TextStyle(
+                      fontSize: 28,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.brown,
+                    ),
+                  );
+                }
               ),
             ),
             SizedBox(height: 20),
@@ -80,7 +85,7 @@ Widget _mainWidget(List<Invoice> invoices) {
                 child: ListView.builder(
                   itemCount: invoices.length,
                   itemBuilder: (context, index) {
-                    return _booking_card_item_widget(invoices[index]);
+                    return _booking_card_item_widget(context,invoices[index]);
                   },
                 ),
               ),
@@ -94,7 +99,7 @@ Widget _mainWidget(List<Invoice> invoices) {
   );
 }
 
-Widget _booking_card_item_widget(Invoice invoice) {
+Widget _booking_card_item_widget(BuildContext context, Invoice invoice) {
   return Card(
     margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 10),
     shape: RoundedRectangleBorder(
@@ -114,7 +119,7 @@ Widget _booking_card_item_widget(Invoice invoice) {
                 Icon(Icons.receipt_long, size: 40, color: Color(0xFF795548)), // Brown Icon
                 SizedBox(height: 8),
                 Text(
-                  "Invoice Details",
+                  AppLocalizations.of(context).translate("invoice_details"),
                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Color(0xFF795548)), // Brown Text
                 ),
                 Divider(thickness: 1, color: Color(0xFF795548)), // Brown Divider
