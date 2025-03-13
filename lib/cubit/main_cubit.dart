@@ -7,6 +7,7 @@ import 'package:rental_car_app/data/models/car_model.dart';
 import 'package:rental_car_app/data/models/invoice.dart';
 import 'package:rental_car_app/utils/date_helper.dart';
 
+import '../data/repositories/user_local_storage.dart';
 import '../data/services/api_service.dart';
 import 'main_state.dart';
 
@@ -29,14 +30,14 @@ class MainCubit extends Cubit<MainState> {
 
   Future<void> fetchInitialBookingApis() async {
     emit(Loading());
-    List<Booking> bookings = await _apiService.fetchBookings(2);
+    List<Booking> bookings = await _apiService.fetchBookings(UserLocalStorage.getUser()!.userId);
 
     emit(InitiateBooking(bookings));
   }
 
   Future<void> fetchInitialInvoiceApis() async {
     emit(Loading());
-    List<Invoice> invoices = await _apiService.fetchInvoices(2);
+    List<Invoice> invoices = await _apiService.fetchInvoices(UserLocalStorage.getUser()!.userId);
 
     emit(InitiateInvoice(invoices));
   }
@@ -78,7 +79,7 @@ class MainCubit extends Cubit<MainState> {
 
   void onConfirmBooking() async {
     emit(Loading());
-    AppResponse<dynamic> response = await _apiService.createBooking(1, _booking);
+    AppResponse<dynamic> response = await _apiService.createBooking(UserLocalStorage.getUser()!.userId, _booking);
     emit(Initiate(_booking, _cars, _services));
     if (response is ErrorResponse) {
       emit(Failure(response.message));

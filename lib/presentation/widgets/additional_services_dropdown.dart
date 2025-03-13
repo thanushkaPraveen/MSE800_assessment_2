@@ -23,14 +23,14 @@ class AdditionalServicesDropdown extends StatelessWidget {
       ),
       child: DropdownButton<AdditionalService>(
         isExpanded: true,
-        value: selectedService,
+        value: services.isEmpty || !services.contains(selectedService) ? null : selectedService, // Ensure the selected value exists in the list
         underline: const SizedBox(),
         icon: const Icon(Icons.arrow_drop_down),
         hint: const Text("Select Additional Service"),
         onChanged: (AdditionalService? newValue) {
           if (newValue != null) onChanged(newValue);
         },
-        items: services.map((AdditionalService service) {
+        items: services.toSet().map((AdditionalService service) { // Ensure unique values
           return DropdownMenuItem<AdditionalService>(
             value: service,
             child: Text("${service.description} (\$${service.amount})"),

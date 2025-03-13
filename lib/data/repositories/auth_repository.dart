@@ -59,7 +59,7 @@ class AuthRepository {
     required String userPassword,
     required String userPhoneNumber,
   }) async {
-    final url = 'http://10.0.2.2:8000/api/v1/user/register';
+    final url = '${AppStrings.baseURL}/api/v1/user/register';
 
     try {
       final response = await _dio.post(
