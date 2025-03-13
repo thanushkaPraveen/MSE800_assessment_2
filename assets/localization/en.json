@@ -7,7 +7,7 @@
   "name": "Name",
   "email_address": "Email address",
   "logout": "Logout",
-  "enter_email_address": "Enter Your Email Address",
+  "enter_email": "Enter Your Email Address",
   "password": "Password",
   "login": "Login",
   "dont_have_account": "Don’t Have An Account ",
@@ -15,7 +15,7 @@
   "welcome_back_message": "Welcome back! Sign in to start making \nreservations.",
   "enter_name": "Enter Your Name",
   "enter_mobile_number": "Enter Your Mobile Number",
-  "if_already_have_account": "If you already have an account",
+  "if_already_have_account": "If you already have an account, ",
   "book_your_car": "Book Your Car",
   "enter_start_trip": "Enter Start Trip (DD/MM/YYYY)",
   "select_date": "Select Date",
@@ -61,6 +61,7 @@
   "enter_valid_email": "Enter a valid email address",
   "password_must_be_6_chars": "Password must be at least 6 characters long",
   "enter_valid_phone_number": "Enter a valid phone number (9-15 digits, with optional country code)",
-  "confirm_booking": "Confirm Booking"
+  "confirm_booking": "Confirm Booking",
+  "year": "Year"
 
 }

@@ -47,7 +47,7 @@ class _HomePageState extends State<HomePage> {
             );
           } else if (state is Success){
             ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(backgroundColor: Colors.green, content: Text("Success.")),
+              const SnackBar(backgroundColor: Color(0x5F000000), content: Text("Success.")),
             );
           }
         },
@@ -322,7 +322,7 @@ class _HomePageState extends State<HomePage> {
                       ),
                       const SizedBox(height: 4),
                       Text(
-                        "Year: ${car.year}",
+                        "${AppLocalizations.of(context).translate("year")} : ${car.year}",
                         style: TextStyle(fontSize: 12, color: Colors.grey[700],),
                       ),
                       const SizedBox(height: 4),
@@ -340,9 +340,8 @@ class _HomePageState extends State<HomePage> {
                 // Car Image Section
                 ClipRRect(
                   borderRadius: BorderRadius.circular(10),
-                  child: Image.network(
-                    // car.imegeurl
-                    "https://img.freepik.com/free-vector/red-car-with-big-eyes-carton-character-isolated_1308-46902.jpg?t=st=1740811740~exp=1740815340~hmac=233226e115b056176b29738a73cceba459d7954dc7103c0918dbc65e553eb4be&w=2000",
+                  child: Image.asset(
+                    'assets/car_001.png',
                     width: 120,
                     height: 80,
                     fit: BoxFit.cover,
@@ -380,9 +379,9 @@ class _HomePageState extends State<HomePage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Center(
+              Center(
                 child: Text(
-                  "Book Your Car",
+                  AppLocalizations.of(context).translate("book_your_car"),
                   style: TextStyle(
                     fontSize: 28,
                     fontWeight: FontWeight.bold,
@@ -396,7 +395,7 @@ class _HomePageState extends State<HomePage> {
                 child: Column(
                   children: [
                     // Start Trip Date Picker
-                    const Text("Enter Start Trip (DD/MM/YYYY)"),
+                    Text(AppLocalizations.of(context).translate("enter_start_trip")),
                     GestureDetector(
                       onTap: () => _selectDate(context, true),
                       child: Container(
@@ -407,7 +406,7 @@ class _HomePageState extends State<HomePage> {
                           borderRadius: BorderRadius.circular(30),
                         ),
                         child: Center(
-                          child: Text(booking.startDate == null ? "Select Date" : booking.startDate!,
+                          child: Text(booking.startDate == null ? AppLocalizations.of(context).translate("select_date") : booking.startDate!,
                             style: const TextStyle(fontSize: 16),
                           ),
                         ),
@@ -415,7 +414,7 @@ class _HomePageState extends State<HomePage> {
                     ),
 
                     // End Trip Date Picker
-                    const Text("Enter End Trip (DD/MM/YYYY)"),
+                    Text(AppLocalizations.of(context).translate("enter_end_trip")),
                     GestureDetector(
                       onTap: () => _selectDate(context, false),
                       child: Container(
@@ -427,7 +426,7 @@ class _HomePageState extends State<HomePage> {
                         ),
                         child: Center(
                           child: Text(
-                            booking.endDate == null ? "Select Date" : booking.endDate!,
+                            booking.endDate == null ? AppLocalizations.of(context).translate("select_date") : booking.endDate!,
                             style: const TextStyle(fontSize: 16),
                           ),
                         ),
@@ -447,7 +446,7 @@ class _HomePageState extends State<HomePage> {
                     const SizedBox(height: 20),
 
                     // 🛠 Additional Services Dropdown (Fetching from API)
-                    const Text("Do you want to add additional services?"),
+                    Text(AppLocalizations.of(context).translate("add_additional_services")),
                     const SizedBox(height: 8),
                     AdditionalServicesDropdown(
                       services: services,
@@ -517,7 +516,7 @@ class _HomePageState extends State<HomePage> {
                   Text(car.modelName,
                       style: const TextStyle(
                           fontSize: 18, fontWeight: FontWeight.bold)),
-                  Text("Year – ${car.year}"),
+                  Text("${AppLocalizations.of(context).translate("year")} – ${car.year}"),
                   const SizedBox(height: 4),
                   Text(
                     car.dailyRate.toString(),
@@ -553,9 +552,9 @@ class _HomePageState extends State<HomePage> {
             ),
           ],
         ),
-        child: const Text(
+        child: Text(
           textAlign: TextAlign.center,
-          "Select a Car",
+            AppLocalizations.of(context).translate("select_car"),
           style: TextStyle(
             fontSize: 16,
           ),

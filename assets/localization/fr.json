@@ -70,6 +70,9 @@
   "enter_valid_email": "Tomoa he wāhitau īmēra whaimana",
   "password_must_be_6_chars": "Me 6 ngā pūāhua te roa o te kupuhipa",
   "enter_valid_phone_number": "Tomoa he nama waea whaimana (9-15 mati, me te kī waehere whenua)",
-  "confirm_booking": "Whakaū i te Tāpui"
+  "confirm_booking": "Whakaū i te Tāpui",
+
+  "year": "Tau"
+
 
 }
