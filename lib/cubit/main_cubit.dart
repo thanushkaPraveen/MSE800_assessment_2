@@ -7,6 +7,7 @@ import 'package:rental_car_app/data/models/car_model.dart';
 import 'package:rental_car_app/data/models/invoice.dart';
 import 'package:rental_car_app/utils/date_helper.dart';
 
+import '../constants/app_strings.dart';
 import '../data/repositories/user_local_storage.dart';
 import '../data/services/api_service.dart';
 import 'main_state.dart';
@@ -30,14 +31,16 @@ class MainCubit extends Cubit<MainState> {
 
   Future<void> fetchInitialBookingApis() async {
     emit(Loading());
-    List<Booking> bookings = await _apiService.fetchBookings(UserLocalStorage.getUser()!.userId);
+    int userId = UserLocalStorage.getUser()!.userEmail == AppStrings.adminEmail ? -1 : UserLocalStorage.getUser()!.userTypeId;
+    List<Booking> bookings = await _apiService.fetchBookings(userId);
 
     emit(InitiateBooking(bookings));
   }
 
   Future<void> fetchInitialInvoiceApis() async {
     emit(Loading());
-    List<Invoice> invoices = await _apiService.fetchInvoices(2);
+    int userId = UserLocalStorage.getUser()!.userEmail == AppStrings.adminEmail ? -1 : UserLocalStorage.getUser()!.userTypeId;
+    List<Invoice> invoices = await _apiService.fetchInvoices(userId);
 
     emit(InitiateInvoice(invoices));
   }
@@ -75,6 +78,10 @@ class MainCubit extends Cubit<MainState> {
 
   void onSubmitClick(BookingModel booking) {
     emit(ShowBookingInfoPopup(booking));
+  }
+
+  void onSelectBooking(Booking booking) {
+    emit(ShowBookingConfirmationPopup(booking));
   }
 
   void onConfirmBooking() async {
