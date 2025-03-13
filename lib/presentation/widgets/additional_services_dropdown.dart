@@ -24,9 +24,9 @@ class AdditionalServicesDropdown extends StatelessWidget {
       child: DropdownButton<AdditionalService>(
         isExpanded: true,
         value: selectedService,
-        underline: SizedBox(),
-        icon: Icon(Icons.arrow_drop_down),
-        hint: Text("Select Additional Service"),
+        underline: const SizedBox(),
+        icon: const Icon(Icons.arrow_drop_down),
+        hint: const Text("Select Additional Service"),
         onChanged: (AdditionalService? newValue) {
           if (newValue != null) onChanged(newValue);
         },
