@@ -5,6 +5,7 @@ import 'package:rental_car_app/presentation/pages/main_page.dart';
 import '../../cubit/auth_cubit.dart';
 import '../../cubit/auth_state.dart';
 import '../../data/repositories/user_local_storage.dart';
+import '../../utils/app_localizations.dart';
 import '../../utils/validators.dart';
 
 class RegisterPage extends StatefulWidget {
@@ -63,7 +64,7 @@ class _RegisterPageState extends State<RegisterPage> {
           } else if (state is AuthSuccess) {
             Navigator.pop(context);
             ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text('Welcome ${state.user.userName}!')),
+              SnackBar(content: Text('${AppLocalizations.of(context).translate("welcome")} ${state.user.userName}!')),
             );
             navigateToMainPage();
           } else if (state is AuthFailure) {
@@ -130,7 +131,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Text(
-                      "VKT Car Rental",
+                      AppLocalizations.of(context).translate("app_name"),
                       style: TextStyle(
                         fontSize: 26,
                         fontWeight: FontWeight.bold,
@@ -139,7 +140,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     ),
                     SizedBox(height: 40),
                     Text(
-                      "Welcome! Sign up to start making reservations.",
+                      AppLocalizations.of(context).translate("welcome_back_message"),
                       textAlign: TextAlign.center,
                       style: TextStyle(fontSize: 20, color: Colors.black),
                     ),
@@ -147,7 +148,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     TextFormField(
                       controller: _nameController,
                       decoration: InputDecoration(
-                        hintText: 'Enter Your Name',
+                        hintText: AppLocalizations.of(context).translate("enter_name"),
                         filled: true,
                         fillColor: Colors.white,
                         border: OutlineInputBorder(
@@ -165,7 +166,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     TextFormField(
                       controller: _emailController,
                       decoration: InputDecoration(
-                        hintText: 'Enter Your Email Address',
+                        hintText: AppLocalizations.of(context).translate("enter_email"),
                         filled: true,
                         fillColor: Colors.white,
                         border: OutlineInputBorder(
@@ -183,7 +184,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     TextFormField(
                       controller: _phoneController,
                       decoration: InputDecoration(
-                        hintText: 'Enter Your Mobile Number',
+                        hintText: AppLocalizations.of(context).translate("enter_mobile_number"),
                         filled: true,
                         fillColor: Colors.white,
                         border: OutlineInputBorder(
@@ -202,7 +203,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       controller: _passwordController,
                       obscureText: true,
                       decoration: InputDecoration(
-                        hintText: 'Password',
+                        hintText: AppLocalizations.of(context).translate("password"),
                         filled: true,
                         fillColor: Colors.white,
                         border: OutlineInputBorder(
@@ -230,7 +231,7 @@ class _RegisterPageState extends State<RegisterPage> {
                         ),
                       ),
                       child: Text(
-                        "Register",
+                        AppLocalizations.of(context).translate("register"),
                         style: TextStyle(fontSize: 18, color: Colors.white),
                       ),
                     ),
@@ -239,7 +240,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
-                          "Already have an account? ",
+                          AppLocalizations.of(context).translate("if_already_have_account"),
                           style: TextStyle(
                             fontSize: 14,
                             color: Colors.black,
@@ -250,7 +251,7 @@ class _RegisterPageState extends State<RegisterPage> {
                             Navigator.pop(context);
                           },
                           child: Text(
-                            "Login",
+                            AppLocalizations.of(context).translate("login"),
                             style: TextStyle(
                               fontSize: 14,
                               color: Colors.blue,

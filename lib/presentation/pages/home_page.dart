@@ -8,6 +8,7 @@ import 'package:rental_car_app/data/models/booking_model.dart';
 import '../../data/models/additional_service.dart';
 import '../../data/models/car_model.dart';
 import '../../data/services/api_service.dart';
+import '../../utils/app_localizations.dart';
 import '../../utils/date_helper.dart';
 import '../widgets/additional_services_dropdown.dart';
 
@@ -132,8 +133,8 @@ class _HomePageState extends State<HomePage> {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  const Text(
-                    "Booking Details",
+                  Text(
+                    AppLocalizations.of(context).translate("booking_details"),
                     style: TextStyle(
                       fontSize: 24,
                       fontWeight: FontWeight.bold,
@@ -159,17 +160,17 @@ class _HomePageState extends State<HomePage> {
                   SizedBox(height: 20),
               
                   // Booking Details
-                  buildBookingInfo("Trip Date",
+                  buildBookingInfo(AppLocalizations.of(context).translate("trip_date"),
                       "${DateHelper.formatDate(_startDate)}  To ${DateHelper.formatDate(_endDate)}"),
-                  buildBookingInfo("Car Number\nPlate", selectedCar.numberPlate),
-                  buildBookingInfo("Car Brand", selectedCar.brandName),
-                  buildBookingInfo("Car Model", selectedCar.modelName),
-                  buildBookingInfo("Vehicle Year", selectedCar.year),
+                  buildBookingInfo(AppLocalizations.of(context).translate("car_number_plate"), selectedCar.numberPlate),
+                  buildBookingInfo(AppLocalizations.of(context).translate("car_brand"), selectedCar.brandName),
+                  buildBookingInfo(AppLocalizations.of(context).translate("car_model"), selectedCar.modelName),
+                  buildBookingInfo(AppLocalizations.of(context).translate("vehicle_year"), selectedCar.year),
                   buildBookingInfo(
-                      "Car rental cost", rentalCost.toStringAsFixed(2)),
-                  buildBookingInfo("Additional\nservice charge",
+                      AppLocalizations.of(context).translate("car_rental_cost"), rentalCost.toStringAsFixed(2)),
+                  buildBookingInfo(AppLocalizations.of(context).translate("additional_service_charge"),
                       selectedServiceTotal.toStringAsFixed(2)),
-                  buildBookingInfo("Total", total.toStringAsFixed(2)),
+                  buildBookingInfo(AppLocalizations.of(context).translate("total"), total.toStringAsFixed(2)),
               
                   SizedBox(height: 20),
               
@@ -187,7 +188,7 @@ class _HomePageState extends State<HomePage> {
                       ),
                     ),
                     child: Text(
-                      "Confirm Booking",
+                      AppLocalizations.of(context).translate("confirm_booking"),
                       style: TextStyle(fontSize: 18, color: Colors.white),
                     ),
                   ),
@@ -231,8 +232,8 @@ class _HomePageState extends State<HomePage> {
                           BorderRadius.vertical(top: Radius.circular(20)),
                     ),
                     alignment: Alignment.center,
-                    child: const Text(
-                      "Select a Car",
+                    child: Text(
+                      AppLocalizations.of(context).translate("select_car"),
                       style: TextStyle(
                           color: Colors.white,
                           fontSize: 20,

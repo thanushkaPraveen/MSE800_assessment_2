@@ -48,7 +48,7 @@ class _LoginPageState extends State<LoginPage> {
           } else if (state is AuthSuccess) {
             Navigator.pop(context);
             ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text('Welcome ${state.user.userName}!')),
+              SnackBar(content: Text(' ${AppLocalizations.of(context).translate("welcome")} ${state.user.userName}!')),
             );
             Navigator.push(
               context,
@@ -113,7 +113,7 @@ class _LoginPageState extends State<LoginPage> {
                     TextFormField(
                       controller: _emailController,
                       decoration: InputDecoration(
-                        hintText: 'Enter Your Email Address',
+                        hintText: AppLocalizations.of(context).translate("enter_email"),
                         filled: true,
                         fillColor: Colors.white,
                         border: OutlineInputBorder(
@@ -132,7 +132,7 @@ class _LoginPageState extends State<LoginPage> {
                       controller: _passwordController,
                       obscureText: true,
                       decoration: InputDecoration(
-                        hintText: 'Password',
+                        hintText: AppLocalizations.of(context).translate("password"),
                         filled: true,
                         fillColor: Colors.white,
                         border: OutlineInputBorder(
@@ -160,7 +160,7 @@ class _LoginPageState extends State<LoginPage> {
                         ),
                       ),
                       child: Text(
-                        "Login",
+                        AppLocalizations.of(context).translate("login"),
                         style: TextStyle(fontSize: 18, color: Colors.white),
                       ),
                     ),
@@ -169,7 +169,7 @@ class _LoginPageState extends State<LoginPage> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
-                          "Don't Have An Account  ",
+                          AppLocalizations.of(context).translate("dont_have_account"),
                           style: TextStyle(
                             fontSize: 14,
                             color: Colors.black,
@@ -185,7 +185,7 @@ class _LoginPageState extends State<LoginPage> {
                             );
                           },
                           child: Text(
-                            "Register",
+                            AppLocalizations.of(context).translate("register"),
                             style: TextStyle(
                               fontSize: 14,
                               color: Colors.blue,

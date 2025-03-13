@@ -7,6 +7,8 @@ import 'package:rental_car_app/presentation/pages/my_booking_page.dart';
 import 'package:rental_car_app/presentation/pages/payment_page.dart';
 import 'package:rental_car_app/presentation/pages/profile_page.dart';
 
+import '../../utils/app_localizations.dart';
+
 class MainPage extends StatefulWidget {
   const MainPage({super.key});
 
@@ -49,19 +51,19 @@ class _MainPageState extends State<MainPage> {
           items: [
             BottomNavigationBarItem(
               icon: Icon(Icons.home),
-              label: "Home",
+              label: AppLocalizations.of(context).translate("home"),
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.menu_book),
-              label: "My Booking",
+              label: AppLocalizations.of(context).translate("my_booking"),
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.attach_money),
-              label: "Payment",
+              label: AppLocalizations.of(context).translate("payment"),
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.person),
-              label: "Profile",
+              label: AppLocalizations.of(context).translate("profile"),
             ),
           ],
         ),

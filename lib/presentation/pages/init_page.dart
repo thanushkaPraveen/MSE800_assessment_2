@@ -4,6 +4,7 @@ import 'package:rental_car_app/presentation/pages/main_page.dart';
 
 import '../../data/repositories/user_local_storage.dart';
 import '../../theme/styles.dart';
+import '../../utils/app_localizations.dart';
 
 class InitPage extends StatefulWidget {
   const InitPage({super.key});
@@ -53,7 +54,7 @@ class _InitPageState extends State<InitPage> {
           // Centered Text
           Center(
             child: Text(
-              'Kia Ora',
+              AppLocalizations.of(context).translate("hi"),
               style: AppStyles.titleTextKioOra,
             ),
           ),

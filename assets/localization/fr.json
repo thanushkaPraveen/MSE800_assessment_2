@@ -11,7 +11,7 @@
   "enter_email": "Tomo tō wāhitau īmēra",
   "password": "Kupuhipa",
   "login": "Takiuru",
-  "dont_have_account": "Kāore anō koe kia whai pūkete?",
+  "dont_have_account": "Kāore anō koe kia whai pūkete? ",
   "register": "Rēhita",
   "welcome_back": "Nau mai hoki! Takiuru kia tīmata ai \ntō tāpui waka.",
   "enter_name": "Tomo tō ingoa",
@@ -24,6 +24,7 @@
   "select_car": "Tīpakohia he Waka",
   "add_additional_services": "Kei te hiahia koe ki ngā ratonga tāpiri?",
   "book_now": "Tāpuia Ināianei",
+  "welcome_back_message": "Nau mai anō! Takiuru kia tīmata ai tō tāpui waka.",
 
   "home": "Kāinga",
   "my_booking": "Āku Tāpui",
@@ -62,5 +63,13 @@
   "vehicle_year": "Tau Waka",
   "car_rental_cost": "Utu Rīhi Waka",
   "additional_service_charge": "Utu Ratonga Tāpirihia",
-  "total": "Tapeke"
+  "total": "Tapeke",
+
+  "welcome": "Nau mai",
+
+  "enter_valid_email": "Tomoa he wāhitau īmēra whaimana",
+  "password_must_be_6_chars": "Me 6 ngā pūāhua te roa o te kupuhipa",
+  "enter_valid_phone_number": "Tomoa he nama waea whaimana (9-15 mati, me te kī waehere whenua)",
+  "confirm_booking": "Whakaū i te Tāpui"
+
 }
