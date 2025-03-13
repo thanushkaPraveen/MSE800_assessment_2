@@ -2,6 +2,7 @@ import 'dart:core';
 import 'dart:math';
 
 import 'package:rental_car_app/data/models/additional_service.dart';
+import 'package:rental_car_app/data/models/booking_model.dart';
 import 'package:rental_car_app/data/models/car_model.dart';
 
 import '../data/models/user_model.dart';
@@ -13,21 +14,21 @@ abstract class MainState extends Equatable {
 }
 
 class Initiate extends MainState {
+  final Booking booking;
   final List<Car> cars;
   final List<AdditionalService> services;
 
-  Initiate(this.cars, this.services);
+  Initiate(this.booking, this.cars, this.services);
 
   @override
-  List<Object?> get props => [cars, services];
+  List<Object?> get props => [booking,  cars, services];
 }
 
 class Loading extends MainState {}
 
 class Success extends MainState {
-  final UserModel user;
 
-  Success(this.user);
+  Success();
 }
 
 class Failure extends MainState {
@@ -46,12 +47,24 @@ class OnCarSelected extends MainState {
   List<Object?> get props => [index, car];
 }
 
-class ShowCarsPopup extends MainState {
+abstract class MainPagePopup extends MainState{}
+
+class ShowSelectACarPopup extends MainPagePopup {
   final index = Random().nextInt(100);
   final List<Car> cars;
 
-  ShowCarsPopup(this.cars);
+  ShowSelectACarPopup(this.cars);
 
   @override
   List<Object?> get props => [index, cars];
+}
+
+class ShowBookingInfoPopup extends MainPagePopup {
+  final index = Random().nextInt(100);
+  final Booking booking;
+
+  ShowBookingInfoPopup(this.booking);
+
+  @override
+  List<Object?> get props => [index, booking];
 }

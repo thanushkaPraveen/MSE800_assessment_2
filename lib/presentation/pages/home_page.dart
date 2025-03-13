@@ -1,7 +1,9 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rental_car_app/cubit/main_cubit.dart';
 import 'package:rental_car_app/cubit/main_state.dart';
+import 'package:rental_car_app/data/models/booking_model.dart';
 
 import '../../data/models/additional_service.dart';
 import '../../data/models/car_model.dart';
@@ -18,14 +20,8 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   late MainCubit _cubit;
-  final ApiService _apiService = ApiService();
   DateTime? _startDate;
   DateTime? _endDate;
-  String _carName = "Honda Jazz";
-  String _carYear = "2020";
-  String _carPrice = "\$250";
-  String _carImage =
-      "assets/toyota_prius.png"; // Replace with actual image path
   bool isCarSelected = true;
 
   @override
@@ -42,21 +38,27 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       body: BlocConsumer<MainCubit, MainState>(
         listener: (context, state) {
-          if (state is Loading) {
-            _showProgressDialog();
-          } else if (state is ShowCarsPopup) {
-            _showSelectCarPopup(context, state.cars, (selectedCar) {
-              _cubit.setSelectedCar(selectedCar);
-            });
+          if (state is MainPagePopup) {
+            _showPopups(state);
+          } else if (state is Failure){
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(backgroundColor: Colors.red, content: Text(state.error)),
+            );
+          } else if (state is Success){
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(backgroundColor: Colors.green, content: Text("Success.")),
+            );
           }
         },
         buildWhen: (previous, current) {
-          return current is Initiate;
+          return current is Initiate || current is Loading;
         },
         builder: (context, state) {
-          if (state is Initiate) {
-            Navigator.pop(context);
-            return _mainWidget(state.cars, state.services);
+          debugPrint("state is: $state");
+          if (state is Loading) {
+            return _progressView();
+          } if (state is Initiate) {
+            return _mainWidget(state.booking, state.cars, state.services);
           } else {
             return const SizedBox();
           }
@@ -79,11 +81,14 @@ class _HomePageState extends State<HomePage> {
       setState(() {
         if (isStartDate) {
           _startDate = pickedDate;
+          _cubit.setStartDate(pickedDate);
           if (_endDate != null && _endDate!.isBefore(_startDate!)) {
             _endDate = _startDate; // Adjust end date if needed
+            _cubit.setEndDate(pickedDate);
           }
         } else {
           _endDate = pickedDate;
+          _cubit.setEndDate(pickedDate);
         }
       });
     }
@@ -123,68 +128,71 @@ class _HomePageState extends State<HomePage> {
               color: Colors.white,
               borderRadius: BorderRadius.circular(20),
             ),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Text(
-                  "Booking Details",
-                  style: TextStyle(
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.brown,
-                  ),
-                ),
-                SizedBox(height: 10),
-
-                // Car Name
-                Text(
-                  selectedCar.brandModelName,
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                ),
-                SizedBox(height: 10),
-
-                // Car Image
-                Image.asset(
-                  "assets/car_001.png", // Replace with actual image path
-                  width: 180,
-                  height: 120,
-                  fit: BoxFit.contain,
-                ),
-                SizedBox(height: 20),
-
-                // Booking Details
-                buildBookingInfo("Trip Date",
-                    "${DateHelper.formatDate(_startDate)}  To ${DateHelper.formatDate(_endDate)}"),
-                buildBookingInfo("Car Number\nPlate", selectedCar.numberPlate),
-                buildBookingInfo("Car Brand", selectedCar.brandName),
-                buildBookingInfo("Car Model", selectedCar.modelName),
-                buildBookingInfo("Vehicle Year", selectedCar.year),
-                buildBookingInfo(
-                    "Car rental cost", rentalCost.toStringAsFixed(2)),
-                buildBookingInfo("Additional\nservice charge",
-                    selectedServiceTotal.toStringAsFixed(2)),
-                buildBookingInfo("Total", total.toStringAsFixed(2)),
-
-                SizedBox(height: 20),
-
-                // Confirm Booking Button
-                ElevatedButton(
-                  onPressed: () {
-                    Navigator.pop(context); // Close popup
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.brown,
-                    padding: EdgeInsets.symmetric(vertical: 14, horizontal: 50),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(30),
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  const Text(
+                    "Booking Details",
+                    style: TextStyle(
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.brown,
                     ),
                   ),
-                  child: Text(
-                    "Confirm Booking",
-                    style: TextStyle(fontSize: 18, color: Colors.white),
+                  SizedBox(height: 10),
+              
+                  // Car Name
+                  Text(
+                    selectedCar.brandModelName,
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                   ),
-                ),
-              ],
+                  SizedBox(height: 10),
+              
+                  // Car Image
+                  Image.asset(
+                    "assets/car_001.png", // Replace with actual image path
+                    width: 180,
+                    height: 120,
+                    fit: BoxFit.contain,
+                  ),
+                  SizedBox(height: 20),
+              
+                  // Booking Details
+                  buildBookingInfo("Trip Date",
+                      "${DateHelper.formatDate(_startDate)}  To ${DateHelper.formatDate(_endDate)}"),
+                  buildBookingInfo("Car Number\nPlate", selectedCar.numberPlate),
+                  buildBookingInfo("Car Brand", selectedCar.brandName),
+                  buildBookingInfo("Car Model", selectedCar.modelName),
+                  buildBookingInfo("Vehicle Year", selectedCar.year),
+                  buildBookingInfo(
+                      "Car rental cost", rentalCost.toStringAsFixed(2)),
+                  buildBookingInfo("Additional\nservice charge",
+                      selectedServiceTotal.toStringAsFixed(2)),
+                  buildBookingInfo("Total", total.toStringAsFixed(2)),
+              
+                  SizedBox(height: 20),
+              
+                  // Confirm Booking Button
+                  ElevatedButton(
+                    onPressed: () {
+                      Navigator.pop(context); // Close popup
+                      _cubit.onConfirmBooking();
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.brown,
+                      padding: EdgeInsets.symmetric(vertical: 14, horizontal: 50),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(30),
+                      ),
+                    ),
+                    child: Text(
+                      "Confirm Booking",
+                      style: TextStyle(fontSize: 18, color: Colors.white),
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         );
@@ -354,22 +362,14 @@ class _HomePageState extends State<HomePage> {
         builder: (BuildContext builderContext) {
           return Dialog(
               backgroundColor: Colors.transparent,
-              child: Stack(
-                children: [
-                  Positioned.fill(
-                      child: Container(
-                          width: double.infinity,
-                          height: double.infinity,
-                          child:
-                              const Center(child: CircularProgressIndicator())))
-                ],
-              ));
+              child: _progressView());
         });
   }
 
-  Widget _mainWidget(List<Car> cars, List<AdditionalService> services) {
-    AdditionalService? selectedService = null;
-    Car? selectedCar = null;
+  Widget _mainWidget(Booking booking, List<Car> cars, List<AdditionalService> services) {
+    debugPrint("_mainWidget: $booking");
+    debugPrint("_mainWidget: $cars");
+    debugPrint("_mainWidget: $services");
 
     return Scaffold(
       backgroundColor: Color(0xFFF5E6DA), // Light Beige Background
@@ -379,7 +379,7 @@ class _HomePageState extends State<HomePage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Center(
+              const Center(
                 child: Text(
                   "Book Your Car",
                   style: TextStyle(
@@ -389,114 +389,101 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ),
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
 
-              // Start Trip Date Picker
-              Text("Enter Start Trip (DD/MM/YYYY)"),
-              GestureDetector(
-                onTap: () => _selectDate(context, true),
-                child: Container(
-                  padding: EdgeInsets.all(12),
-                  margin: EdgeInsets.only(top: 8, bottom: 20),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(30),
-                  ),
-                  child: Center(
-                    child: Text(
-                      _startDate == null
-                          ? "Select Date"
-                          : DateHelper.formatDate(_startDate),
-                      style: TextStyle(fontSize: 16),
+              SingleChildScrollView(
+                child: Column(
+                  children: [
+                    // Start Trip Date Picker
+                    const Text("Enter Start Trip (DD/MM/YYYY)"),
+                    GestureDetector(
+                      onTap: () => _selectDate(context, true),
+                      child: Container(
+                        padding: const EdgeInsets.all(12),
+                        margin: const EdgeInsets.only(top: 8, bottom: 20),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(30),
+                        ),
+                        child: Center(
+                          child: Text(booking.startDate == null ? "Select Date" : booking.startDate!,
+                            style: const TextStyle(fontSize: 16),
+                          ),
+                        ),
+                      ),
                     ),
-                  ),
-                ),
-              ),
 
-              // End Trip Date Picker
-              Text("Enter End Trip (DD/MM/YYYY)"),
-              GestureDetector(
-                onTap: () => _selectDate(context, false),
-                child: Container(
-                  padding: EdgeInsets.all(12),
-                  margin: EdgeInsets.only(top: 8, bottom: 20),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(30),
-                  ),
-                  child: Center(
-                    child: Text(
-                      _endDate == null
-                          ? "Select Date"
-                          : DateHelper.formatDate(_endDate),
-                      style: TextStyle(fontSize: 16),
+                    // End Trip Date Picker
+                    const Text("Enter End Trip (DD/MM/YYYY)"),
+                    GestureDetector(
+                      onTap: () => _selectDate(context, false),
+                      child: Container(
+                        padding: const EdgeInsets.all(12),
+                        margin: const EdgeInsets.only(top: 8, bottom: 20),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(30),
+                        ),
+                        child: Center(
+                          child: Text(
+                            booking.endDate == null ? "Select Date" : booking.endDate!,
+                            style: const TextStyle(fontSize: 16),
+                          ),
+                        ),
+                      ),
                     ),
-                  ),
-                ),
-              ),
-              // Car Selection (Clickable)
-              Stack(
-                children: [
-                  /// White View on Top
-                  GestureDetector(
-                    onTap: () => _cubit.onCarCardViewClick(cars),
-                    child: _selectedACarWidget(cars),
-                  )
-                ],
-              ),
+                    // Car Selection (Clickable)
+                    Stack(
+                      children: [
+                        /// White View on Top
+                        GestureDetector(
+                          onTap: () => _cubit.onCarCardViewClick(cars),
+                          child: _selectedACarWidget(booking, cars),
+                        )
+                      ],
+                    ),
 
-              SizedBox(height: 20),
+                    const SizedBox(height: 20),
 
-              // 🛠 Additional Services Dropdown (Fetching from API)
-              Text("Do you want to add additional services?"),
-              SizedBox(height: 8),
-              AdditionalServicesDropdown(
-                services: services,
-                selectedService: selectedService,
-                onChanged: (service) {
-                  setState(() {
-                    selectedService = service;
-                  });
-                },
-              ),
-
-              SizedBox(height: 30),
-
-              // Book Now Button
-              Center(
-                child: ElevatedButton(
-                  onPressed: (selectedCar != null &&
-                          _startDate != null &&
-                          _endDate != null)
-                      ? () {
-                          // Handle booking logic here
-                          print(
-                              "Car booked: $selectedCar, Dates: $_startDate - $_endDate");
-                          showBookingDetailsPopup(
-                              context,
-                              selectedCar!,
-                              _startDate!,
-                              _endDate!,
-                              selectedService); // Show Popup
+                    // 🛠 Additional Services Dropdown (Fetching from API)
+                    const Text("Do you want to add additional services?"),
+                    const SizedBox(height: 8),
+                    AdditionalServicesDropdown(
+                      services: services,
+                      selectedService: booking.additionalService,
+                      onChanged: (service) {
+                        setState(() {
+                          _cubit.setSelectedService(service);
+                        });
+                      },
+                    ),
+                    const SizedBox(height: 30),
+                    // Book Now Button
+                    Center(
+                      child: ElevatedButton(
+                        onPressed: (booking.isValidData())
+                            ? () {
+                          _cubit.onSubmitClick(booking);
                         }
-                      : null, // Disables button if conditions are not met
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: (selectedCar != null &&
-                            _startDate != null &&
-                            _endDate != null)
-                        ? Colors.brown // Active color
-                        : Colors.grey, // Disabled color
-                    padding: EdgeInsets.symmetric(vertical: 16, horizontal: 80),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(30),
+                            : null,
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: (booking.isValidData())
+                              ? Colors.brown // Active color
+                              : Colors.grey, // Disabled color
+                          padding: EdgeInsets.symmetric(vertical: 16, horizontal: 80),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(30),
+                          ),
+                        ),
+                        child: const Text(
+                          "Book Now",
+                          style: TextStyle(fontSize: 18, color: Colors.white),
+                        ),
+                      ),
                     ),
-                  ),
-                  child: const Text(
-                    "Book Now",
-                    style: TextStyle(fontSize: 18, color: Colors.white),
-                  ),
+                  ],
                 ),
-              ),
+              )
             ],
           ),
         ),
@@ -504,83 +491,103 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget _selectedACarWidget(List<Car> cars) {
-    return BlocConsumer<MainCubit, MainState>(
-      listener: (context, state) {},
-      buildWhen: (previous, current) {
-        return current is OnCarSelected;
-      },
-      builder: (context, state) {
-        if (state is OnCarSelected) {
-          Car car = state.car;
-          return Container(
-            padding: EdgeInsets.all(15),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(16),
-              boxShadow: const [
-                BoxShadow(
-                  color: Colors.black12,
-                  blurRadius: 4,
-                  spreadRadius: 2,
-                ),
-              ],
+  Widget _selectedACarWidget(Booking booking, List<Car> cars) {
+    if (booking.car != null) {
+      Car car = booking.car!;
+      return Container(
+        padding: EdgeInsets.all(15),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(16),
+          boxShadow: const [
+            BoxShadow(
+              color: Colors.black12,
+              blurRadius: 4,
+              spreadRadius: 2,
             ),
-            child: Row(
-              children: [
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(car.modelName,
-                          style: const TextStyle(
-                              fontSize: 18, fontWeight: FontWeight.bold)),
-                      Text("Year – ${car.year}"),
-                      const SizedBox(height: 4),
-                      Text(
-                        car.dailyRate.toString(),
-                        style: const TextStyle(
-                            fontSize: 18,
-                            color: Colors.brown,
-                            fontWeight: FontWeight.bold),
-                      ),
-                    ],
+          ],
+        ),
+        child: Row(
+          children: [
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(car.modelName,
+                      style: const TextStyle(
+                          fontSize: 18, fontWeight: FontWeight.bold)),
+                  Text("Year – ${car.year}"),
+                  const SizedBox(height: 4),
+                  Text(
+                    car.dailyRate.toString(),
+                    style: const TextStyle(
+                        fontSize: 18,
+                        color: Colors.brown,
+                        fontWeight: FontWeight.bold),
                   ),
-                ),
-                const SizedBox(width: 12),
-                Image.asset(
-                  'assets/car_001.png',
-                  width: 80,
-                  height: 60,
-                ),
-              ],
-            ),
-          );
-        } else {
-          return Container(
-            width: double.infinity,
-            padding: const EdgeInsets.all(15),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(16),
-              boxShadow: const [
-                BoxShadow(
-                  color: Colors.black12,
-                  blurRadius: 4,
-                  spreadRadius: 2,
-                ),
-              ],
-            ),
-            child: const Text(
-              textAlign: TextAlign.center,
-              "Select a Car",
-              style: TextStyle(
-                fontSize: 16,
+                ],
               ),
             ),
-          );
-        }
-      },
+            const SizedBox(width: 12),
+            Image.asset(
+              'assets/car_001.png',
+              width: 80,
+              height: 60,
+            ),
+          ],
+        ),
+      );
+    } else {
+      return Container(
+        width: double.infinity,
+        padding: const EdgeInsets.all(15),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(16),
+          boxShadow: const [
+            BoxShadow(
+              color: Colors.black12,
+              blurRadius: 4,
+              spreadRadius: 2,
+            ),
+          ],
+        ),
+        child: const Text(
+          textAlign: TextAlign.center,
+          "Select a Car",
+          style: TextStyle(
+            fontSize: 16,
+          ),
+        ),
+      );
+    }
+  }
+
+  Widget _progressView() {
+    return Stack(
+      children: [
+        Positioned.fill(
+            child: Container(
+                width: double.infinity,
+                height: double.infinity,
+                child:
+                const Center(child: CircularProgressIndicator())))
+      ],
     );
+  }
+
+  void _showPopups(MainPagePopup state) {
+    if (state is ShowSelectACarPopup) {
+      _showSelectCarPopup(context, state.cars, (selectedCar) {
+        _cubit.setSelectedCar(selectedCar);
+      });
+    } else if (state is ShowBookingInfoPopup) {
+      Booking booking = state.booking;
+      showBookingDetailsPopup(
+          context, booking.car!,
+          booking.startDateTime!,
+          booking.endDateTime!,
+          booking.additionalService);
+    }
   }
 }
