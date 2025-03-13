@@ -1,7 +1,7 @@
 import 'package:rental_car_app/data/models/additional_service.dart';
 import 'package:rental_car_app/data/models/car_model.dart';
 
-class Booking {
+class BookingModel {
   DateTime? startDateTime;
   DateTime? endDateTime;
   String? startDate;
@@ -10,7 +10,7 @@ class Booking {
   AdditionalService? additionalService;
   Car? car;
 
-  Booking();
+  BookingModel();
 
   bool isValidData() {
     return startDate != null && endDate != null && carId != null && additionalService != null;

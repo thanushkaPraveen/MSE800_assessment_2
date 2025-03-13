@@ -53,7 +53,7 @@ class ApiService {
   }
 
   Future<AppResponse<dynamic>> createBooking(
-      int userId, Booking booking) async {
+      int userId, BookingModel booking) async {
     const String url = '${AppStrings.baseURL}/api/v1/booking/create-a-booking';
 
     Map<String, dynamic> additionalServices = {

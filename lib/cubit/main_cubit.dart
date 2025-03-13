@@ -13,7 +13,7 @@ class MainCubit extends Cubit<MainState> {
 
   late List<Car> _cars;
   late List<AdditionalService> _services;
-  Booking _booking = new Booking();
+  BookingModel _booking = new BookingModel();
 
   MainCubit(this._apiService) : super(Loading());
 
@@ -56,7 +56,7 @@ class MainCubit extends Cubit<MainState> {
     emit(Initiate(_booking, _cars, _services));
   }
 
-  void onSubmitClick(Booking booking) {
+  void onSubmitClick(BookingModel booking) {
     emit(ShowBookingInfoPopup(booking));
   }
 

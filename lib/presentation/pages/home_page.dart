@@ -366,7 +366,7 @@ class _HomePageState extends State<HomePage> {
         });
   }
 
-  Widget _mainWidget(Booking booking, List<Car> cars, List<AdditionalService> services) {
+  Widget _mainWidget(BookingModel booking, List<Car> cars, List<AdditionalService> services) {
     debugPrint("_mainWidget: $booking");
     debugPrint("_mainWidget: $cars");
     debugPrint("_mainWidget: $services");
@@ -491,7 +491,7 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget _selectedACarWidget(Booking booking, List<Car> cars) {
+  Widget _selectedACarWidget(BookingModel booking, List<Car> cars) {
     if (booking.car != null) {
       Car car = booking.car!;
       return Container(
@@ -582,7 +582,7 @@ class _HomePageState extends State<HomePage> {
         _cubit.setSelectedCar(selectedCar);
       });
     } else if (state is ShowBookingInfoPopup) {
-      Booking booking = state.booking;
+      BookingModel booking = state.booking;
       showBookingDetailsPopup(
           context, booking.car!,
           booking.startDateTime!,

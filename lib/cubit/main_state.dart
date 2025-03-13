@@ -14,7 +14,7 @@ abstract class MainState extends Equatable {
 }
 
 class Initiate extends MainState {
-  final Booking booking;
+  final BookingModel booking;
   final List<Car> cars;
   final List<AdditionalService> services;
 
@@ -61,7 +61,7 @@ class ShowSelectACarPopup extends MainPagePopup {
 
 class ShowBookingInfoPopup extends MainPagePopup {
   final index = Random().nextInt(100);
-  final Booking booking;
+  final BookingModel booking;
 
   ShowBookingInfoPopup(this.booking);
 
