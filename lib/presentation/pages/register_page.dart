@@ -22,7 +22,7 @@ class _RegisterPageState extends State<RegisterPage> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _phoneController = TextEditingController();
-  final String _userTypeId = "1"; // Assuming fixed user type
+  final String _userTypeId = "2"; // Assuming fixed user type
 
   @override
   void initState() {

@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:rental_car_app/data/repositories/user_local_storage.dart';
 import 'package:rental_car_app/presentation/pages/main_page.dart';
 import 'package:rental_car_app/presentation/pages/register_page.dart';
 
+import '../../constants/app_strings.dart';
 import '../../cubit/auth_cubit.dart';
 import '../../cubit/auth_state.dart';
 import '../../utils/app_localizations.dart';
 import '../../utils/validators.dart';
+import 'admin_main_page.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -50,12 +53,23 @@ class _LoginPageState extends State<LoginPage> {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(content: Text(' ${AppLocalizations.of(context).translate("welcome")} ${state.user.userName}!')),
             );
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => const MainPage(),
-              ),
-            );
+
+            if (UserLocalStorage.getUser()!.userEmail == AppStrings.adminEmail) {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const AdminMainPage(),
+                ),
+              );
+            }
+            else {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const MainPage(),
+                ),
+              );
+            }
           } else if (state is AuthFailure) {
             print("🛑 UI Error: ${state.error}");
             Navigator.pop(context);

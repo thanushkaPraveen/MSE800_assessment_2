@@ -6,14 +6,14 @@ import '../../main.dart'; // Import MyApp for localization
 import '../../utils/app_localizations.dart';
 import 'login_page.dart';
 
-class ProfilePage extends StatefulWidget {
-  const ProfilePage({super.key});
+class AdminProfilePage extends StatefulWidget {
+  const AdminProfilePage({super.key});
 
   @override
-  _ProfilePageState createState() => _ProfilePageState();
+  _AdminProfilePageState createState() => _AdminProfilePageState();
 }
 
-class _ProfilePageState extends State<ProfilePage> {
+class _AdminProfilePageState extends State<AdminProfilePage> {
   Locale _selectedLocale = Locale('en', 'US'); // Default language
   bool _isMounted = false; // Track if widget is still active
 
@@ -61,7 +61,7 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFFF5E6DA), // Light beige background
+      backgroundColor: Color(0xFF2C2C2C), // Dark Grey Background
       body: Center(
         child: Padding(
           padding: const EdgeInsets.all(20.0),
@@ -70,25 +70,25 @@ class _ProfilePageState extends State<ProfilePage> {
             children: [
               // Title
               Text(
-                AppLocalizations.of(context).translate("my_profile"),
+                AppLocalizations.of(context).translate("admin_profile"),
                 style: TextStyle(
                   fontSize: 28,
                   fontWeight: FontWeight.bold,
-                  color: Colors.brown,
+                  color: Colors.white, // White for contrast
                 ),
               ),
-              SizedBox(height: 60),
+              SizedBox(height: 50),
 
               // Profile Card
               Container(
                 padding: EdgeInsets.all(20),
                 decoration: BoxDecoration(
-                  color: Colors.white,
+                  color: Color(0xFF3A3A3A), // Darker card background
                   borderRadius: BorderRadius.circular(16),
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.black12,
-                      blurRadius: 4,
+                      color: Colors.black26,
+                      blurRadius: 6,
                       spreadRadius: 2,
                     ),
                   ],
@@ -97,18 +97,19 @@ class _ProfilePageState extends State<ProfilePage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     buildProfileItem(
-                        AppLocalizations.of(context).translate("name"),
-                        UserLocalStorage.getUser()!.userName),
+                      AppLocalizations.of(context).translate("name"),
+                      UserLocalStorage.getUser()!.userName,
+                    ),
                     SizedBox(height: 12),
                     buildProfileItem(
-                        AppLocalizations.of(context)
-                            .translate("phone_number"),
-                        UserLocalStorage.getUser()!.userPhoneNumber),
+                      AppLocalizations.of(context).translate("phone_number"),
+                      UserLocalStorage.getUser()!.userPhoneNumber,
+                    ),
                     SizedBox(height: 12),
                     buildProfileItem(
-                        AppLocalizations.of(context)
-                            .translate("email_address"),
-                        UserLocalStorage.getUser()!.userEmail),
+                      AppLocalizations.of(context).translate("email_address"),
+                      UserLocalStorage.getUser()!.userEmail,
+                    ),
                   ],
                 ),
               ),
@@ -117,6 +118,7 @@ class _ProfilePageState extends State<ProfilePage> {
               // Language Selector
               DropdownButton<Locale>(
                 value: _selectedLocale,
+                dropdownColor: Color(0xFF3A3A3A), // Darker dropdown for admin UI
                 onChanged: (Locale? newLocale) {
                   if (newLocale != null) {
                     _changeLanguage(newLocale);
@@ -124,11 +126,11 @@ class _ProfilePageState extends State<ProfilePage> {
                 },
                 items: [
                   DropdownMenuItem(
-                    child: Text("English"),
+                    child: Text("English", style: TextStyle(color: Colors.white)),
                     value: Locale('en', 'US'),
                   ),
                   DropdownMenuItem(
-                    child: Text("Māori"), // ✅ French added
+                    child: Text("Māori", style: TextStyle(color: Colors.white)),
                     value: Locale('fr', 'FR'),
                   ),
                 ],
@@ -139,7 +141,7 @@ class _ProfilePageState extends State<ProfilePage> {
               ElevatedButton(
                 onPressed: tapOnLogOut,
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.brown,
+                  backgroundColor: Colors.blueAccent, // Blue for Admin Actions
                   padding: EdgeInsets.symmetric(vertical: 14, horizontal: 80),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(30),
@@ -164,14 +166,14 @@ class _ProfilePageState extends State<ProfilePage> {
       children: [
         Text(
           label,
-          style: TextStyle(fontSize: 14, color: Colors.grey),
+          style: TextStyle(fontSize: 14, color: Colors.grey[300]), // Lighter grey for readability
         ),
         SizedBox(height: 4),
         Text(
           value,
-          style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+          style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white),
         ),
-        Divider(color: Colors.grey), // Adds a line between fields
+        Divider(color: Colors.grey[500]), // Medium grey divider
       ],
     );
   }

@@ -72,7 +72,11 @@
   "enter_valid_phone_number": "Tomoa he nama waea whaimana (9-15 mati, me te kī waehere whenua)",
   "confirm_booking": "Whakaū i te Tāpui",
 
-  "year": "Tau"
-
+  "year": "Tau",
+  "invoice": "Inihua",
+  "bookings": "Ngā Tāpui",
+  "user_bookings": "Ngā Tāpui a te \nKaiwhakamahi",
+  "user_invoices": "Ngā Inihua a te \nKaiwhakamahi",
+  "admin_profile": "Kōtaha Kaiwhakahaere"
 
 }
