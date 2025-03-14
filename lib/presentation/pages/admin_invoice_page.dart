@@ -9,14 +9,14 @@ import '../../data/models/car_model.dart';
 import '../../utils/app_localizations.dart';
 import '../../utils/date_helper.dart';
 
-class PaymentPage extends StatefulWidget {
-  const PaymentPage({super.key});
+class AdminInvoicePage extends StatefulWidget {
+  const AdminInvoicePage({super.key});
 
   @override
-  State<PaymentPage> createState() => _PaymentPageState();
+  State<AdminInvoicePage> createState() => _AdminInvoicePageState();
 }
 
-class _PaymentPageState extends State<PaymentPage> {
+class _AdminInvoicePageState extends State<AdminInvoicePage> {
   late MainCubit _cubit;
 
   @override
@@ -31,10 +31,11 @@ class _PaymentPageState extends State<PaymentPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color(0xFF2C2C2C), // Dark Grey Background for Admin UI
       body: BlocConsumer<MainCubit, MainState>(
         listener: (context, state) {
           if (state is Loading) {
-            // _showProgressDialog();
+            // Show loading state UI if necessary
           }
         },
         buildWhen: (previous, current) {
@@ -42,7 +43,6 @@ class _PaymentPageState extends State<PaymentPage> {
         },
         builder: (context, state) {
           if (state is InitiateInvoice) {
-            // Navigator.pop(context);
             return _mainWidget(state.invoices);
           } else {
             return const SizedBox();
@@ -54,59 +54,53 @@ class _PaymentPageState extends State<PaymentPage> {
 }
 
 Widget _mainWidget(List<Invoice> invoices) {
+  return Padding(
+    padding: const EdgeInsets.all(20.0),
+    child: SafeArea(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Center(
+            child: Builder(
+              builder: (context) {
+                return Text(
+                  AppLocalizations.of(context).translate("user_invoices"),
+                  style: TextStyle(
+                    fontSize: 28,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white, // White Text for contrast
+                  ),
+                );
+              }
+            ),
+          ),
+          SizedBox(height: 20),
 
-  return Scaffold(
-    backgroundColor: Color(0xFFF5E6DA), // Light Beige Background
-    body: Padding(
-      padding: const EdgeInsets.all(20.0),
-      child: SafeArea(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Center(
-              child: Builder(
-                builder: (context) {
-                  return Text(
-                    AppLocalizations.of(context).translate("payment"),
-                    style: TextStyle(
-                      fontSize: 28,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.brown,
-                    ),
-                  );
-                }
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 10),
+              child: ListView.builder(
+                itemCount: invoices.length,
+                itemBuilder: (context, index) {
+                  return _invoice_card_item_widget(context, invoices[index]);
+                },
               ),
             ),
-            SizedBox(height: 20),
-
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(vertical: 10),
-                child: ListView.builder(
-                  itemCount: invoices.length,
-                  itemBuilder: (context, index) {
-                    return _booking_card_item_widget(context,invoices[index]);
-                  },
-                ),
-              ),
-            ),
-
-            SizedBox(height: 20),
-          ],
-        ),
+          ),
+        ],
       ),
     ),
   );
 }
 
-Widget _booking_card_item_widget(BuildContext context, Invoice invoice) {
+Widget _invoice_card_item_widget(BuildContext context, Invoice invoice) {
   return Card(
     margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 10),
     shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.circular(10),
+      borderRadius: BorderRadius.circular(12),
     ),
     elevation: 5,
-    color: Color(0x35F3E2D3), // Soft Beige Card Background
+    color: Color(0xFF3A3A3A), // Darker card background for Admin UI
     child: Padding(
       padding: EdgeInsets.all(16),
       child: Column(
@@ -116,13 +110,13 @@ Widget _booking_card_item_widget(BuildContext context, Invoice invoice) {
           Center(
             child: Column(
               children: [
-                Icon(Icons.receipt_long, size: 40, color: Color(0xFF795548)), // Brown Icon
+                Icon(Icons.receipt_long, size: 40, color: Colors.blueAccent), // Blue Icon for contrast
                 SizedBox(height: 8),
                 Text(
                   AppLocalizations.of(context).translate("invoice_details"),
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Color(0xFF795548)), // Brown Text
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.white), // White text
                 ),
-                Divider(thickness: 1, color: Color(0xFF795548)), // Brown Divider
+                Divider(thickness: 1, color: Colors.grey[500]), // Light Grey Divider
               ],
             ),
           ),
@@ -131,29 +125,29 @@ Widget _booking_card_item_widget(BuildContext context, Invoice invoice) {
           buildInfoTile(Icons.receipt, "Invoice ID", invoice.invoiceId.toString()),
           buildInfoTile(Icons.book_online, "Booking ID", invoice.bookingId.toString()),
           buildInfoTile(Icons.account_circle, "User ID", invoice.userId.toString()),
-          buildInfoTile(Icons.monetization_on, "Amount", "\$${invoice.amount.toStringAsFixed(2)}"),
+          buildInfoTile(Icons.monetization_on, "Amount", "\$${invoice.amount.toStringAsFixed(2)}", iconColor: Colors.greenAccent),
           buildInfoTile(Icons.credit_card, "Payment Method", invoice.paymentMethod ?? "Not Available"),
           buildInfoTile(Icons.calendar_today, "Payment Date", invoice.paymentDate.toString()),
           buildInfoTile(
             invoice.isPaid ? Icons.check_circle : Icons.cancel,
             "Payment Status",
             invoice.isPaid ? "Paid" : "Not Paid",
-            iconColor: invoice.isPaid ? Colors.green : Colors.red,
+            iconColor: invoice.isPaid ? Colors.green : Colors.redAccent,
           ),
           buildInfoTile(
             invoice.isActive ? Icons.check : Icons.cancel,
             "Active Status",
             invoice.isActive ? "Active" : "Inactive",
-            iconColor: invoice.isActive ? Colors.green : Colors.red,
+            iconColor: invoice.isActive ? Colors.green : Colors.redAccent,
           ),
 
-          Divider(thickness: 1, color: Color(0xFF795548)),
+          Divider(thickness: 1, color: Colors.grey[500]),
 
           // Car Details Section
           Center(
             child: Text(
               "Car Information",
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Color(0xFF795548)),
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white),
             ),
           ),
           buildInfoTile(Icons.directions_car, "Car Number Plate", invoice.carNumberPlate),
@@ -161,13 +155,13 @@ Widget _booking_card_item_widget(BuildContext context, Invoice invoice) {
           buildInfoTile(Icons.date_range, "Start Date", invoice.startDate.toString()),
           buildInfoTile(Icons.date_range, "End Date", invoice.endDate.toString()),
 
-          Divider(thickness: 1, color: Color(0xFF795548)),
+          Divider(thickness: 1, color: Colors.grey[500]),
 
           // User Information Section
           Center(
             child: Text(
               "User Information",
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Color(0xFF795548)),
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white),
             ),
           ),
           buildInfoTile(Icons.person, "User Name", invoice.userName),
@@ -181,14 +175,14 @@ Widget _booking_card_item_widget(BuildContext context, Invoice invoice) {
 
 Widget buildInfoTile(IconData icon, String label, String value, {Color? iconColor}) {
   return ListTile(
-    leading: Icon(icon, color: iconColor ?? Color(0xFF795548)), // Default Brown Icon
+    leading: Icon(icon, color: iconColor ?? Colors.blueAccent), // Blue Accent Icons for Professional Look
     title: Text(
       label,
-      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14, color: Color(0xFF795548)), // Brown Text
+      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14, color: Colors.white), // White for contrast
     ),
     subtitle: Text(
       value,
-      style: TextStyle(fontSize: 14, color: Colors.black87),
+      style: TextStyle(fontSize: 14, color: Colors.grey[300]), // Light Grey for readability
     ),
   );
 }

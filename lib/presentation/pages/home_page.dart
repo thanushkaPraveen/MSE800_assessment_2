@@ -248,10 +248,8 @@ class _HomePageState extends State<HomePage> {
                         itemCount: cars.length,
                         itemBuilder: (context, index) {
                           return _car_card_item_widget(cars[index], () {
-                            onCarSelected(
-                                cars[index]); // Pass selected car object
-                            Navigator.pop(
-                                context); // Close popup after selection
+                            onCarSelected(cars[index]); // Pass selected car object
+                            Navigator.pop(context); // Close popup after selection
                           });
                         },
                       ),

@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:rental_car_app/data/repositories/user_local_storage.dart';
 import 'package:rental_car_app/presentation/pages/main_page.dart';
 import 'package:rental_car_app/presentation/pages/register_page.dart';
 
+import '../../constants/app_strings.dart';
 import '../../cubit/auth_cubit.dart';
 import '../../cubit/auth_state.dart';
 import '../../utils/app_localizations.dart';
 import '../../utils/validators.dart';
+import 'admin_main_page.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -44,21 +47,29 @@ class _LoginPageState extends State<LoginPage> {
       body: BlocConsumer<AuthCubit, AuthState>(
         listener: (BuildContext context, AuthState state) {
           if (state is AuthLoading) {
-            _showProgressDialog();
           } else if (state is AuthSuccess) {
-            Navigator.pop(context);
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(content: Text(' ${AppLocalizations.of(context).translate("welcome")} ${state.user.userName}!')),
             );
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => const MainPage(),
-              ),
-            );
+
+            if (UserLocalStorage.getUser()!.userEmail == AppStrings.adminEmail) {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const AdminMainPage(),
+                ),
+              );
+            }
+            else {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const MainPage(),
+                ),
+              );
+            }
           } else if (state is AuthFailure) {
             print("🛑 UI Error: ${state.error}");
-            Navigator.pop(context);
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                   content: Text(state.error.replaceAll(
@@ -67,16 +78,43 @@ class _LoginPageState extends State<LoginPage> {
           }
         },
         buildWhen: (previous, current) {
-          return current is AuthInitial;
+          return current is AuthInitial || current is AuthLoading;
         },
         builder: (context, state) {
           if (state is AuthInitial) {
             return _loginPageWidget();
+          } else if (state is AuthLoading) {
+            return _progressView();
           } else {
             return const SizedBox();
           }
         },
       ),
+    );
+  }
+
+  Widget _progressView() {
+    return Stack(
+      children: [
+        Positioned.fill(
+          child: Container(
+            color: Color(0xFFD9D9D9), // Background color
+            child: const Center( // Centers the Column in the screen
+              child: Column(
+                mainAxisSize: MainAxisSize.min, // Prevents taking full height
+                children: [
+                  CircularProgressIndicator(),
+                  SizedBox(height: 10), // Adds spacing between loader & text
+                  Text(
+                    "Loading...",
+                    style: TextStyle(color: Colors.black, fontSize: 16),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ],
     );
   }
 

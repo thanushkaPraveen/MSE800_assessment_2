@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:rental_car_app/constants/app_strings.dart';
+import 'package:rental_car_app/presentation/pages/admin_main_page.dart';
 import 'package:rental_car_app/presentation/pages/login_page.dart';
 import 'package:rental_car_app/presentation/pages/main_page.dart';
 
@@ -20,10 +22,18 @@ class _InitPageState extends State<InitPage> {
 
     Future.delayed(Duration(seconds: 2), () {
       if (UserLocalStorage.getUser() != null) {
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => MainPage()),
-        );
+        if (UserLocalStorage.getUser()!.userEmail == AppStrings.adminEmail) {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => AdminMainPage()),
+          );
+        }
+        else {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => MainPage()),
+          );
+        }
       } else {
         Navigator.pushReplacement(
           context,

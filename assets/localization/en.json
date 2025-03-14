@@ -62,6 +62,10 @@
   "password_must_be_6_chars": "Password must be at least 6 characters long",
   "enter_valid_phone_number": "Enter a valid phone number (9-15 digits, with optional country code)",
   "confirm_booking": "Confirm Booking",
-  "year": "Year"
-
+  "year": "Year",
+  "invoice": "Invoice",
+  "bookings": "Bookings",
+  "user_bookings": "User Bookings",
+  "user_invoices": "User Invoices",
+  "admin_profile": "Admin Profile"
 }
