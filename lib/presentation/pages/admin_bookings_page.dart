@@ -4,7 +4,6 @@ import 'package:rental_car_app/data/models/booking.dart';
 
 import '../../cubit/main_cubit.dart';
 import '../../cubit/main_state.dart';
-import '../../data/models/car_model.dart';
 import '../../utils/app_localizations.dart';
 import '../../utils/date_helper.dart';
 
@@ -33,17 +32,19 @@ class _AdminBookingsPageState extends State<AdminBookingsPage> {
       body: BlocConsumer<MainCubit, MainState>(
         listener: (context, state) {
           if (state is Loading) {
-            // _showProgressDialog();
-          }
-          if (state is MainPagePopup) {
+          } else if (state is MainPagePopup) {
 
+          } else if (state is AdminBookingUpdateStatusPopup) {
+            _handleAdminBookingUpdateStatusPopup(state.choice);
           }
         },
         buildWhen: (previous, current) {
-          return current is InitiateBooking;
+          return current is InitiateBooking || current is Loading;
         },
         builder: (context, state) {
-          if (state is InitiateBooking) {
+          if (state is Loading) {
+            return _progressView();
+          } else if (state is InitiateBooking) {
             // Navigator.pop(context);
             return _mainWidget(state.bookings);
           } else {
@@ -51,6 +52,31 @@ class _AdminBookingsPageState extends State<AdminBookingsPage> {
           }
         },
       ),
+    );
+  }
+
+  Widget _progressView() {
+    return Stack(
+      children: [
+        Positioned.fill(
+          child: Container(
+            color: Color(0xFF2C2C2C), // Background color
+            child: const Center( // Centers the Column in the screen
+              child: Column(
+                mainAxisSize: MainAxisSize.min, // Prevents taking full height
+                children: [
+                  CircularProgressIndicator(),
+                  SizedBox(height: 10), // Adds spacing between loader & text
+                  Text(
+                    "Loading...",
+                    style: TextStyle(color: Colors.white, fontSize: 16),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ],
     );
   }
 
@@ -68,7 +94,7 @@ class _AdminBookingsPageState extends State<AdminBookingsPage> {
                   builder: (context) {
                     return Text(
                       AppLocalizations.of(context).translate("user_bookings"),
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontSize: 28,
                         fontWeight: FontWeight.bold,
                         color: Colors.white,
@@ -77,8 +103,7 @@ class _AdminBookingsPageState extends State<AdminBookingsPage> {
                   },
                 ),
               ),
-              SizedBox(height: 20),
-
+              const SizedBox(height: 20),
               Expanded(
                 child: Padding(
                   padding: const EdgeInsets.symmetric(vertical: 10),
@@ -94,7 +119,6 @@ class _AdminBookingsPageState extends State<AdminBookingsPage> {
                   ),
                 ),
               ),
-
               SizedBox(height: 20),
             ],
           ),
@@ -124,6 +148,19 @@ class _AdminBookingsPageState extends State<AdminBookingsPage> {
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
+                Container(
+                  width: 30,
+                  height: double.infinity, // Match parent height
+                  decoration: BoxDecoration(
+                    color: _getStatusColor(bookings.status),
+                    borderRadius: const BorderRadius.only(
+                      topLeft: Radius.circular(15), // Match parent border radius
+                      bottomLeft: Radius.circular(15),
+                    ),
+                  ),
+                ),
+                const SizedBox(width: 8,),
+
                 // Car Details Section
                 Expanded(
                   child: Column(
@@ -193,33 +230,42 @@ class _AdminBookingsPageState extends State<AdminBookingsPage> {
     );
   }
 
+  void _handleCancelBooking(Booking booking) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text("Booking ID $booking. has been cancelled."),
+        backgroundColor: Colors.redAccent,
+      ),
+    );
+  }
+
+  void _handleAdminBookingUpdateStatusPopup(int choice) {
+    if (choice == 1) {
+      _handleConfirmBooking(choice);
+    } else {
+      _handleRejectBooking(choice);
+    }
+  }
+
+  void _handleRejectBooking(int bookingId) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text("Booking ID $bookingId has been rejected."),
+        backgroundColor: Colors.orange,
+      ),
+    );
+  }
+
+  void _handleConfirmBooking(int bookingId) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text("Booking ID $bookingId has been confirmed."),
+        backgroundColor: Colors.green,
+      ),
+    );
+  }
+
   void _showBookingActionPopup(Booking booking) {
-    void _handleCancelBooking(Booking booking) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text("Booking ID $booking. has been cancelled."),
-          backgroundColor: Colors.redAccent,
-        ),
-      );
-    }
-
-    void _handleRejectBooking(Booking booking) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text("Booking ID ${booking.bookingId} has been rejected."),
-          backgroundColor: Colors.orange,
-        ),
-      );
-    }
-
-    void _handleConfirmBooking(Booking booking) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text("Booking ID ${booking.bookingId} has been confirmed."),
-          backgroundColor: Colors.green,
-        ),
-      );
-    }
 
     showDialog(
       context: context,
@@ -273,7 +319,7 @@ class _AdminBookingsPageState extends State<AdminBookingsPage> {
             TextButton(
               onPressed: () {
                 Navigator.pop(context);
-                _handleRejectBooking(booking);
+                _cubit.onClickBookingUpdate(booking, 2);
               },
               style: TextButton.styleFrom(
                 backgroundColor: Colors.orange, // Orange for Reject
@@ -286,7 +332,7 @@ class _AdminBookingsPageState extends State<AdminBookingsPage> {
             TextButton(
               onPressed: () {
                 Navigator.pop(context);
-                _handleConfirmBooking(booking);
+                _cubit.onClickBookingUpdate(booking, 1);
               },
               style: TextButton.styleFrom(
                 backgroundColor: Colors.green, // Green for Confirm
@@ -298,5 +344,18 @@ class _AdminBookingsPageState extends State<AdminBookingsPage> {
         );
       },
     );
+  }
+
+  Color _getStatusColor(String status) {
+    switch (status) {
+      case "Confirmed":
+        return Colors.green;
+      case "Cancelled":
+        return Colors.red;
+      case "Pending":
+        return Colors.yellow;
+      default:
+        return Colors.grey; // Default color if status is unknown
+    }
   }
 }

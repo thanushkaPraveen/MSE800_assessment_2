@@ -33,7 +33,7 @@ class MainCubit extends Cubit<MainState> {
     emit(Loading());
     int userId = UserLocalStorage.getUser()!.userEmail == AppStrings.adminEmail ? -1 : UserLocalStorage.getUser()!.userTypeId;
     List<Booking> bookings = await _apiService.fetchBookings(userId);
-
+    bookings = bookings.reversed.toList();
     emit(InitiateBooking(bookings));
   }
 
@@ -92,6 +92,17 @@ class MainCubit extends Cubit<MainState> {
       emit(Failure(response.message));
     } else {
       emit(Success());
+    }
+  }
+
+  void onClickBookingUpdate(Booking booking, int choice) async {
+    emit(Loading());
+    AppResponse<dynamic> response = await _apiService.updateBookingStatus(booking.bookingId, choice);
+    fetchInitialBookingApis();
+    if (response is ErrorResponse) {
+      emit(Failure(response.message));
+    } else {
+      emit(AdminBookingUpdateStatusPopup(choice));
     }
   }
 }

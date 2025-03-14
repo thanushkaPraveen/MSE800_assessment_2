@@ -145,4 +145,48 @@ class ApiService {
       );
     }
   }
+
+  Future<AppResponse<dynamic>> updateBookingStatus(int bookingId, int choice) async {
+    const String url = '${AppStrings.baseURL}/api/v1/admin/update-booking-status';
+
+    Map<String, dynamic> body = {
+      "booking_id": bookingId,
+      "status": choice
+    };
+
+    try {
+      Response response = await _dio.post(url, data: body);
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        int code = response.data['code'];
+        if (code == 200 || code == 201) {
+          return SuccessResponse(
+            code: response.statusCode!,
+            message: response.data['message'],
+            data: response.data['data'],
+          );
+        } else {
+          return ErrorResponse(
+            code: code,
+            message: response.data['message'],
+          );
+        }
+      } else {
+        return ErrorResponse(
+          code: response.statusCode!,
+          message: response.data['message'],
+        );
+      }
+    } on DioException catch (e) {
+      return ErrorResponse(
+        code: e.response?.statusCode ?? 500,
+        message: e.response?.data['message'] ?? 'An unexpected error occurred',
+      );
+    } catch (e) {
+      return ErrorResponse(
+        code: 500,
+        message: 'Unexpected error: $e',
+      );
+    }
+  }
 }

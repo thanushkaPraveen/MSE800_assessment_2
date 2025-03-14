@@ -98,3 +98,13 @@ class ShowBookingConfirmationPopup extends MainPagePopup {
   @override
   List<Object?> get props => [index, booking];
 }
+
+class AdminBookingUpdateStatusPopup extends MainPagePopup {
+  final index = Random().nextInt(100);
+  final int choice;
+
+  AdminBookingUpdateStatusPopup(this.choice);
+
+  @override
+  List<Object?> get props => [index, choice];
+}

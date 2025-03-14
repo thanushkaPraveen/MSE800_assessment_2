@@ -14,6 +14,10 @@ class AuthCubit extends Cubit<AuthState> {
     try {
       final user = await authRepository.login(email, password);
 
+      await Future.delayed(Duration(milliseconds: 500), () {
+        emit(AuthInitial());
+      });
+
       if (user != null) {
         UserLocalStorage.saveUser(user);
         emit(AuthSuccess(user));
@@ -44,6 +48,10 @@ class AuthCubit extends Cubit<AuthState> {
         userPassword: userPassword,
         userPhoneNumber: userPhoneNumber,
       );
+
+      await Future.delayed(Duration(milliseconds: 500), () {
+        emit(AuthInitial());
+      });
 
       if (user != null) {
         UserLocalStorage.saveUser(user);

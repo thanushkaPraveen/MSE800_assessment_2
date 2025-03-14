@@ -47,9 +47,7 @@ class _LoginPageState extends State<LoginPage> {
       body: BlocConsumer<AuthCubit, AuthState>(
         listener: (BuildContext context, AuthState state) {
           if (state is AuthLoading) {
-            _showProgressDialog();
           } else if (state is AuthSuccess) {
-            Navigator.pop(context);
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(content: Text(' ${AppLocalizations.of(context).translate("welcome")} ${state.user.userName}!')),
             );
@@ -72,7 +70,6 @@ class _LoginPageState extends State<LoginPage> {
             }
           } else if (state is AuthFailure) {
             print("🛑 UI Error: ${state.error}");
-            Navigator.pop(context);
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                   content: Text(state.error.replaceAll(
@@ -81,16 +78,43 @@ class _LoginPageState extends State<LoginPage> {
           }
         },
         buildWhen: (previous, current) {
-          return current is AuthInitial;
+          return current is AuthInitial || current is AuthLoading;
         },
         builder: (context, state) {
           if (state is AuthInitial) {
             return _loginPageWidget();
+          } else if (state is AuthLoading) {
+            return _progressView();
           } else {
             return const SizedBox();
           }
         },
       ),
+    );
+  }
+
+  Widget _progressView() {
+    return Stack(
+      children: [
+        Positioned.fill(
+          child: Container(
+            color: Color(0xFFD9D9D9), // Background color
+            child: const Center( // Centers the Column in the screen
+              child: Column(
+                mainAxisSize: MainAxisSize.min, // Prevents taking full height
+                children: [
+                  CircularProgressIndicator(),
+                  SizedBox(height: 10), // Adds spacing between loader & text
+                  Text(
+                    "Loading...",
+                    style: TextStyle(color: Colors.black, fontSize: 16),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ],
     );
   }
 
