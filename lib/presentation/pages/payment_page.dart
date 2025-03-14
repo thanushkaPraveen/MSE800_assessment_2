@@ -132,7 +132,7 @@ Widget _booking_card_item_widget(BuildContext context, Invoice invoice) {
           buildInfoTile(Icons.book_online, "Booking ID", invoice.bookingId.toString()),
           buildInfoTile(Icons.account_circle, "User ID", invoice.userId.toString()),
           buildInfoTile(Icons.monetization_on, "Amount", "\$${invoice.amount.toStringAsFixed(2)}"),
-          buildInfoTile(Icons.credit_card, "Payment Method", invoice.paymentMethod),
+          buildInfoTile(Icons.credit_card, "Payment Method", invoice.paymentMethod ?? "Not Available"),
           buildInfoTile(Icons.calendar_today, "Payment Date", invoice.paymentDate.toString()),
           buildInfoTile(
             invoice.isPaid ? Icons.check_circle : Icons.cancel,
