@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rental_car_app/data/models/booking.dart';
+import 'package:rental_car_app/theme/app_colors.dart';
 
 import '../../cubit/main_cubit.dart';
 import '../../cubit/main_state.dart';
@@ -82,7 +83,7 @@ class _AdminBookingsPageState extends State<AdminBookingsPage> {
 
   Widget _mainWidget(List<Booking> bookings) {
     return Scaffold(
-      backgroundColor: Color(0xFF2C2C2C), // Dark Grey Background for Admin
+      backgroundColor:  AppColors.primaryColorAdmin, // Dark Grey Background for Admin
       body: Padding(
         padding: const EdgeInsets.all(20.0),
         child: SafeArea(
@@ -97,7 +98,7 @@ class _AdminBookingsPageState extends State<AdminBookingsPage> {
                       style: const TextStyle(
                         fontSize: 28,
                         fontWeight: FontWeight.bold,
-                        color: Colors.white,
+                        color: AppColors.primaryBackgroundColorAdmin,
                       ),
                     );
                   },
@@ -136,7 +137,7 @@ class _AdminBookingsPageState extends State<AdminBookingsPage> {
     return GestureDetector(
       onTap: onTap,
       child: Card(
-        color: Color(0xFF3A3A3A),
+        color: AppColors.primaryPopupColorAdmin,
         // Darker card background for admin theme
         margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 10),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),

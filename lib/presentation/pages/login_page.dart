@@ -81,12 +81,10 @@ class _LoginPageState extends State<LoginPage> {
           return current is AuthInitial || current is AuthLoading;
         },
         builder: (context, state) {
-          if (state is AuthInitial) {
+          if (state is AuthLoading) {
             return _loginPageWidget();
-          } else if (state is AuthLoading) {
-            return _progressView();
           } else {
-            return const SizedBox();
+            return _loginPageWidget();
           }
         },
       ),

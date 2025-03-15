@@ -6,6 +6,7 @@ import 'package:rental_car_app/presentation/pages/home_page.dart';
 import 'package:rental_car_app/presentation/pages/my_booking_page.dart';
 import 'package:rental_car_app/presentation/pages/payment_page.dart';
 import 'package:rental_car_app/presentation/pages/profile_page.dart';
+import 'package:rental_car_app/theme/app_colors.dart';
 
 import '../../utils/app_localizations.dart';
 import 'admin_bookings_page.dart';
@@ -45,7 +46,7 @@ class _AdminMainPageState extends State<AdminMainPage> {
         bottomNavigationBar: BottomNavigationBar(
           currentIndex: _selectedIndex,
           onTap: _onTabTapped,
-          backgroundColor: Color(0xFF2C2C2C), // Dark Grey Background for Admin
+          backgroundColor: AppColors.primaryBackgroundColorAdmin, // Dark Grey Background for Admin
           selectedItemColor: Colors.blueAccent, // Highlight selected tab with Blue
           unselectedItemColor: Colors.grey[400], // Light Grey for unselected items
           showUnselectedLabels: true,

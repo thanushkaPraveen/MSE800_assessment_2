@@ -81,9 +81,9 @@ class _RegisterPageState extends State<RegisterPage> {
           if (state is AuthInitial) {
             return _registerPageWidget();
           } else if (state is AuthLoading) {
-            return _progressView();
+            return _registerPageWidget();
           } else {
-            return const SizedBox();
+            return _registerPageWidget();
           }
         },
       ),

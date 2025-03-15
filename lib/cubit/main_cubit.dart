@@ -39,7 +39,7 @@ class MainCubit extends Cubit<MainState> {
 
   Future<void> fetchInitialInvoiceApis() async {
     emit(Loading());
-    int userId = UserLocalStorage.getUser()!.userEmail == AppStrings.adminEmail ? -1 : UserLocalStorage.getUser()!.userTypeId;
+    int userId = UserLocalStorage.getUser()!.userEmail == AppStrings.adminEmail ? -1 : UserLocalStorage.getUser()!.userId;
     List<Invoice> invoices = await _apiService.fetchInvoices(userId);
 
     emit(InitiateInvoice(invoices));

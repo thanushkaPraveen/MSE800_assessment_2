@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rental_car_app/data/models/booking.dart';
 import 'package:rental_car_app/data/models/invoice.dart';
+import 'package:rental_car_app/theme/app_colors.dart';
 
 import '../../cubit/main_cubit.dart';
 import '../../cubit/main_state.dart';
@@ -31,7 +32,7 @@ class _AdminInvoicePageState extends State<AdminInvoicePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFF2C2C2C), // Dark Grey Background for Admin UI
+      backgroundColor:AppColors.primaryColorAdmin, // Dark Grey Background for Admin UI
       body: BlocConsumer<MainCubit, MainState>(
         listener: (context, state) {
           if (state is Loading) {
@@ -68,7 +69,7 @@ Widget _mainWidget(List<Invoice> invoices) {
                   style: TextStyle(
                     fontSize: 28,
                     fontWeight: FontWeight.bold,
-                    color: Colors.white, // White Text for contrast
+                    color: AppColors.primaryBackgroundColorAdmin, // White Text for contrast
                   ),
                 );
               }
@@ -100,7 +101,7 @@ Widget _invoice_card_item_widget(BuildContext context, Invoice invoice) {
       borderRadius: BorderRadius.circular(12),
     ),
     elevation: 5,
-    color: Color(0xFF3A3A3A), // Darker card background for Admin UI
+    color: AppColors.primaryPopupColorAdmin, // Darker card background for Admin UI
     child: Padding(
       padding: EdgeInsets.all(16),
       child: Column(

@@ -3,6 +3,7 @@ import 'package:hive/hive.dart';
 import '../../data/repositories/language_storage.dart';
 import '../../data/repositories/user_local_storage.dart';
 import '../../main.dart'; // Import MyApp for localization
+import '../../theme/app_colors.dart';
 import '../../utils/app_localizations.dart';
 import 'login_page.dart';
 
@@ -61,7 +62,7 @@ class _AdminProfilePageState extends State<AdminProfilePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFF2C2C2C), // Dark Grey Background
+      backgroundColor: AppColors.primaryColorAdmin, // Dark Grey Background
       body: Center(
         child: Padding(
           padding: const EdgeInsets.all(20.0),
@@ -74,7 +75,7 @@ class _AdminProfilePageState extends State<AdminProfilePage> {
                 style: TextStyle(
                   fontSize: 28,
                   fontWeight: FontWeight.bold,
-                  color: Colors.white, // White for contrast
+                  color: AppColors.primaryBackgroundColorAdmin, // White for contrast
                 ),
               ),
               SizedBox(height: 50),
@@ -83,7 +84,7 @@ class _AdminProfilePageState extends State<AdminProfilePage> {
               Container(
                 padding: EdgeInsets.all(20),
                 decoration: BoxDecoration(
-                  color: Color(0xFF3A3A3A), // Darker card background
+                  color:  AppColors.primaryPopupColorAdmin, // Darker card background
                   borderRadius: BorderRadius.circular(16),
                   boxShadow: [
                     BoxShadow(
@@ -118,7 +119,7 @@ class _AdminProfilePageState extends State<AdminProfilePage> {
               // Language Selector
               DropdownButton<Locale>(
                 value: _selectedLocale,
-                dropdownColor: Color(0xFF3A3A3A), // Darker dropdown for admin UI
+                dropdownColor: AppColors.primaryBackgroundColorAdmin, // Darker dropdown for admin UI
                 onChanged: (Locale? newLocale) {
                   if (newLocale != null) {
                     _changeLanguage(newLocale);
@@ -141,7 +142,7 @@ class _AdminProfilePageState extends State<AdminProfilePage> {
               ElevatedButton(
                 onPressed: tapOnLogOut,
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.blueAccent, // Blue for Admin Actions
+                  backgroundColor: AppColors.primaryBackgroundColorAdmin, // Blue for Admin Actions
                   padding: EdgeInsets.symmetric(vertical: 14, horizontal: 80),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(30),
