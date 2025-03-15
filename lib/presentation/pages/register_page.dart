@@ -51,7 +51,11 @@ class _RegisterPageState extends State<RegisterPage> {
   }
 
   void navigateToMainPage() {
-    Navigator.push(context, MaterialPageRoute(builder: (context) => const MainPage()));
+    Navigator.pushAndRemoveUntil(
+      context,
+      MaterialPageRoute(builder: (context) => MainPage()),
+          (route) => false, // This removes all previous routes from the stack
+    );
   }
 
   @override

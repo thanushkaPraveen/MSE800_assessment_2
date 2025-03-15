@@ -23,21 +23,24 @@ class _InitPageState extends State<InitPage> {
     Future.delayed(Duration(seconds: 2), () {
       if (UserLocalStorage.getUser() != null) {
         if (UserLocalStorage.getUser()!.userEmail == AppStrings.adminEmail) {
-          Navigator.pushReplacement(
+          Navigator.pushAndRemoveUntil(
             context,
             MaterialPageRoute(builder: (context) => AdminMainPage()),
+                (route) => false, // This removes all previous routes from the stack
           );
         }
         else {
-          Navigator.pushReplacement(
+          Navigator.pushAndRemoveUntil(
             context,
             MaterialPageRoute(builder: (context) => MainPage()),
+                (route) => false, // This removes all previous routes from the stack
           );
         }
       } else {
-        Navigator.pushReplacement(
+        Navigator.pushAndRemoveUntil(
           context,
           MaterialPageRoute(builder: (context) => LoginPage()),
+              (route) => false, // This removes all previous routes from the stack
         );
       }
     });

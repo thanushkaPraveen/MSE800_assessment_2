@@ -53,19 +53,17 @@ class _LoginPageState extends State<LoginPage> {
             );
 
             if (UserLocalStorage.getUser()!.userEmail == AppStrings.adminEmail) {
-              Navigator.push(
+              Navigator.pushAndRemoveUntil(
                 context,
-                MaterialPageRoute(
-                  builder: (context) => const AdminMainPage(),
-                ),
+                MaterialPageRoute(builder: (context) => AdminMainPage()),
+                    (route) => false, // This removes all previous routes from the stack
               );
             }
             else {
-              Navigator.push(
+              Navigator.pushAndRemoveUntil(
                 context,
-                MaterialPageRoute(
-                  builder: (context) => const MainPage(),
-                ),
+                MaterialPageRoute(builder: (context) => MainPage()),
+                    (route) => false, // This removes all previous routes from the stack
               );
             }
           } else if (state is AuthFailure) {
