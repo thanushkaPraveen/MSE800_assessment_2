@@ -31,7 +31,7 @@ class MainCubit extends Cubit<MainState> {
 
   Future<void> fetchInitialBookingApis() async {
     emit(Loading());
-    int userId = UserLocalStorage.getUser()!.userEmail == AppStrings.adminEmail ? -1 : UserLocalStorage.getUser()!.userTypeId;
+    int userId = UserLocalStorage.getUser()!.userEmail == AppStrings.adminEmail ? -1 : UserLocalStorage.getUser()!.userId;
     List<Booking> bookings = await _apiService.fetchBookings(userId);
     bookings = bookings.reversed.toList();
     emit(InitiateBooking(bookings));
