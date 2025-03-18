@@ -71,9 +71,7 @@ A Flutter-based car rental application with separate interfaces for customers an
 1. Add translation files in `assets/localization/`
 2. Supported languages:
     - English (`en.json`)
-    - Māori (`mi.json`)
-    - French (`fr.json`)
-    - Māori (NZ) (`mi_NZ.json`)
+    - Māori (`fr.json`)
 
 To add new languages:
 1. Create new JSON file in `assets/localization/`
