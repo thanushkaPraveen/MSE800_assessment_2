@@ -1,7 +1,3 @@
-(Due to technical issues, the search service is temporarily unavailable.)
-
-Here's a comprehensive README.md for your Rental Car App:
-
 # Rental Car App
 
 A Flutter-based car rental application with separate interfaces for customers and administrators, supporting multi-language localization (English and Māori).
