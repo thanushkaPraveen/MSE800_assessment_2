@@ -45,7 +45,7 @@ class _RentalCarAppState extends State<RentalCarApp> {
   @override
   void initState() {
     super.initState();
-    _locale = widget.savedLocale ?? Locale('en', 'US'); // ✅ Initialize with default value
+    _locale = widget.savedLocale ?? Locale('en', 'US');
   }
 
   void setLocale(Locale locale) {
@@ -59,7 +59,6 @@ class _RentalCarAppState extends State<RentalCarApp> {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => AuthCubit(AuthRepository()),
-      // ✅ Ensuring AuthCubit is globally available
       child: MaterialApp(
         title: "Rental App",
         debugShowCheckedModeBanner: false,
@@ -69,14 +68,13 @@ class _RentalCarAppState extends State<RentalCarApp> {
           Locale('fr', 'FR')
         ],
         localizationsDelegates: [
-          AppLocalizations.delegate, // ✅ Custom localization
+          AppLocalizations.delegate,
           GlobalWidgetsLocalizations.delegate,
-          GlobalMaterialLocalizations.delegate, // ✅ Ensure Material widgets work
+          GlobalMaterialLocalizations.delegate,
           GlobalCupertinoLocalizations.delegate,
         ],
-        locale: _locale, // ✅ Apply updated locale
+        locale: _locale,
         localeResolutionCallback: (locale, supportedLocales) {
-          // ✅ Ensure Māori defaults to English for Material & Cupertino localizations
           if (locale?.languageCode == 'mi') {
             return Locale('en', 'US'); // Fallback to English
           }
